@@ -1,0 +1,168 @@
+\documentclass[10pt]{report}
+
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+\usepackage{graphicx} % images
+\usepackage{fancyhdr} % headers and footers
+\usepackage{parskip} % paragraph
+\usepackage{geometry} % shapes
+\usepackage{hyperref} % Links
+\usepackage{pdflscape} % making a page landscape
+\usepackage{xcolor}
+\usepackage[shortlabels]{enumitem}
+\usepackage{multirow}
+
+\graphicspath{{../images/}}
+
+% margins and page size
+\geometry{
+a4paper,
+left=30mm,
+top=25mm,
+right=30mm,
+bottom=25mm
+}
+
+\begin{document}
+
+\begin{titlepage}
+\center
+{\huge\bfseries Computer Graphics 
+
+Aum Patel
+}
+
+\end{titlepage}
+\tableofcontents
+\chapter{Question 1 - Geometry and vertex attributes}
+
+Y-axis up, X axis left to right and Z axis towards you is a Right handed coordinate system. I have proven this by using my right-hand with the X-axis being on the thumb, the Y-axis being on the first finger and the Z-axis being on my middle finger and rotating it to meet the 3 requirements. You cannot rotate the left hand to do this.
+
+\begin{figure}[h]
+    \centering
+    \fbox{\includegraphics[width = 5cm ]{Right_Hand_Axis.png}}
+    \caption{Image of hand with axis labeled.}
+\end{figure}
+
+I decided to draw out the model I was going to make in Blender first and then place the vertices on top of it. 
+
+The colors of the axis are consistent in all images: \textcolor{red}{Red : X} , \textcolor{green}{Green : Y} , \textcolor{blue}{Blue : Z}
+
+\begin{figure}[h]
+    \centering
+    \fbox{\includegraphics[width = 5cm ]{house_blender.png}}
+    \caption{House in blender with drawn axis.}
+\end{figure}
+
+I chose the bottom vertex on the rear left of the house as the origin as I would only have to work with positive numbers for the rest of the vertices, and they would also be round numbers (except for the roof) as I am going to make the house with a square base of 1x1. 
+
+Below is a wireframe view of the same house with the coordinates labeled.
+\begin{figure}[h]
+    \centering
+    \fbox{\includegraphics[width = 10cm ]{house_blender_wireframe_with_coord.png}}
+    \caption{House in blender with wireframe and coordinates.}
+\end{figure}
+
+Coordinates for the vertices:
+\begin{enumerate}[(a)]
+    \item (0, 0, 0)
+    \item (0, 0, 1)
+    \item (1, 0, 0)
+    \item (1, 0, 1)
+    \item (0, 1, 0)
+    \item (0, 1, 1)
+    \item (1, 1, 0)
+    \item (1, 1, 1)
+    \item (0.5, 2, 0)
+    \item (0.5, 2, 1)
+\end{enumerate}
+
+16 triangles will be used to make up the house, and there will be normals that are shared between them.
+
+% Left
+% (a, b, f)
+% (a, f, e)
+
+% Front
+% (b, h, f)
+% (b, d, h)
+% (f, h, j)
+
+% Right
+% (d, g, h)
+% (d, c, g)
+
+% Back
+% (c, e, g)
+% (c, a, e)
+% (g, e, i)
+
+% Base
+% (a, c, b)
+% (b, c, d)
+
+% Roof Left
+% (e, j, i)
+% (e, f, j)
+
+% Roof Right
+% (h, i, j)
+% (h, g, i)
+
+
+
+I calculated the vector normals by using the following equation:
+
+If we have 3 vectors that make up a a triangle in an anti-clockwise manner: \(V0, V1, V2\), to calculate the normal facing outwards we do:
+
+\(A = V1 - V0\)  |  \(B = V2 - V0\)
+
+\(Normal = A \times B\)
+
+Doing this with the first triangle on the table (triangle on the left face of the house) give you:
+
+\(A = (0, 0, 1) - (0, 0, 0)\) \\ \(A = (0, 0, 1)\)
+
+\(B = (0, 1, 1) - (0, 0, 0)\) \\ \(B = (0, 1, 1)\)
+
+\(Normal = (0, 0, 1) \times (0, 1, 1)\) \\ \(Normal = (-1, 0, 0)\)
+
+I confirmed this calculation to be correct by looking at the shape itself in 3D space, and \((-1, 0, 0)\) is the normal that would be correct.
+
+I had no need to normalise the vectors as they output from the cross product was a sensible number.
+
+Same calculation is done for the rest of the sides, triangles facing the same direction will have the same surface normals.
+
+\begin{table}
+    \begin{tabular}{|l|l|} 
+    \hline
+    \textbf{ Triangles } & \textbf{Normals }              \\ 
+    \hline
+    (a, b, f)            & \multirow{2}{*}{(-1, 0, 0)}    \\
+    (a, f, e)            &                                \\ 
+    \hline
+    (b, h, f)            & \multirow{3}{*}{(0, 0, 1)}     \\
+    (b, d, h)            &                                \\
+    (f, h, j)            &                                \\ 
+    \hline
+    (d, g, h)            & \multirow{2}{*}{(1, 0, 0)}     \\
+    (d, c, g)            &                                \\ 
+    \hline
+    (c, e, g)            & \multirow{3}{*}{(0, 0, -1)}    \\
+    (c, a, e)            &                                \\
+    (g, e, i)            &                                \\ 
+    \hline
+    (a, c, b)            & \multirow{2}{*}{(0, -1, 0)}    \\
+    (b, c, d)            &                                \\ 
+    \hline
+    (e, j, i)            & \multirow{2}{*}{(-1, 0.5, 0)}  \\
+    (e, f, j)            &                                \\ 
+    \hline
+    (h, i, j)            & \multirow{2}{*}{(1, 0.5, 0)}   \\
+    (h, g, i)            &                                \\
+    \hline
+    \end{tabular}
+\end{table}
+
+
+\end{document}
