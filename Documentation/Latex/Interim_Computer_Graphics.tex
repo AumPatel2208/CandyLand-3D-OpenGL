@@ -2,7 +2,7 @@
 
 \usepackage[utf8]{inputenc} % Required for inputting international characters
 \usepackage[T1]{fontenc} % Output font encoding for international characters
-\usepackage{graphicx} % images
+\usepackage[demo]{graphicx} % images % get rid of [demo] for black box removal
 \usepackage{fancyhdr} % headers and footers
 \usepackage{parskip} % paragraph
 \usepackage{geometry} % shapes
@@ -163,6 +163,37 @@ Same calculation is done for the rest of the sides, triangles facing the same di
     \hline
     \end{tabular}
 \end{table}
+
+\newpage
+
+To write the .obj file, I have to change the alphabetical indices that I have been using into numerical. I have rounded the numbers to 6 decimal places.
+
+\begin{center}
+    \begin{enumerate}[v]
+        \item (0, 0, 0)
+        \item (0, 0, 1)
+        \item (1, 0, 0)
+        \item (1, 0, 1)
+        \item (0, 1, 0)
+        \item (0, 1, 1)
+        \item (1, 1, 0)
+        \item (1, 1, 1)
+        \item (0.5, 2, 0)
+        \item (0.5, 2, 1)
+    \end{enumerate}     
+    \begin{enumerate}[vn]
+        \item (-0.333333, -0.333333, -0.333333)
+        \item (-0.333333, -0.333333, 0.333333)
+        \item (0.333333, -0.333333, -0.333333)
+        \item (0.333333, -0.333333, 0.333333)
+        \item (-0.666667, 0.166667, -0.333333)
+        \item (-0.666667, 0.166667, 0.333333)
+        \item (0.0, 0.166667, -0.333333)
+        \item (0.0, 0.166667, 0.333333)
+        \item (0.0, 0.333333, -0.333333)
+        \item (0.0, 0.333333, 0.333333)
+    \end{enumerate}  
+\end{center}
 
 
 \end{document}
