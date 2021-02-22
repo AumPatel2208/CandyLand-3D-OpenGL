@@ -166,34 +166,94 @@ Same calculation is done for the rest of the sides, triangles facing the same di
 
 \newpage
 
-To write the .obj file, I have to change the alphabetical indices that I have been using into numerical. I have rounded the numbers to 6 decimal places.
+To write the .obj file, I have to change the alphabetical indices that I have been using into numerical. I have rounded the numbers to 6 decimal places. I have the same number of vertex normals as vertices as I decided to make the shape smooth shaded. 
 
+NOTE THE VERTEX NORMALS HAVE NOT BEEN NORMALISED.
+
+
+\begin{enumerate}[v]
+    \item 0 0 0 % 1 a
+    \item 0 0 1 % 2 b
+    \item 1 0 0 % 3 c
+    \item 1 0 1 % 4 d
+    \item 0 1 0 % 5 e
+    \item 0 1 1 % 6 f
+    \item 1 1 0 % 7 g
+    \item 1 1 1 % 8 h
+    \item 0.5 2 0 % 9 i
+    \item 0.5 2 1 % 10 j
+\end{enumerate}     
+% normalize vector (-0.333333333333, -0.333333333333, -0.333333333333)
+% normalize vector (-0.333333333333, -0.333333333333, 0.333333333333)
+% normalize vector (0.333333333333 ,-0.333333333333,-0.333333333333)
+% normalize vector (0.333333333333 ,-0.333333333333,0.333333333333)
+% normalize vector (-0.66666666667, 0.1666666667,-0.333333333333)
+% normalize vector (-0.66666666667, 0.1666666667,0.333333333333)
+% normalize vector (0.0, 0.1666666667, -0.333333333333)
+% normalize vector (0.0, 0.1666666667, 0.333333333333)
+% normalize vector (0.0, 0.333333333333, -0.333333333333)
+% normalize vector (0.0, 0.333333333333, 0.333333333333)
+\begin{enumerate}[vn]
+    \item -0.333333 -0.333333 -0.333333 % 1 a
+    \item -0.333333 -0.333333 0.333333 % 2 b
+    \item 0.333333 -0.333333 -0.333333 % 3 c
+    \item 0.333333 -0.333333 0.333333 % 4 d
+    \item -0.666667 0.166667 -0.333333 % 5 e
+    \item -0.666667 0.166667 0.333333 % 6 f
+    \item 0.0 0.166667 -0.333333 % 7 g
+    \item 0.0 0.166667 0.333333 % 8 h
+    \item 0.0 0.333333 -0.333333 % 9 i
+    \item 0.0 0.333333 0.333333 % 10 j
+\end{enumerate}  
+usemtl matWall
+\begin{enumerate}[f]
+    \item 1//1 2//2 6//6
+    \item 1//1 6//6 5//5
+    \item 2//2 8//8 6//6
+    \item 2//2 4//4 8//8
+    \item 6//6 8//8 10//10
+    \item 4//4 7//7 8//8
+    \item 4//4 3//3 7//7
+    \item 3//3 5//5 7//7
+    \item 3//3 1//1 5//5
+    \item 7//7 5//5 9//9
+    \item 1//1 3//3 2//2
+    \item 2//2 3//3 4//4
+\end{enumerate}
+usemtl matRoof
+\begin{enumerate}[f]
+    \item 5//5 10//10 9//9
+    \item 5//5 6//6 10//10
+    \item 8//8 9//9 10//10
+    \item 8//8 7//7 9//9
+\end{enumerate}
+
+
+\chapter{Question 2 - Vertex Buffer Object(VBO) design and transformations}
 \begin{center}
-    \begin{enumerate}[v]
-        \item (0, 0, 0)
-        \item (0, 0, 1)
-        \item (1, 0, 0)
-        \item (1, 0, 1)
-        \item (0, 1, 0)
-        \item (0, 1, 1)
-        \item (1, 1, 0)
-        \item (1, 1, 1)
-        \item (0.5, 2, 0)
-        \item (0.5, 2, 1)
-    \end{enumerate}     
-    \begin{enumerate}[vn]
-        \item (-0.333333, -0.333333, -0.333333)
-        \item (-0.333333, -0.333333, 0.333333)
-        \item (0.333333, -0.333333, -0.333333)
-        \item (0.333333, -0.333333, 0.333333)
-        \item (-0.666667, 0.166667, -0.333333)
-        \item (-0.666667, 0.166667, 0.333333)
-        \item (0.0, 0.166667, -0.333333)
-        \item (0.0, 0.166667, 0.333333)
-        \item (0.0, 0.333333, -0.333333)
-        \item (0.0, 0.333333, 0.333333)
-    \end{enumerate}  
+\begin{verbatim}
+You now have to design a VBO to contain the vertex attributes for your house. Choose a suitable layout for your VBO and list the calls to OpenGL from your client program required to transfer the VBO to the GPU. These should be native OpenGL commands. Do not assume that you have the helper classes from the template. Ensure that you give the correct values for the position and stride for each of the vertex attributes in VBO.
+
+Your house is to be translated so it is centred at a new position on the ground plane, rotated by an angle that is not a multiple of 90º in such a way that the house remains correctly positioned on the ground and scaled to some multiple of its size. Choose your own rotation,translation and scale and provide the calls to glm using a glUtilmatrix stack that will achieve the desired transformation. Also provide the code to transfer this information to the GPU
+\end{verbatim}
 \end{center}
+
+My single VBO will look like this:
+\begin{verbatim}
+x y z x y z x y z r g b r g b r g b
+\end{verbatim}
+which is the standard format, making the attributes tightly packed.
+
+I will add the vertices for the triangles into an array of floats of size 9, three coordinates per triangle in the counter-clockwise order they should be drawn to render outside, for example the first triangle will look like this:
+{0, 0, 0
+0, 0, 1
+0, 1, 1}
+
+As the RGB values are in the VBO, I will initialise them as an array of size 9 as well.
+{1, 1, 1,
+1, 1, 1,
+1, 1, 1}
+
 
 
 \end{document}
