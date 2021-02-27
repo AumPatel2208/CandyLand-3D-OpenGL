@@ -47,6 +47,7 @@ Aum Patel
 \tableofcontents
 \chapter{Question 1 - Geometry and vertex attributes}
 
+\section{Coordinate System}
 Y-axis up, X axis left to right and Z axis towards you is a Right handed coordinate system. I have proven this by using my right-hand with the X-axis being on the thumb, the Y-axis being on the first finger and the Z-axis being on my middle finger and rotating it to meet the 3 requirements. You cannot rotate the left hand to do this.
 
 \begin{figure}[H]
@@ -55,6 +56,7 @@ Y-axis up, X axis left to right and Z axis towards you is a Right handed coordin
     \caption{Image of hand with axis labeled.}
 \end{figure}
 
+\section{Model and dimensions}
 I decided to draw out the model I was going to make in Blender first and then place the vertices on top of it. 
 
 The colors of the axis are consistent in all images: \textcolor{red}{Red : X} , \textcolor{green}{Green : Y} , \textcolor{blue}{Blue : Z}
@@ -90,6 +92,7 @@ Coordinates for the vertices:
 
 16 triangles will be used to make up the house, and there will be normals that are shared between them.
 
+% \begin{comments}
 % Left
 % (a, b, f)
 % (a, f, e)
@@ -119,10 +122,11 @@ Coordinates for the vertices:
 % Roof Right
 % (h, i, j)
 % (h, g, i)
+% \end{comments}
 
+\section{Normals and OBJ}
 
-
-I calculated the vector normals by using the following equation:
+I calculated the surface normals by using the following equation:
 
 If we have 3 vectors that make up a a triangle in an anti-clockwise manner: \(V0, V1, V2\), to calculate the normal facing outwards we do:
 
@@ -144,7 +148,7 @@ I had no need to normalise the vectors as they output from the cross product was
 
 Same calculation is done for the rest of the sides, triangles facing the same direction will have the same surface normals.
 
-\begin{table}
+\begin{table}[H]
     \begin{tabular}{|l|l|} 
     \hline
     \textbf{ Triangles } & \textbf{Normals }              \\ 
@@ -175,11 +179,27 @@ Same calculation is done for the rest of the sides, triangles facing the same di
     \end{tabular}
 \end{table}
 
-\newpage
+I calculated the vertex normals by taking the normals for the triangles that share that vertex, and average the X, Y and Z and then normalised the output.
+
+Working out for vertex (0,0,0):
+
+\(Normals of triangles that share the vertex (0,0,0): (-1,0,0) (0,-1,0) (0,0,-1)\)
+
+\(X Average: -1 + 0 + 0\)
+
+\(Y Average: 0 + -1 + 0\)
+
+\(Z Average: 0 + 0 + -1\)
+\( = (-1,-1,-1)\)
+
+\(Normalise  (-1,-1,-1) = 
+(-0.57735, -0.57735, -0.57735) (5dp)\)
 
 To write the .obj file, I have to change the alphabetical indices that I have been using into numerical. I have rounded the numbers to 6 decimal places. I have the same number of vertex normals as vertices as I decided to make the shape smooth shaded. 
 
-NOTE THE VERTEX NORMALS HAVE NOT BEEN NORMALISED.
+
+
+
 
 
 \begin{enumerate}[v]
@@ -204,18 +224,35 @@ NOTE THE VERTEX NORMALS HAVE NOT BEEN NORMALISED.
 % normalize vector (0.0, 0.1666666667, 0.333333333333)
 % normalize vector (0.0, 0.333333333333, -0.333333333333)
 % normalize vector (0.0, 0.333333333333, 0.333333333333)
+%
+% % Un-normlaised
+% \begin{enumerate}[vn]
+%     \item -0.333333 -0.333333 -0.333333 % 1 a
+%     \item -0.333333 -0.333333 0.333333 % 2 b
+%     \item 0.333333 -0.333333 -0.333333 % 3 c
+%     \item 0.333333 -0.333333 0.333333 % 4 d
+%     \item -0.666667 0.166667 -0.333333 % 5 e
+%     \item -0.666667 0.166667 0.333333 % 6 f
+%     \item 0.0 0.166667 -0.333333 % 7 g
+%     \item 0.0 0.166667 0.333333 % 8 h
+%     \item 0.0 0.333333 -0.333333 % 9 i
+%     \item 0.0 0.333333 0.333333 % 10 j
+% \end{enumerate}  
+
+% Normalised
 \begin{enumerate}[vn]
-    \item -0.333333 -0.333333 -0.333333 % 1 a
-    \item -0.333333 -0.333333 0.333333 % 2 b
-    \item 0.333333 -0.333333 -0.333333 % 3 c
-    \item 0.333333 -0.333333 0.333333 % 4 d
-    \item -0.666667 0.166667 -0.333333 % 5 e
-    \item -0.666667 0.166667 0.333333 % 6 f
-    \item 0.0 0.166667 -0.333333 % 7 g
-    \item 0.0 0.166667 0.333333 % 8 h
-    \item 0.0 0.333333 -0.333333 % 9 i
-    \item 0.0 0.333333 0.333333 % 10 j
+    \item -0.57735 -0.57735 -0.57735 % 1 a
+    \item -0.57735 -0.57735 0.57735 % 2 b
+    \item 0.57735 -0.57735 -0.57735 % 3 c
+    \item 0.57735 -0.57735 0.57735 % 4 d
+    \item -0.872872 0.218218 -0.436435 % 5 e
+    \item -0.872872 0.218218 0.436435 % 6 f
+    \item 0 0.447215 -0.894427 % 7 g
+    \item 0 0.447215 0.894427 % 8 h
+    \item 0 0.707107 -0.707107 % 9 i
+    \item 0 0.707107 0.707107 % 10 j
 \end{enumerate}  
+
 usemtl matWall
 \begin{enumerate}[f]
     \item 1//1 2//2 6//6
@@ -241,13 +278,8 @@ usemtl matRoof
 
 
 \chapter{Question 2 - Vertex Buffer Object(VBO) design and transformations}
-\begin{center}
-\begin{verbatim}
-You now have to design a VBO to contain the vertex attributes for your house. Choose a suitable layout for your VBO and list the calls to OpenGL from your client program required to transfer the VBO to the GPU. These should be native OpenGL commands. Do not assume that you have the helper classes from the template. Ensure that you give the correct values for the position and stride for each of the vertex attributes in VBO.
 
-Your house is to be translated so it is centred at a new position on the ground plane, rotated by an angle that is not a multiple of 90º in such a way that the house remains correctly positioned on the ground and scaled to some multiple of its size. Choose your own rotation,translation and scale and provide the calls to glm using a glUtilmatrix stack that will achieve the desired transformation. Also provide the code to transfer this information to the GPU
-\end{verbatim}
-\end{center}
+\section{VBO Design}
 
 My single VBO will look like this:
 \begin{verbatim}
@@ -255,8 +287,10 @@ x y z x y z x y z r g b r g b r g b
 \end{verbatim}
 which is the standard format, making the attributes tightly packed.
 
-I will add the vertices for the triangles into an array of floats of size 3 * numberOfTriangles, three coordinates per triangle in the counter-clockwise order they should be drawn to render outside, the first two triangles will look like this followed by the rest of the vertices:
-triangleVertices[30] = 
+I will add the vertices for the triangles into an array of floats of size = 3 * 3 * numberOfTriangles, three floats per coordinate, 3 coordinates per triangle in the counter-clockwise order they should be drawn to render outside, the first two triangles will look like this followed by the rest of the vertices:
+
+triangleVertices[144] = 
+
 \{0, 0, 0,
 
 0, 0, 1
@@ -271,8 +305,11 @@ triangleVertices[30] =
 
 ...\}
 
-As the RGB values are in the VBO, I will initialise them as an array of size 30 as well.
-triangleColors[30] = 
+
+As the RGB values are in the VBO, I will initialise them as an array of size 144 as well.
+
+triangleColors[144] = 
+
 \{1, 1, 1,
 
 1, 1, 1,
@@ -287,13 +324,14 @@ triangleColors[30] =
 
 ...\}
 
+
 Two uint (GLuint) variables will need to be created, one is VAO (will be called \textbf{vao}) and the other is VBO (will be called \textbf{vbo}).
 
 We then call the following functions:
 \begin{lstlisting}[language=c]
     // Will have to create two arrays of floats that contain the vertices for all the triangles and the colours for all the triangles both size 10 
-    const GLfloat triangleVertices[30] = {...`will have all the vertices here as floats`...}
-    const GLfloat triangleColours[30] = {...`will have all the colour data here as floats`...}
+    const GLfloat triangleVertices[144] = {...`will have all the vertices here as floats`...}
+    const GLfloat triangleColours[144] = {...`will have all the colour data here as floats`...}
 
     // Will generate a vertex array object (allocate space) and assign it to vao. We pass through a reference so that it will change the variable.
     glGenVertexArrays(1, &vao);
@@ -307,12 +345,17 @@ We then call the following functions:
     // then bind the vbo to the target which is GL_ARRAY_BUFFER
     glBindBuffer(GL_ARRAY_BUFFER, vbo)
 
+    // We allocate the buffer space required for our data for the VBO
+    // the size is 288 as it is sizeof(triangleVertices) + sizeof(triangleColors)
+    glBufferData(GL_ARRAY_BUFFER, 288, NULL, GL_STATIC_DRAW);
+
+
     // We pass in the data separately by sub-dividing the buffer, as we would like to allocate vertices and color to the same buffer. This could be done so that you create two separate buffers and VBOs like seen on https://www.khronos.org/opengl/wiki/Tutorial2:_VAOs,_VBOs,_Vertex_and_Fragment_Shaders_(C_/_SDL)#Compilation
-    // Here, 0 is the starting index and 30 is the sizeof(triangleVertices)
-    glBufferSubData(GL_ARRAY_BUFFER, 0, 30, triangleVertices); // vertices
+    // Here, 0 is the starting index and 144 is the sizeof(triangleVertices)
+    glBufferSubData(GL_ARRAY_BUFFER, 0, 144, triangleVertices); // vertices
     
-    // Here, 30 is the starting index and 30 is the sizeof(triangleColours)
-    glBufferSubData(GL_ARRAY_BUFFER, 30, 30, triangleColours); // colours
+    // Here, 144 is the starting index and 144 is the sizeof(triangleColours)
+    glBufferSubData(GL_ARRAY_BUFFER, 144, 144, triangleColours); // colours
 
     // we will enable the vertex attribute arrays one after the other creating the correct 
     glEnableVertexAttribArray(0);
@@ -321,13 +364,15 @@ We then call the following functions:
     
     
     glEnableVertexAttribArray(1);
-    // here the last parameter is a pointer to 30 as that is where the colour data starts in the buffer
-    glEnableVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) 30);
+    // here the last parameter is a pointer to 144 as that is where the colour data starts in the buffer
+    glEnableVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) 144);
 
     
 \end{lstlisting}
 
 % This should pass the vertex data to a buffer in the GPU.
+
+\section{Transformation and rendering}
 
 Now to transform it and then render the object we will use a glutil::MatrixStack to transform the object.
 
@@ -345,14 +390,16 @@ Now to transform it and then render the object we will use a glutil::MatrixStack
         matrixStack.Scale(3.7f);
 
 
-        // now to render the triangles we pass in the vao that we created and then draw it on screen.
+        // now to render the triangles we pass in the vao that we created and the number of triangles * 3 and then draw it on screen.
         glBindVertexArray(vao);
-        glDrawElements(GL_TRIANGLES, , GL_UNSIGNED_INT, 0)
+        glDrawElements(GL_TRIANGLES, 48, GL_UNSIGNED_INT, 0)
     matrixStack.Pop();
 
 \end{lstlisting}
 
 \chapter{Question 3 - Camera Positioning}
+
+\section{Description and calls}
 
 \(\textbf{zNear}\) and \(\textbf{zFar}\) define the distance of the near and far clipping planes. Anything that is in front of the camera but its distance is less than \(\textbf{zNear}\), it will not be displayed; vice versa with \(\textbf{zFar}\), anything in front of the camera but farther away than \(\textbf{zFar}\) will not be shown.
 
@@ -390,7 +437,7 @@ Now to position the camera and provide the forward and the up vector. I will pos
     cameraUp = glm::vec3(0,1,0) 
 \end{lstlisting}
 
-
+\section{Moving the camera around the house}
 There are two methods of rotating the camera around a certain object while always keeping it in the center of view.
 One is by creating a Catmull Rom Spline that is a circle around the house.
 
@@ -431,6 +478,230 @@ We can use the glm::lookAt() method to get a viewing matrix that will change wha
 
 
 \chapter{Question 4 - Shader Implementation}
+
+
+\chapter{Question 5 - Texture Mapping}
+
+\section{Texture and texture coordinates with OBJ explanation}
+
+Values from Question 1:
+Coordinates for the vertices:
+\begin{enumerate}[(1)]
+    \item (0, 0, 0) % 1 a
+    \item (0, 0, 1) % 2 b
+    \item (1, 0, 0) % 3 c
+    \item (1, 0, 1) % 4 d
+    \item (0, 1, 0) % 5 e
+    \item (0, 1, 1) % 6 f
+    \item (1, 1, 0) % 7 g
+    \item (1, 1, 1) % 8 h
+    \item (0.5, 2, 0) % 9 i
+    \item (0.5, 2, 1) % 10 j
+\end{enumerate}
+
+Below is the the image of the texture I will be using, I decided to place both roof and walls onto the same texture image and then give coordinates separately, as this avoids having to load 2 images.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\includegraphics[width = 5cm ]{texturemap.png}}
+    \caption{Image of the texture I will be using.}
+\end{figure}
+
+The coordinates of the texture are broken down like the following diagram.
+\begin{figure}[H]
+    \centering
+    \fbox{\includegraphics[width = 5cm ]{texturemap_labelled.png}}
+    \caption{Coordinates marked on texture image.}
+\end{figure}
+
+I will break the texture down into two triangles each like below. (Note these triangles could be oriented the other way using the same coordinates)
+\begin{figure}[H]
+    \centering
+    \fbox{\includegraphics[width = 5cm ]{texturemap_triangles.png}}
+    \caption{Texture split into triangles}
+\end{figure}
+
+
+Texture Coordinates
+\begin{enumerate}[(1)]
+    \item (0, 0)
+    \item (0, 1)
+    \item (0.5, 0)
+    \item (0.5, 1)
+    \item (1, 0)
+    \item (1, 1)
+\end{enumerate}
+
+Now as an Obj file to show the texture coordinates per vertex of the triangles. Will be represented as v/vt/vn. 
+
+Note: The triangles (6,8,10) and (7,5,9) are considered parts of the wall and not the roof, only the slant is considered the roof.
+
+Below is appended after the vertices are listed.
+\begin{enumerate}[vt ]
+    \item 0 0  % 1
+    \item 0 1  % 2
+    \item 0.5 0  % 3
+    \item 0.5 1  % 4
+    \item 1 0  % 5
+    \item 1 1  % 6
+\end{enumerate}
+
+The below is an amendment to the faces.
+% \begin{enumerate}[(1)]
+%     \item (0, 0, 0) % 1 a
+%     \item (0, 0, 1) % 2 b
+%     \item (1, 0, 0) % 3 c
+%     \item (1, 0, 1) % 4 d
+%     \item (0, 1, 0) % 5 e
+%     \item (0, 1, 1) % 6 f
+%     \item (1, 1, 0) % 7 g
+%     \item (1, 1, 1) % 8 h
+%     \item (0.5, 2, 0) % 9 i
+%     \item (0.5, 2, 1) % 10 j
+% \end{enumerate}
+
+usemtl matWall
+\begin{enumerate}[f]
+    \item 1/2/1 2/4/2 6/3/6
+    \item 1/2/1 6/3/6 5/1/5
+    \item 2/4/2 8/3/8 6/1/6
+    \item 2/1/2 4/4/4 8/3/8
+    \item 6/2/6 8/3/8 10/1/10
+    \item 4/2/4 7/3/7 8/1/8
+    \item 4/2/4 3/4/3 7/3/7
+    \item 3/2/3 5/3/5 7/1/7
+    \item 3/2/3 1/4/1 5/3/5
+    \item 7/2/7 5/3/5 9/1/9
+    \item 1/3/1 3/1/3 2/4/2
+    \item 2/4/2 3/1/3 4/2/4
+\end{enumerate}
+usemtl matRoof
+\begin{enumerate}[f]
+    \item 5/4/5 10/5/10 9/3/9
+    \item 5/4/5 6/6/6 10/5/10
+    \item 8/4/8 9/5/9 10/3/10
+    \item 8/4/8 7/6/7 9/5/9
+\end{enumerate}
+
+
+% TODO GLSL code
+\section{VBO design}
+The VBO design will need to be altered to make room for the texture coordinates in the buffer. Because the textures only have 2 coordinates, I will make the size of one vertex 2 floats.
+
+When I create the triangleVertices and triangleColors, I will also create triangleTextures that will be of size 2 $\times$ 3 $\times$ numberOfTriangles: 
+
+The first two triangles will look like this:
+\begin{verbatim}
+    triangleTextures[96] = 
+    {0 , 1,
+    0.5, 1,
+    0.5, 0,
+    0, 1,
+    0.5, 0,
+    0, 0,
+    ...}
+\end{verbatim}
+
+The VBO will look like this: x y z x y z x y z r g b r g b r g b u v u v u v 
+
+We will have to allocate more space to the buffer for the triangles, and will have to split it into another sub buffer data and enable that.
+
+\begin{lstlisting}[language=c]
+    // first we create the array just under triangleVertices and triangleColours
+    const GLfloat triangleTextures[96] = {...`will have all the colour data here as floats`...}
+
+    ...
+
+    // this will replace the previous glBufferData call.
+    // the size is 384 as it is sizeof(triangleVertices) + sizeof(triangleColors) + sizeof(triangleTextures)
+    glBufferData(GL_ARRAY_BUFFER, 384, NULL, GL_STATIC_DRAW);
+
+    ...
+
+    // after the calls to create sub buffers we create another bufferSubData for the textures
+    // Here, 288 is the starting index and 96 is the sizeof(triangleTextures) glBufferSubData(GL_ARRAY_BUFFER, 288, 144, triangleTextures); // textures
+
+    ...
+
+    // we enable the vertex attribute after activating the others
+    glEnableVertexAttribArray(2);
+    // the index is 2, there are 2 floats per vertex, and the size is 96
+    glEnableVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) 96);
+
+\end{lstlisting}
+
+\section{Door and four windows}
+
+\subsection{Using Texture}
+
+I would render the house by just changing the texture by changing the texture into the following: and then using the section with the doors and widows for only the front of the house.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\includegraphics[width = 10cm ]{texture_doorsWindows.png}}
+    \caption{Texture with doors and windows}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\includegraphics[width = 10cm ]{texture_doorsWindows_labbleed.png}}
+    \caption{Texture with doors and windows labelled}
+\end{figure}
+
+
+This change in texture will lead to the coordinates changing in the OBJ file, the indices needn't change however more will be added. Then in the triangles for the front of the house the right most texture will be used.
+
+
+I will describe it using changes to be made to the OBJ file:
+
+Below is appended after the vertices are listed.
+\begin{enumerate}[vt ]
+    \item 0 0  % 1
+    \item 0 1  % 2
+    \item 0.33333 0  % 3
+    \item 0.33333 1  % 4
+    \item 0.66667 0  % 5
+    \item 0.66667 1  % 6
+    \item 1 0 % 7
+    \item 1 1 % 8
+\end{enumerate}
+
+Only change to be made to the faces section is the texture indices for the front face.
+
+This: 
+
+\dots
+\begin{enumerate}[f]
+    \item 2/4/2 8/3/8 6/1/6
+    \item 2/1/2 4/4/4 8/3/8
+\end{enumerate}
+\dots
+
+will change into:
+
+\dots
+\begin{enumerate}[f]
+    \item 2/6/2 8/7/8 6/5/6
+    \item 2/6/2 4/8/4 8/7/8
+\end{enumerate}
+\dots
+
+
+This will keep all the other textures the same but change the front of the house.
+
+\subsection{Using Geometry}
+
+We can change the geometry of the front of the house to make it have triangles for the door, window and wall, doing this will create many triangles as this is going to be one face and not separate shapes.
+
+Below is the diagram I created which shows how I went about splitting the shape into the least amount of triangles possible.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\includegraphics[width = 10cm ]{geometry_windwos.png}}
+    \caption{Geometry of the front of the house broken down.}
+\end{figure}
+
+This accounts to having 40 triangles for the shape; and 26 vertices.
 
 
 \end{document}
