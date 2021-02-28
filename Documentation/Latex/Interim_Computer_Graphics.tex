@@ -5,17 +5,21 @@
 \usepackage[demo]{graphicx} % images % get rid of [demo] for black box removal
 % \usepackage{graphicx} % images % get rid of [demo] for black box removal
 \usepackage{fancyhdr} % headers and footers
-\usepackage{parskip} % paragraph
-\usepackage{geometry} % shapes
-\usepackage{hyperref} % Links
-\usepackage{pdflscape} % making a page landscape
+% \usepackage{parskip} % paragraph
+\usepackage{geometry} % page size
+% \usepackage{hyperref} % Links
+% \usepackage{pdflscape} % making a page landscape
 \usepackage{xcolor}
 \usepackage[shortlabels]{enumitem}
 \usepackage{multirow}
 \usepackage{listings}
+\usepackage{titlesec}
 \usepackage{float} % to place figures in place
 
 \graphicspath{{../images/}}
+
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries}{}{0pt}{\Huge}
 
 % margins and page size
 \geometry{
@@ -428,6 +432,7 @@ I will have the camera's perspective projection matrix be created with the follo
 Now to position the camera and provide the forward and the up vector. I will position it so that the camera is pointing straight into it and looking at the front of the house.
 \begin{lstlisting}[language = c]
     // The house is sitting on the XZ plane and has a total height of 2, so I placed the camera on the center with 1 on the Y axis. As the house goes from 0 to 1 on the X, I decided to place the camera in the center, this being 0.5. As the house already extrudes by 1 on the Z axis, I moved the camera back by 2 extra points to make sure that the house will fit into the FOV, making it 3 on the Z.
+
     cameraPosition = glm::vec3(0.5f, 1, 3) 
 
     // the forward is -1 on the Z as it is facing the front of the house that has a normal of (0,0,1)
@@ -479,6 +484,75 @@ We can use the glm::lookAt() method to get a viewing matrix that will change wha
 
 \chapter{Question 4 - Shader Implementation}
 
+Below is what the 2 shader files will look like. One vertex shader, adn another fragment shader.
+
+\begin{lstlisting}[language = c]
+/* shader.vert */
+    
+    // This is passed in through the client program
+    // These matrices describe how the shape will be transformed.
+    uniform struct Matrices{
+        mat4 projMatrix;
+        mat4 modelViewMatrix;
+    } matrices;
+
+    // position is passed in to first location
+    // this first location is the first location of the vertex buffer from the vao which contained the x y z
+    layout(location = 0) in vec3 inPosition;
+
+    // colour is passed through to the second location
+    // this second location is the second location of the vertex buffer from the vao which contains the r g b
+    layout(location = 1) in vec3 inColour;
+
+    out vec3 color
+
+    void main(){
+        // the position is altered by the matrix that is passed in
+        gl_Position = matrices.projMatrix * matrices.modelViewMatrix * vec4(inPosition, 1.0f);
+
+        // the colour from the VBO is passed out to the fragment shader
+        color = inColour;
+    }
+\end{lstlisting}
+
+\begin{lstlisting}[language = c]
+/* shader.frag */ 
+
+    // colour is passed in from the vertex shader.
+    in vec3 colour;
+    // frag colour is output
+    out vec4 fragColour;
+    void main(){
+        // the colour of the fragment is the changed to the colour that is passed in via the client via the vertex shader
+        fragColour = vec4(fragColour 1.0);
+    }
+
+\end{lstlisting}
+
+Below is the same code from 2.2 in the client program (render method) however with the setting the  uniforms.
+
+\begin{lstlisting}
+    glUtil::MatrixStack matrixStack; // creating the stack
+    matrixStack.SetIdentity(); // setting it to an identity matrix
+
+    matrixStack.Push();
+        matrixStack.Translate(14, 0, 6);
+        matrixStack.Rotate(glm::vec3(0, 1, 0), 38);
+        matrixStack.Scale(3.7f);
+
+        // we pass in the camera's projection matrix to the shader program
+        shaderProgram->SetUniform("matrices.projMatrix", camera->GetPerspectiveProjectionMatrix());
+
+        // we pass in the transformations done using the matrixStack to the shader program
+        shaderProgram->SetUniform("matrices.modelViewMatrix", matrixStack.Top());
+
+        // Rendering 
+        glBindVertexArray(vao);
+        glDrawElements(GL_TRIANGLES, 48, GL_UNSIGNED_INT, 0)
+    matrixStack.Pop();
+
+\end{lstlisting}
+
 
 \chapter{Question 5 - Texture Mapping}
 
@@ -499,7 +573,7 @@ Coordinates for the vertices:
     \item (0.5, 2, 1) % 10 j
 \end{enumerate}
 
-Below is the the image of the texture I will be using, I decided to place both roof and walls onto the same texture image and then give coordinates separately, as this avoids having to load 2 images.
+Below is the the image of the texture I will be using, I decided to place both roof and walls onto the same texture image and then give coordinates separately, as this avoids having to load 2 images, both materials will use the same texture.
 
 \begin{figure}[H]
     \centering
@@ -619,7 +693,8 @@ We will have to allocate more space to the buffer for the triangles, and will ha
     ...
 
     // after the calls to create sub buffers we create another bufferSubData for the textures
-    // Here, 288 is the starting index and 96 is the sizeof(triangleTextures) glBufferSubData(GL_ARRAY_BUFFER, 288, 144, triangleTextures); // textures
+    // Here, 288 is the starting index and 96 is the sizeof(triangleTextures) 
+    glBufferSubData(GL_ARRAY_BUFFER, 288, 144, triangleTextures); // textures
 
     ...
 
@@ -701,7 +776,7 @@ Below is the diagram I created which shows how I went about splitting the shape 
     \caption{Geometry of the front of the house broken down.}
 \end{figure}
 
-This accounts to having 40 triangles for the shape; and 26 vertices.
+This accounts to having 40 triangles for the shape; and 26 vertices. The 13 triangles inside of the door and windows will have different colour vectors to the rest of the house. 
 
 
 \end{document}
