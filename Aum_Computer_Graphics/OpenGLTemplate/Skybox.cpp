@@ -82,11 +82,11 @@ void CSkybox::Create(float size)
 }
 
 // Render the skybox
-void CSkybox::Render(int textureUnit)
+void CSkybox::Render()
 {
 	glDepthMask(0);
 	glBindVertexArray(m_vao);
-	m_cubemapTexture.Bind(textureUnit);
+	m_cubemapTexture.Bind(1);
 	for (int i = 0; i < 6; i++) {
 		//m_textures[i].Bind();
 		glDrawArrays(GL_TRIANGLE_STRIP, i*4, 4);

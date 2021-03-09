@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\Aum\AppData\Local\JetBrains\Rider2020.3\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Aum\AppData\Local\JetBrains\Rider2020.3\resharper-host\Local\Transient\Rider\v203\SolutionCaches\_OpenGLTemplate.309984084.00" t="ExcludeRecursive" />
+    <e p="C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics" t="IncludeFlat">
+      <e p="OpenGLTemplate" t="IncludeRecursive">
+        <e p="Audio.cpp" t="Include" />
+        <e p="Audio.h" t="Include" />
+        <e p="Camera.cpp" t="Include" />
+        <e p="Camera.h" t="Include" />
+        <e p="CatmullRom.cpp" t="Include" />
+        <e p="CatmullRom.h" t="Include" />
+        <e p="Common.h" t="Include" />
+        <e p="Cubemap.cpp" t="Include" />
+        <e p="Cubemap.h" t="Include" />
+        <e p="FreeTypeFont.cpp" t="Include" />
+        <e p="FreeTypeFont.h" t="Include" />
+        <e p="Game.cpp" t="Include" />
+        <e p="Game.h" t="Include" />
+        <e p="GameWindow.cpp" t="Include" />
+        <e p="GameWindow.h" t="Include" />
+        <e p="HighResolutionTimer.cpp" t="Include" />
+        <e p="HighResolutionTimer.h" t="Include" />
+        <e p="MatrixStack.cpp" t="Include" />
+        <e p="MatrixStack.h" t="Include" />
+        <e p="OpenAssetImportMesh.cpp" t="Include" />
+        <e p="OpenAssetImportMesh.h" t="Include" />
+        <e p="OpenGLTemplate.vcxproj" t="IncludeRecursive" />
+        <e p="Plane.cpp" t="Include" />
+        <e p="Plane.h" t="Include" />
+        <e p="resources" t="Include">
+          <e p="shaders" t="Include">
+            <e p="mainShader.frag" t="Include" />
+            <e p="mainShader.vert" t="Include" />
+            <e p="textShader.frag" t="Include" />
+            <e p="textShader.vert" t="Include" />
+          </e>
+        </e>
+        <e p="Shaders.cpp" t="Include" />
+        <e p="Shaders.h" t="Include" />
+        <e p="Skybox.cpp" t="Include" />
+        <e p="Skybox.h" t="Include" />
+        <e p="Sphere.cpp" t="Include" />
+        <e p="Sphere.h" t="Include" />
+        <e p="Texture.cpp" t="Include" />
+        <e p="Texture.h" t="Include" />
+        <e p="VertexBufferObject.cpp" t="Include" />
+        <e p="VertexBufferObject.h" t="Include" />
+        <e p="VertexBufferObjectIndexed.cpp" t="Include" />
+        <e p="VertexBufferObjectIndexed.h" t="Include" />
+        <e p="x64\Debug" t="ExcludeRecursive" />
+      </e>
+      <e p="OpenGLTemplate.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="x64\Debug" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>

@@ -22,14 +22,14 @@ public:
 
 	int CurrentLap(float d); // Return the currvent lap (starting from 0) based on distance along the control curve.
 
-	bool Sample(float d, glm::vec3 &p, glm::vec3 &up = _dummy_vector); // Return a point on the centreline based on a certain distance along the control curve.
+	bool Sample(float d, glm::vec3& p, glm::vec3& up = _dummy_vector); // Return a point on the centreline based on a certain distance along the control curve.
 
 private:
 
 	void SetControlPoints();
 	void ComputeLengthsAlongControlPoints();
 	void UniformlySampleControlPoints(int numSamples);
-	glm::vec3 Interpolate(glm::vec3 &p0, glm::vec3 &p1, glm::vec3 &p2, glm::vec3 &p3, float t);
+	glm::vec3 Interpolate(glm::vec3& p0, glm::vec3& p1, glm::vec3& p2, glm::vec3& p3, float t);
 
 
 	vector<float> m_distances;
@@ -48,6 +48,8 @@ private:
 
 	vector<glm::vec3> m_leftOffsetPoints;	// Left offset curve points
 	vector<glm::vec3> m_rightOffsetPoints;	// Right offset curve points
+
+	vector<glm::vec3> m_trackTrianglePoints;
 
 
 	unsigned int m_vertexCount;				// Number of vertices in the track VBO
