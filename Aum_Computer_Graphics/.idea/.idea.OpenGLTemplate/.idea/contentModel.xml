@@ -29,6 +29,8 @@
         <e p="OpenGLTemplate.vcxproj" t="IncludeRecursive" />
         <e p="Plane.cpp" t="Include" />
         <e p="Plane.h" t="Include" />
+        <e p="Player.cpp" t="Include" />
+        <e p="Player.h" t="Include" />
         <e p="resources" t="Include">
           <e p="shaders" t="Include">
             <e p="mainShader.frag" t="Include" />

@@ -49,6 +49,7 @@ Game::Game() {
     m_pHighResolutionTimer = NULL;
     m_pAudio = NULL;
     m_pCatmullRom = NULL;
+    // m_player = NULL;
 
     m_dt = 0.0;
     m_framesPerSecond = 0;
@@ -57,6 +58,9 @@ Game::Game() {
 
     // set current distance to 0
     m_currentDistance = 0.0f;
+
+    m_cameraRotation = 0.f;
+    m_cameraSpeed = 0.1f;
 }
 
 // Destructor
@@ -71,6 +75,7 @@ Game::~Game() {
     delete m_pSphere;
     delete m_pAudio;
     delete m_pCatmullRom;
+    // delete m_player;
 
     if (m_pShaderPrograms != NULL) {
         for (unsigned int i = 0; i < m_pShaderPrograms->size(); i++)
@@ -99,6 +104,7 @@ void Game::Initialise() {
     m_pSphere = new CSphere;
     m_pAudio = new CAudio;
     m_pCatmullRom = new CCatmullRom;
+    // m_player = new Player;
 
     RECT dimensions = m_gameWindow.GetDimensions();
 
@@ -162,6 +168,9 @@ void Game::Initialise() {
     m_pBarrelMesh->Load("resources\\models\\Barrel\\Barrel02.obj"); // Downloaded from http://www.psionicgames.com/?page_id=24 on 24 Jan 2013
     m_pHorseMesh->Load("resources\\models\\Horse\\Horse2.obj"); // Downloaded from http://opengameart.org/content/horse-lowpoly on 24 Jan 2013
 
+    // create player
+    // m_player->Initialise();
+    
     // Create a sphere
     m_pSphere->Create("resources\\textures\\", "dirtpile01.jpg", 25, 25); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
     glEnable(GL_CULL_FACE);
@@ -264,6 +273,8 @@ void Game::Render() {
     }
     modelViewMatrixStack.Pop();
 
+    // render player
+    // m_player->Render(modelViewMatrixStack, pMainProgram, m_pCamera);
 
     // Render the barrel 
     modelViewMatrixStack.Push();
@@ -316,22 +327,37 @@ void Game::Render() {
 void Game::Update() {
     // Update the camera using the amount of time that has elapsed to avoid framerate dependent motion
     // m_pCamera->Set(glm::vec3(0, 300, 0), glm::vec3(0, 0, 0), glm::vec3(1, 0, 0));
-    m_pCamera->Update(m_dt);
+    // m_pCamera->Update(m_dt);
 
     // makes camera spin around the spline
 
-    // m_currentDistance += m_dt * 0.1f; // increment by 0.1
-    // glm::vec3 p;
-    // glm::vec3 pNext;
-    // m_pCatmullRom->Sample(m_currentDistance, p);
-    // m_pCatmullRom->Sample(m_currentDistance + m_dt * 0.1f, pNext);
-    // glm::vec3 tangent = pNext - p;
-    // tangent = glm::normalize(tangent);
-    // glm::vec3 normal = glm::normalize(glm::cross(tangent,glm::vec3(0,1,0)));
-    // glm::vec3 binormal = glm::normalize(glm::cross(normal , tangent));
-    //
-    // m_pCamera->Set(p, p + 10.0f*tangent,glm::vec3(0,1,0));
-    //
+    // camera rotation changes based on key presses
+    if (GetKeyState(VK_LEFT) & 0x80) {
+        m_cameraRotation -= m_dt * 0.001f;
+    }else if (GetKeyState(VK_RIGHT) & 0x80){
+        m_cameraRotation += m_dt * 0.001f;
+    }
+    if (GetKeyState(VK_UP) & 0x80) {
+        m_cameraSpeed += m_dt * 0.0001f;
+    }else if (GetKeyState(VK_DOWN) & 0x80){
+        m_cameraSpeed -= m_dt * 0.0001f;
+    }
+    
+    m_currentDistance += m_dt * m_cameraSpeed; // increment by 0.1
+    glm::vec3 p;
+    glm::vec3 pNext;
+    m_pCatmullRom->Sample(m_currentDistance, p);
+    m_pCatmullRom->Sample(m_currentDistance + m_dt * 0.1f, pNext);
+    glm::vec3 tangent = pNext - p;
+    tangent = glm::normalize(tangent);
+    glm::vec3 normal = glm::normalize(glm::cross(tangent, glm::vec3(0, 1, 0)));
+    glm::vec3 binormal = glm::normalize(glm::cross(normal, tangent));
+    
+    p.y += 3.0f;
+    
+    glm::vec3 up = glm::rotate(glm::vec3(0, 1, 0), m_cameraRotation, tangent);
+    
+    m_pCamera->Set(p, p + 10.0f * tangent, up);
 
 
     // delete possibly

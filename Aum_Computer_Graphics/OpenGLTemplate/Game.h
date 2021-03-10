@@ -37,6 +37,8 @@ private:
 	CHighResolutionTimer *m_pHighResolutionTimer;
 	CAudio *m_pAudio;
 	CCatmullRom *m_pCatmullRom;
+	// Player* m_player;
+
 
 	// Some other member variables
 	double m_dt;
@@ -62,6 +64,9 @@ private:
 	HINSTANCE m_hInstance;
 	int m_frameCount;
 	double m_elapsedTime;
+
+	float m_cameraRotation;
+	float m_cameraSpeed;
 
 
 };

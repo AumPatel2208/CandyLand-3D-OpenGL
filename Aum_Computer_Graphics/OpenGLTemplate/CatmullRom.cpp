@@ -27,15 +27,39 @@ glm::vec3 CCatmullRom::Interpolate(glm::vec3& p0, glm::vec3& p1, glm::vec3& p2, 
 
 void CCatmullRom::SetControlPoints() {
     // Set control points (m_controlPoints) here, or load from disk
-    m_controlPoints.push_back(glm::vec3(100, 5, 0));
-    m_controlPoints.push_back(glm::vec3(71, 5, 71));
-    m_controlPoints.push_back(glm::vec3(0, 5, 100));
-    m_controlPoints.push_back(glm::vec3(-71, 5, 71));
-    m_controlPoints.push_back(glm::vec3(-100, 5, 0));
-    m_controlPoints.push_back(glm::vec3(-71, 5, -71));
-    m_controlPoints.push_back(glm::vec3(0, 5, -100));
-    m_controlPoints.push_back(glm::vec3(71, 5, -71));
+    // m_controlPoints.push_back(glm::vec3(100, 5, 0));
+    // m_controlPoints.push_back(glm::vec3(71, 5, 71));
+    // m_controlPoints.push_back(glm::vec3(0, 5, 100));
+    // m_controlPoints.push_back(glm::vec3(-71, 5, 71));
+    // m_controlPoints.push_back(glm::vec3(-100, 5, 0));
+    // m_controlPoints.push_back(glm::vec3(-71, 5, -71));
+    // m_controlPoints.push_back(glm::vec3(0, 5, -100));
+    // m_controlPoints.push_back(glm::vec3(71, 5, -71));
 
+    float xOffset = 0;
+    float zOffset = 0;
+    float yOffset = 35;
+
+    m_controlPoints.push_back(glm::vec3(xOffset + 0, yOffset + 0, zOffset + -80));
+    m_controlPoints.push_back(glm::vec3(xOffset + 30, yOffset + 0, zOffset + -60));
+    m_controlPoints.push_back(glm::vec3(xOffset + 90, yOffset + -30, zOffset + -30));
+    m_controlPoints.push_back(glm::vec3(xOffset + 140, yOffset + 0, zOffset + 30));
+    // changed
+    // m_controlPoints.push_back(glm::vec3(xOffset + 0, yOffset + 0, zOffset + 60));
+    m_controlPoints.push_back(glm::vec3(xOffset + 0, yOffset + 0, zOffset + 100));
+    
+    m_controlPoints.push_back(glm::vec3(xOffset + -60, yOffset + 20, zOffset + 40));
+    m_controlPoints.push_back(glm::vec3(xOffset + -100, yOffset + 40, zOffset + 20));
+    m_controlPoints.push_back(glm::vec3(xOffset + -100, yOffset + 0, zOffset + -20));
+    // changed
+    // m_controlPoints.push_back(glm::vec3(xOffset + -30, yOffset + 0, zOffset + -40));
+    // m_controlPoints.push_back(glm::vec3(xOffset + -30, yOffset + -20, zOffset + -40));
+    // changed due to crimp
+    m_controlPoints.push_back(glm::vec3(xOffset + -70, yOffset + 0, zOffset + -60));
+    // m_controlPoints.push_back(glm::vec3(xOffset + -50, yOffset + 0, zOffset + -80));
+    // changed due to crimp
+    m_controlPoints.push_back(glm::vec3(xOffset + -40, yOffset + 0, zOffset + -90));
+    // m_controlPoints.push_back(glm::vec3(xOffset + -30, yOffset + 0, zOffset + -80));
 
     // Optionally, set upvectors (m_controlUpVectors, one for each control point as well)
 }
@@ -320,20 +344,20 @@ void CCatmullRom::CreateTrack() {
         vboTrack.AddData(&texCoord, sizeof(glm::vec2));
         vboTrack.AddData(&normal, sizeof(glm::vec3));
     }
-    
+
 
     // janky fix for not having a triangle have a point at 0,0,0
     vboTrack.AddData(&m_trackTrianglePoints[0], sizeof(glm::vec3));
-    vboTrack.AddData(&m_trackTrianglePoints[m_trackTrianglePoints.size()-2], sizeof(glm::vec3));
-    vboTrack.AddData(&m_trackTrianglePoints[m_trackTrianglePoints.size()-1], sizeof(glm::vec3));
+    vboTrack.AddData(&m_trackTrianglePoints[m_trackTrianglePoints.size() - 2], sizeof(glm::vec3));
+    vboTrack.AddData(&m_trackTrianglePoints[m_trackTrianglePoints.size() - 1], sizeof(glm::vec3));
     vboTrack.AddData(&texCoord, sizeof(glm::vec2));
     vboTrack.AddData(&normal, sizeof(glm::vec3));
-    
+
     vboTrack.AddData(&m_trackTrianglePoints[0], sizeof(glm::vec3));
-    vboTrack.AddData(&m_trackTrianglePoints[m_trackTrianglePoints.size()-1], sizeof(glm::vec3));
+    vboTrack.AddData(&m_trackTrianglePoints[m_trackTrianglePoints.size() - 1], sizeof(glm::vec3));
     vboTrack.AddData(&m_trackTrianglePoints[1], sizeof(glm::vec3));
     vboTrack.AddData(&texCoord, sizeof(glm::vec2));
-    vboTrack.AddData(&normal, sizeof(glm::vec3));	
+    vboTrack.AddData(&normal, sizeof(glm::vec3));
 
 
     // Upload the VBO to the GPU
