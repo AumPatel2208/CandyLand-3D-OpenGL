@@ -8,13 +8,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c7796f2d-f175-488a-8831-6047c0722fba" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/OpenGLTemplate/Player.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OpenGLTemplate/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OpenGLTemplate/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OpenGLTemplate/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OpenGLTemplate/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/CatmullRom.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/CatmullRom.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Camera.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Camera.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Camera.h" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Camera.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/CatmullRom.h" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/CatmullRom.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Game.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Game.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Game.h" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Game.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/OpenGLTemplate.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/OpenGLTemplate.vcxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/OpenGLTemplate.vcxproj.filters" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/OpenGLTemplate.vcxproj.filters" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,13 +26,27 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/OpenGLTemplate/include/gl/glew.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/OpenGLTemplate/include/assimp/camera.h" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
-      <option value="$PROJECT_DIR$/OpenGLTemplate/CatmullRom.h" />
-      <option value="$PROJECT_DIR$/OpenGLTemplate/CatmullRom.cpp" />
-      <option value="$PROJECT_DIR$/OpenGLTemplate/Game.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Player.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Player.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/CatmullRom.h" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Camera.h" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Car.h" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Car.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Camera.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Pickup.h" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Pickup.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/GameObject.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/GameObject.h" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/CatmullRom.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/GO_Pickup.h" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/GO_Pickup.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Game.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Game.cpp" />
     </changedPaths>
   </component>
@@ -52,7 +68,8 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C++" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="RiderCodeInspectionGeneratedSettingsId" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager">
@@ -116,6 +133,17 @@
       <workItem from="1615308370921" duration="6442000" />
       <workItem from="1615320671331" duration="7277000" />
       <workItem from="1615377308527" duration="5001000" />
+      <workItem from="1615386442786" duration="2517000" />
+      <workItem from="1615391228841" duration="13436000" />
+      <workItem from="1615497873429" duration="2818000" />
+      <workItem from="1615640504020" duration="4397000" />
+      <workItem from="1615648931708" duration="1228000" />
+      <workItem from="1615723270220" duration="97000" />
+      <workItem from="1615723437977" duration="1499000" />
+      <workItem from="1615725014242" duration="2326000" />
+      <workItem from="1615742257577" duration="1863000" />
+      <workItem from="1615745893740" duration="4541000" />
+      <workItem from="1615811382316" duration="3036000" />
     </task>
     <servers />
   </component>

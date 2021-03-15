@@ -14,6 +14,10 @@ class CPlane;
 class CFreeTypeFont;
 class CHighResolutionTimer;
 class CSphere;
+class GameObject;
+class Car;
+class Pickup;
+class GO_Pickup;
 class COpenAssetImportMesh;
 class CAudio;
 class CCatmullRom;
@@ -34,17 +38,21 @@ private:
 	COpenAssetImportMesh *m_pBarrelMesh;
 	COpenAssetImportMesh *m_pHorseMesh;
 	CSphere *m_pSphere;
+	Car *mCar;
+	// Pickup *mPickup;
+	// GO_Pickup *mGOPickup;
 	CHighResolutionTimer *m_pHighResolutionTimer;
 	CAudio *m_pAudio;
 	CCatmullRom *m_pCatmullRom;
 	// Player* m_player;
+	GO_Pickup *gamo;
+
 
 
 	// Some other member variables
 	double m_dt;
 	int m_framesPerSecond;
 	bool m_appActive;
-	float m_currentDistance;
 	bool isWireFrame = false;
 
 
@@ -64,9 +72,12 @@ private:
 	HINSTANCE m_hInstance;
 	int m_frameCount;
 	double m_elapsedTime;
+	double mSeconds = 0;
 
-	float m_cameraRotation;
-	float m_cameraSpeed;
+	int mPlayerLane = 0; // -1 is left, +1 is right
+	float mPlayerOffset = 0.f; 
+
+
 
 
 };

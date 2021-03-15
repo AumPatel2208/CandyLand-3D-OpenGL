@@ -30,7 +30,11 @@ Source code drawn from a number of sources and examples, including contributions
 #include "Plane.h"
 #include "Shaders.h"
 #include "FreeTypeFont.h"
+#include "GameObject.h"
 #include "Sphere.h"
+#include "Car.h"
+#include "Pickup.h"
+#include "GO_Pickup.h"
 #include "MatrixStack.h"
 #include "OpenAssetImportMesh.h"
 #include "Audio.h"
@@ -44,8 +48,11 @@ Game::Game() {
     m_pPlanarTerrain = NULL;
     m_pFtFont = NULL;
     m_pBarrelMesh = NULL;
+    gamo = NULL;
     m_pHorseMesh = NULL;
     m_pSphere = NULL;
+    mCar = NULL;
+    // mPickup = NULL;
     m_pHighResolutionTimer = NULL;
     m_pAudio = NULL;
     m_pCatmullRom = NULL;
@@ -56,11 +63,7 @@ Game::Game() {
     m_frameCount = 0;
     m_elapsedTime = 0.0f;
 
-    // set current distance to 0
-    m_currentDistance = 0.0f;
 
-    m_cameraRotation = 0.f;
-    m_cameraSpeed = 0.1f;
 }
 
 // Destructor
@@ -71,8 +74,12 @@ Game::~Game() {
     delete m_pPlanarTerrain;
     delete m_pFtFont;
     delete m_pBarrelMesh;
+    delete gamo;
     delete m_pHorseMesh;
     delete m_pSphere;
+    delete mCar;
+    // delete mPickup;
+    // delete mGOPickup;
     delete m_pAudio;
     delete m_pCatmullRom;
     // delete m_player;
@@ -100,8 +107,12 @@ void Game::Initialise() {
     m_pPlanarTerrain = new CPlane;
     m_pFtFont = new CFreeTypeFont;
     m_pBarrelMesh = new COpenAssetImportMesh;
+    gamo = new GO_Pickup;
     m_pHorseMesh = new COpenAssetImportMesh;
     m_pSphere = new CSphere;
+    mCar = new Car;
+    // mPickup = new Pickup;
+    // mGOPickup = new GO_Pickup;
     m_pAudio = new CAudio;
     m_pCatmullRom = new CCatmullRom;
     // m_player = new Player;
@@ -170,10 +181,21 @@ void Game::Initialise() {
 
     // create player
     // m_player->Initialise();
-    
+
     // Create a sphere
     m_pSphere->Create("resources\\textures\\", "dirtpile01.jpg", 25, 25); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
+
+    // create car
+    mCar->Create("resources\\textures\\", "dirtpile01.jpg", 25, 25); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
+    
+    // mPickup->Create("resources\\textures\\", "dirtpile01.jpg", 25, 25); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
+    // mGOPickup->Create();
+    gamo->Create();
+    
+    // cull faces
     glEnable(GL_CULL_FACE);
+
+    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // Initialise audio and play background music
     m_pAudio->Initialise();
@@ -286,6 +308,18 @@ void Game::Render() {
         m_pBarrelMesh->Render();
     }
     modelViewMatrixStack.Pop();
+    // Render the gamo 
+    modelViewMatrixStack.Push();
+    {
+        modelViewMatrixStack.Translate(gamo->position());
+        modelViewMatrixStack.Rotate(gamo->rotationAxis(), gamo->rotationAmount());
+        modelViewMatrixStack.Scale(2.5f);
+        modelViewMatrixStack.Scale(gamo->scale());
+        pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
+        pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
+        gamo->Render();
+    }
+    modelViewMatrixStack.Pop();
 
 
     // Render the sphere
@@ -301,6 +335,36 @@ void Game::Render() {
     }
     modelViewMatrixStack.Pop();
 
+    // Render the car
+    modelViewMatrixStack.Push();
+    {
+        modelViewMatrixStack.Translate(mCar->position());
+        // modelViewMatrixStack.Rotate(glm::vec3(1, 0, 0), -90);
+        modelViewMatrixStack.Rotate(mCar->rotationAxis(), mCar->rotationAmount());
+        modelViewMatrixStack.Scale(mCar->scale());
+        pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
+        pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
+        // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
+        //pMainProgram->SetUniform("bUseTexture", false);
+        mCar->Render();
+    }
+    modelViewMatrixStack.Pop();
+
+    // // Render the Pickup
+    // modelViewMatrixStack.Push();
+    // {
+    //     modelViewMatrixStack.Translate(mGOPickup->position());
+    //     modelViewMatrixStack.Rotate(mGOPickup->rotationAxis(), mGOPickup->rotationAmount());
+    //     modelViewMatrixStack.Scale(mGOPickup->scale());
+    //     pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
+    //     pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
+    //     // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
+    //     //pMainProgram->SetUniform("bUseTexture", false);
+    //     mGOPickup->Render();
+    // }
+    // modelViewMatrixStack.Pop();
+    //
+    //
     modelViewMatrixStack.Push();
     {
         // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
@@ -327,58 +391,39 @@ void Game::Render() {
 void Game::Update() {
     // Update the camera using the amount of time that has elapsed to avoid framerate dependent motion
     // m_pCamera->Set(glm::vec3(0, 300, 0), glm::vec3(0, 0, 0), glm::vec3(1, 0, 0));
-    // m_pCamera->Update(m_dt);
 
-    // makes camera spin around the spline
+    // m_car->Update(m_dt, m_pCamera);
 
-    // camera rotation changes based on key presses
-    if (GetKeyState(VK_LEFT) & 0x80) {
-        m_cameraRotation -= m_dt * 0.001f;
-    }else if (GetKeyState(VK_RIGHT) & 0x80){
-        m_cameraRotation += m_dt * 0.001f;
-    }
+    m_pCamera->Update(m_dt, m_pCatmullRom);
+    mCar->Update(m_dt, m_pCatmullRom);
+    float speed = m_dt * 0.0001f;
+
     if (GetKeyState(VK_UP) & 0x80) {
-        m_cameraSpeed += m_dt * 0.0001f;
-    }else if (GetKeyState(VK_DOWN) & 0x80){
-        m_cameraSpeed -= m_dt * 0.0001f;
+        m_pCamera->addSpeed(speed);
+        mCar->addSpeed(speed);
     }
-    
-    m_currentDistance += m_dt * m_cameraSpeed; // increment by 0.1
-    glm::vec3 p;
-    glm::vec3 pNext;
-    m_pCatmullRom->Sample(m_currentDistance, p);
-    m_pCatmullRom->Sample(m_currentDistance + m_dt * 0.1f, pNext);
-    glm::vec3 tangent = pNext - p;
-    tangent = glm::normalize(tangent);
-    glm::vec3 normal = glm::normalize(glm::cross(tangent, glm::vec3(0, 1, 0)));
-    glm::vec3 binormal = glm::normalize(glm::cross(normal, tangent));
-    
-    p.y += 3.0f;
-    
-    glm::vec3 up = glm::rotate(glm::vec3(0, 1, 0), m_cameraRotation, tangent);
-    
-    m_pCamera->Set(p, p + 10.0f * tangent, up);
+    else if (GetKeyState(VK_DOWN) & 0x80) {
+        m_pCamera->addSpeed(-speed);
+        mCar->addSpeed(-speed);
+    }
 
-
-    // delete possibly
-    /*
-    static float t = 0.0f;
-    t += 0.0005f * (float)m_dt;
-    if (t > 1.0f)
-    t = 0.0f;
-
-    CCatmullRom cr;
-    glm::vec3 p0 = glm::vec3(-500, 10, -200);
-    glm::vec3 p1 = glm::vec3(0, 10, -200);
-    glm::vec3 p2 = glm::vec3(0, 10, 200);
-    glm::vec3 p3 = glm::vec3(-500, 10, 200);
-
-
-
-    glm::vec3 x = cr.Interpolate(p0, p1, p2, p3, t);
-
-    m_pCamera->Set(x, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-    */
+    if (GetKeyState(VK_LEFT) & 0x80) {
+        if (mPlayerLane == 1)
+            mPlayerLane = 0;
+        else if (mPlayerLane == 0)
+            mPlayerLane = -1;
+        mPlayerOffset -= m_dt * 0.001f;
+        mCar->addXOffset(mPlayerOffset);
+        
+    }
+    else if (GetKeyState(VK_RIGHT) & 0x80) {
+        if (mPlayerLane == -1)
+            mPlayerLane = 0;
+        else if (mPlayerLane == 0)
+            mPlayerLane = 1;
+        mPlayerOffset += m_dt * 0.001f;
+        mCar->addXOffset(mPlayerOffset);
+    }
 
     m_pAudio->Update();
 }
@@ -414,6 +459,7 @@ void Game::DisplayFrameRate() {
         fontProgram->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
         fontProgram->SetUniform("vColour", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
         m_pFtFont->Render(20, height - 20, 20, "FPS: %d", m_framesPerSecond);
+        // m_pFtFont->Render(20, height - 40, 20, "Elapsed Time: %d", m_dt);
     }
 }
 

@@ -9,6 +9,8 @@
         <e p="Audio.h" t="Include" />
         <e p="Camera.cpp" t="Include" />
         <e p="Camera.h" t="Include" />
+        <e p="Car.cpp" t="Include" />
+        <e p="Car.h" t="Include" />
         <e p="CatmullRom.cpp" t="Include" />
         <e p="CatmullRom.h" t="Include" />
         <e p="Common.h" t="Include" />
@@ -18,8 +20,12 @@
         <e p="FreeTypeFont.h" t="Include" />
         <e p="Game.cpp" t="Include" />
         <e p="Game.h" t="Include" />
+        <e p="GameObject.cpp" t="Include" />
+        <e p="GameObject.h" t="Include" />
         <e p="GameWindow.cpp" t="Include" />
         <e p="GameWindow.h" t="Include" />
+        <e p="GO_Pickup.cpp" t="Include" />
+        <e p="GO_Pickup.h" t="Include" />
         <e p="HighResolutionTimer.cpp" t="Include" />
         <e p="HighResolutionTimer.h" t="Include" />
         <e p="MatrixStack.cpp" t="Include" />
@@ -27,10 +33,10 @@
         <e p="OpenAssetImportMesh.cpp" t="Include" />
         <e p="OpenAssetImportMesh.h" t="Include" />
         <e p="OpenGLTemplate.vcxproj" t="IncludeRecursive" />
+        <e p="Pickup.cpp" t="Include" />
+        <e p="Pickup.h" t="Include" />
         <e p="Plane.cpp" t="Include" />
         <e p="Plane.h" t="Include" />
-        <e p="Player.cpp" t="Include" />
-        <e p="Player.h" t="Include" />
         <e p="resources" t="Include">
           <e p="shaders" t="Include">
             <e p="mainShader.frag" t="Include" />
