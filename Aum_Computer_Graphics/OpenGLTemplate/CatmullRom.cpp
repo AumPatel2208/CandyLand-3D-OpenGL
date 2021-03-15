@@ -47,7 +47,7 @@ void CCatmullRom::SetControlPoints() {
     // changed
     // m_controlPoints.push_back(glm::vec3(xOffset + 0, yOffset + 0, zOffset + 60));
     m_controlPoints.push_back(glm::vec3(xOffset + 0, yOffset + 0, zOffset + 100));
-    
+
     m_controlPoints.push_back(glm::vec3(xOffset + -60, yOffset + 20, zOffset + 40));
     m_controlPoints.push_back(glm::vec3(xOffset + -100, yOffset + 40, zOffset + 20));
     m_controlPoints.push_back(glm::vec3(xOffset + -100, yOffset + 0, zOffset + -20));
@@ -125,6 +125,30 @@ bool CCatmullRom::Sample(float d, glm::vec3& p, glm::vec3& up) {
         up = glm::normalize(Interpolate(m_controlUpVectors[iPrev], m_controlUpVectors[iCur], m_controlUpVectors[iNext], m_controlUpVectors[iNextNext], t));
 
     return true;
+}
+
+glm::vec3 CCatmullRom::GeneratePositionOnPath() {
+    // srand (time(NULL));
+    float distance = rand() % 1000;
+
+    glm::vec3 position;
+    glm::vec3 up;
+
+
+    int offset = rand() % (int)width - width / 2;
+
+    Sample(distance, position, up);
+
+    glm::vec3 pNext;
+    Sample(distance + 0.1, pNext);
+
+
+    glm::vec3 tangent = glm::normalize(position - pNext);
+    glm::vec3 normal = glm::normalize(glm::cross(tangent, glm::vec3(0, 1, 0)));
+
+    // offset them
+    position = position + (float)offset * normal;
+    return position;
 }
 
 
@@ -214,13 +238,12 @@ void CCatmullRom::CreateOffsetCurves() {
 
     for (int i = 0; i < m_centrelinePoints.size() - 1; ++i) {
         // w = path width
-        float w = 20.f;
         glm::vec3 tangent = glm::normalize(m_centrelinePoints[i + 1] - m_centrelinePoints[i]);
         glm::vec3 normal = glm::normalize(glm::cross(tangent, glm::vec3(0, 1, 0)));
         glm::vec3 binormal = glm::normalize(glm::cross(normal, tangent));
 
-        m_leftOffsetPoints.push_back(m_centrelinePoints[i] - (w / 2) * normal);
-        m_rightOffsetPoints.push_back(m_centrelinePoints[i] + (w / 2) * normal);
+        m_leftOffsetPoints.push_back(m_centrelinePoints[i] - (width / 2) * normal);
+        m_rightOffsetPoints.push_back(m_centrelinePoints[i] + (width / 2) * normal);
 
     }
 

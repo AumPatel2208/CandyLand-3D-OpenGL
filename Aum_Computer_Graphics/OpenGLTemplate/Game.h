@@ -17,7 +17,6 @@ class CSphere;
 class GameObject;
 class Car;
 class Pickup;
-class GO_Pickup;
 class COpenAssetImportMesh;
 class CAudio;
 class CCatmullRom;
@@ -45,7 +44,7 @@ private:
 	CAudio *m_pAudio;
 	CCatmullRom *m_pCatmullRom;
 	// Player* m_player;
-	GO_Pickup *gamo;
+	Pickup *mPickup;
 
 
 
@@ -54,6 +53,7 @@ private:
 	int m_framesPerSecond;
 	bool m_appActive;
 	bool isWireFrame = false;
+	int mPlayerScore = 0;
 
 
 public:
@@ -63,11 +63,15 @@ public:
 	LRESULT ProcessEvents(HWND window,UINT message, WPARAM w_param, LPARAM l_param);
 	void SetHinstance(HINSTANCE hinstance);
 	WPARAM Execute();
+	void ManageCollisions();
+	bool CheckCollision(glm::vec3 aPos, float aRadius, glm::vec3 bPos, float bRadius);
+	
 
 private:
 	static const int FPS = 60;
 	void DisplayFrameRate();
 	void GameLoop();
+	void CreatePickups(int amount);
 	GameWindow m_gameWindow;
 	HINSTANCE m_hInstance;
 	int m_frameCount;
@@ -75,8 +79,11 @@ private:
 	double mSeconds = 0;
 
 	int mPlayerLane = 0; // -1 is left, +1 is right
-	float mPlayerOffset = 0.f; 
+	float mPlayerOffset = 0.f;
 
+	
+
+	vector<glm::vec3> pickupPositions;
 
 
 

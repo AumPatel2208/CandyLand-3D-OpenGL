@@ -24,8 +24,6 @@
         <e p="GameObject.h" t="Include" />
         <e p="GameWindow.cpp" t="Include" />
         <e p="GameWindow.h" t="Include" />
-        <e p="GO_Pickup.cpp" t="Include" />
-        <e p="GO_Pickup.h" t="Include" />
         <e p="HighResolutionTimer.cpp" t="Include" />
         <e p="HighResolutionTimer.h" t="Include" />
         <e p="MatrixStack.cpp" t="Include" />

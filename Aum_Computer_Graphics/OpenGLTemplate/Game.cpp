@@ -34,7 +34,6 @@ Source code drawn from a number of sources and examples, including contributions
 #include "Sphere.h"
 #include "Car.h"
 #include "Pickup.h"
-#include "GO_Pickup.h"
 #include "MatrixStack.h"
 #include "OpenAssetImportMesh.h"
 #include "Audio.h"
@@ -48,15 +47,13 @@ Game::Game() {
     m_pPlanarTerrain = NULL;
     m_pFtFont = NULL;
     m_pBarrelMesh = NULL;
-    gamo = NULL;
+    mPickup = NULL;
     m_pHorseMesh = NULL;
     m_pSphere = NULL;
     mCar = NULL;
-    // mPickup = NULL;
     m_pHighResolutionTimer = NULL;
     m_pAudio = NULL;
     m_pCatmullRom = NULL;
-    // m_player = NULL;
 
     m_dt = 0.0;
     m_framesPerSecond = 0;
@@ -74,7 +71,7 @@ Game::~Game() {
     delete m_pPlanarTerrain;
     delete m_pFtFont;
     delete m_pBarrelMesh;
-    delete gamo;
+    delete mPickup;
     delete m_pHorseMesh;
     delete m_pSphere;
     delete mCar;
@@ -107,7 +104,7 @@ void Game::Initialise() {
     m_pPlanarTerrain = new CPlane;
     m_pFtFont = new CFreeTypeFont;
     m_pBarrelMesh = new COpenAssetImportMesh;
-    gamo = new GO_Pickup;
+    mPickup = new Pickup;
     m_pHorseMesh = new COpenAssetImportMesh;
     m_pSphere = new CSphere;
     mCar = new Car;
@@ -186,12 +183,13 @@ void Game::Initialise() {
     m_pSphere->Create("resources\\textures\\", "dirtpile01.jpg", 25, 25); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
 
     // create car
-    mCar->Create("resources\\textures\\", "dirtpile01.jpg", 25, 25); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
-    
+    // mCar->Create("resources\\textures\\", "dirtpile01.jpg", 25, 25); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
+    mCar->Create(); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
+
     // mPickup->Create("resources\\textures\\", "dirtpile01.jpg", 25, 25); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
     // mGOPickup->Create();
-    gamo->Create();
-    
+    mPickup->Create();
+
     // cull faces
     glEnable(GL_CULL_FACE);
 
@@ -210,6 +208,13 @@ void Game::Initialise() {
     m_pCatmullRom->CreateCentreline();
     m_pCatmullRom->CreateOffsetCurves();
     m_pCatmullRom->CreateTrack();
+
+    pickupPositions.push_back(mPickup->position());
+    pickupPositions.push_back(glm::vec3(10, 10, 0));
+    // pickupPositions.push_back(m_pCatmullRom->GeneratePositionOnPath());
+    CreatePickups(20);
+
+
 }
 
 // Render method runs repeatedly in a loop
@@ -308,38 +313,58 @@ void Game::Render() {
         m_pBarrelMesh->Render();
     }
     modelViewMatrixStack.Pop();
-    // Render the gamo 
-    modelViewMatrixStack.Push();
-    {
-        modelViewMatrixStack.Translate(gamo->position());
-        modelViewMatrixStack.Rotate(gamo->rotationAxis(), gamo->rotationAmount());
-        modelViewMatrixStack.Scale(2.5f);
-        modelViewMatrixStack.Scale(gamo->scale());
-        pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-        pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-        gamo->Render();
+
+    for (glm::vec3 p : pickupPositions) {
+        // Render the pickup 
+        modelViewMatrixStack.Push();
+        {
+            // modelViewMatrixStack.Translate(mPickup->position());
+            modelViewMatrixStack.Translate(p);
+            modelViewMatrixStack.Translate(glm::vec3(0, mPickup->spinHeight, 0));
+            modelViewMatrixStack.Rotate(mPickup->rotationAxis(), mPickup->rotationAmount());
+            modelViewMatrixStack.Rotate(glm::vec3(0, 1, 0), mPickup->spinAmount);
+            // modelViewMatrixStack.Scale(2.5f);
+            modelViewMatrixStack.Scale(mPickup->scale());
+            pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
+            pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
+            mPickup->Render();
+            // if(mPickup->showCollisionSphere) {
+            //    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            //    mPickup->getCollisionSphere()->Render();
+            //     // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            // }
+        }
+        modelViewMatrixStack.Pop();
+
     }
-    modelViewMatrixStack.Pop();
 
 
     // Render the sphere
-    modelViewMatrixStack.Push();
-    {
-        modelViewMatrixStack.Translate(glm::vec3(0.0f, 2.0f, 150.0f));
-        modelViewMatrixStack.Scale(2.0f);
-        pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-        pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-        // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
-        //pMainProgram->SetUniform("bUseTexture", false);
-        m_pSphere->Render();
+    if (mPickup->showCollisionSphere) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+        modelViewMatrixStack.Push();
+        {
+            modelViewMatrixStack.Translate(glm::vec3(mPickup->position()));
+            modelViewMatrixStack.Translate(glm::vec3(0.0f, mPickup->collisionHeight(), 0.0f));
+            modelViewMatrixStack.Scale(mPickup->collisionRadius());
+            pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
+            pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
+            // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
+            //pMainProgram->SetUniform("bUseTexture", false);
+            // m_pSphere->Render();
+            mPickup->getCollisionSphere()->Render();
+        }
+        modelViewMatrixStack.Pop();
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
-    modelViewMatrixStack.Pop();
+
 
     // Render the car
     modelViewMatrixStack.Push();
     {
         modelViewMatrixStack.Translate(mCar->position());
-        // modelViewMatrixStack.Rotate(glm::vec3(1, 0, 0), -90);
+        modelViewMatrixStack *= mCar->getRotationOnPath();
         modelViewMatrixStack.Rotate(mCar->rotationAxis(), mCar->rotationAmount());
         modelViewMatrixStack.Scale(mCar->scale());
         pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
@@ -349,6 +374,30 @@ void Game::Render() {
         mCar->Render();
     }
     modelViewMatrixStack.Pop();
+
+
+    
+    // Render the sphere
+    if (mCar->showCollisionSphere) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+        modelViewMatrixStack.Push();
+        {
+            modelViewMatrixStack.Translate(glm::vec3(mCar->position()));
+            modelViewMatrixStack.Translate(glm::vec3(0.0f, mCar->collisionHeight(), 0.0f));
+            modelViewMatrixStack.Scale(mCar->collisionRadius());
+            // modelViewMatrixStack.Scale(mCar->collisionScale());
+            modelViewMatrixStack *= mCar->getRotationOnPath();
+            pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
+            pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
+            // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
+            //pMainProgram->SetUniform("bUseTexture", false);
+            // m_pSphere->Render();
+            mCar->getCollisionSphere()->Render();
+        }
+        modelViewMatrixStack.Pop();
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
 
     // // Render the Pickup
     // modelViewMatrixStack.Push();
@@ -378,6 +427,17 @@ void Game::Render() {
     }
     modelViewMatrixStack.Pop();
 
+    CShaderProgram* fontProgram = (*m_pShaderPrograms)[1];
+
+    RECT dimensions = m_gameWindow.GetDimensions();
+    int height = dimensions.bottom - dimensions.top;
+    // Use the font shader program and render the text
+    fontProgram->UseProgram();
+    glDisable(GL_DEPTH_TEST);
+    fontProgram->SetUniform("matrices.modelViewMatrix", glm::mat4(1));
+    fontProgram->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
+    fontProgram->SetUniform("vColour", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    m_pFtFont->Render(20, height - 40, 20, "Score: %i", mPlayerScore);
     // Draw the 2D graphics after the 3D graphics
     DisplayFrameRate();
 
@@ -412,20 +472,66 @@ void Game::Update() {
             mPlayerLane = 0;
         else if (mPlayerLane == 0)
             mPlayerLane = -1;
-        mPlayerOffset -= m_dt * 0.001f;
+        mPlayerOffset -= m_dt *mCar->getOffsetSpeed();
         mCar->addXOffset(mPlayerOffset);
-        
+
+
     }
     else if (GetKeyState(VK_RIGHT) & 0x80) {
         if (mPlayerLane == -1)
             mPlayerLane = 0;
         else if (mPlayerLane == 0)
             mPlayerLane = 1;
-        mPlayerOffset += m_dt * 0.001f;
+        mPlayerOffset += m_dt * mCar->getOffsetSpeed();
         mCar->addXOffset(mPlayerOffset);
     }
 
+    ManageCollisions();
+    mPickup->Update(m_dt);
+
     m_pAudio->Update();
+}
+
+void Game::ManageCollisions() {
+
+    // collision between player and pickup
+    // if (CheckCollision(mPickup->position(), mPickup->collisionRadius(), m_pCamera->GetPosition(), m_pCamera->collisionRadius())) {
+    //     mPickup->showCollisionSphere = false;
+    //     mPlayerScore += 1;
+    // }
+
+    vector<vector<glm::vec3>::iterator> pickupsToRemove;
+
+    for (auto p = pickupPositions.begin(); p != pickupPositions.end(); ++p) {
+        if (CheckCollision(*p, mPickup->collisionRadius(), m_pCamera->GetPosition(), m_pCamera->collisionRadius())) {
+            mPickup->showCollisionSphere = false;
+            mPlayerScore += 1;
+            // note to remove pickup
+            pickupsToRemove.push_back(p);
+        }
+        if (CheckCollision(*p, mPickup->collisionRadius(), mCar->position(), mCar->collisionRadius())) {
+            mPickup->showCollisionSphere = false;
+            mPlayerScore += 1;
+            // note to remove pickup
+            pickupsToRemove.push_back(p);
+        }
+    }
+
+    // remove pickup
+    for (auto& i : pickupsToRemove) {
+        pickupPositions.erase(i);
+    }
+
+}
+
+bool Game::CheckCollision(glm::vec3 aPos, float aRadius, glm::vec3 bPos, float bRadius) {
+    const float distance = glm::distance(aPos, bPos);
+
+    if (distance < aRadius || distance < bRadius) {
+        return true;
+    }
+
+    return false;
 }
 
 
@@ -459,7 +565,6 @@ void Game::DisplayFrameRate() {
         fontProgram->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
         fontProgram->SetUniform("vColour", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
         m_pFtFont->Render(20, height - 20, 20, "FPS: %d", m_framesPerSecond);
-        // m_pFtFont->Render(20, height - 40, 20, "Elapsed Time: %d", m_dt);
     }
 }
 
@@ -483,6 +588,12 @@ void Game::GameLoop() {
     m_dt = m_pHighResolutionTimer->Elapsed();
 
 
+}
+
+void Game::CreatePickups(int amount) {
+    for (int i = 0; i < amount; ++i) {
+        pickupPositions.push_back(m_pCatmullRom->GeneratePositionOnPath());
+    }
 }
 
 
@@ -561,6 +672,11 @@ LRESULT Game::ProcessEvents(HWND window, UINT message, WPARAM w_param, LPARAM l_
         case '1':
             m_pAudio->PlayEventSound();
             break;
+
+        case 0x46:
+            m_pCamera->FlipCameraState();
+            break;
+
         }
         break;
 

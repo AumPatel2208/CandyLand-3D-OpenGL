@@ -52,6 +52,10 @@ public:
         m_cameraSpeed += speed;
     }
 
+    float collisionRadius(){return mCollisionRadius;}
+
+    void FlipCameraState(){cameraState= !cameraState;}
+
 private:
     glm::vec3 m_position; // The position of the camera's centre of projection
     glm::vec3 m_view; // The camera's viewpoint (point where the camera is looking)
@@ -67,6 +71,11 @@ private:
     float m_cameraRotation;
     float m_cameraSpeed;
     float m_currentDistance;
+    
+	bool cameraState = false;
+
+
+    float mCollisionRadius = 2.f;;
 
 
 };

@@ -8,6 +8,7 @@
 
 #include "camera.h"
 #include "CatmullRom.h"
+#include "Sphere.h"
 #include "OpenAssetImportMesh.h"
 
 
@@ -21,21 +22,33 @@ GameObject::GameObject(): mVao(0), mNumTriangles(0) {
 
     mForward = glm::vec3(0, 0, 1);
     mUp = glm::vec3(0, 1, 0);
+
+    mCollisionSphere = NULL;
+
+    showCollisionSphere = true;
 }
+
 
 GameObject::~GameObject() {
     delete mMesh;
+    delete mCollisionSphere;
 }
 
 void GameObject::Create(string path) {
     mMesh = new COpenAssetImportMesh;
     mMesh->Load(path);
     mMeshPath = path;
+
+    mCollisionSphere = new CSphere;
+    mCollisionSphere->Create("resources\\textures\\", "dirtpile01.jpg", 25, 25); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
 }
 
 void GameObject::Create() {
     mMesh = new COpenAssetImportMesh;
     mMesh->Load(mMeshPath);
+    
+    mCollisionSphere = new CSphere;
+    mCollisionSphere->Create("resources\\textures\\", "dirtpile01.jpg", 25, 25); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
 }
 
 void GameObject::Render() {
@@ -48,13 +61,13 @@ void GameObject::Release() {
     vbo.Release();
 }
 
-bool GameObject::CheckCollision(glm::vec3 bPosition, float bCollisionRadius) {
-
-    float distance = glm::distance(mPosition, bPosition);
-
-    if (distance < mCollisionRadius || distance < bCollisionRadius) {
-        return true;
-    }
-
-    return false;
-}
+// bool GameObject::CheckCollision(glm::vec3 bPosition, float bCollisionRadius) {
+//
+//     float distance = glm::distance(mPosition, bPosition);
+//
+//     if (distance < mCollisionRadius || distance < bCollisionRadius) {
+//         return true;
+//     }
+//
+//     return false;
+// }

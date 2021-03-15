@@ -86,7 +86,7 @@ void CCamera::SetViewBySpline(double dt, CCatmullRom* catmullRom) {
     glm::vec3 pNext;
     catmullRom->Sample(m_currentDistance, p);
     catmullRom->Sample(m_currentDistance + dt * 0.1f, pNext);
-    
+
     glm::vec3 tangent = pNext - p;
     tangent = glm::normalize(tangent);
     glm::vec3 normal = glm::normalize(glm::cross(tangent, glm::vec3(0, 1, 0)));
@@ -97,8 +97,9 @@ void CCamera::SetViewBySpline(double dt, CCatmullRom* catmullRom) {
     glm::vec3 up = glm::rotate(glm::vec3(0, 1, 0), m_cameraRotation, tangent);
 
     // car->setPosition(pNext);
-    
-    Set(p, p + 10.0f * tangent, up);
+
+    if (cameraState)
+        Set(p, p + 10.0f * tangent, up);
 }
 
 // Rotate the camera view point -- this effectively rotates the camera since it is looking at the view point
@@ -139,12 +140,12 @@ void CCamera::Update(double dt, CCatmullRom* catmullRom) {
     // by mouse and keyboard
     glm::vec3 vector = glm::cross(m_view - m_position, m_upVector);
     m_strafeVector = glm::normalize(vector);
-    
+
     SetViewByMouse();
     TranslateByKeyboard(dt);
 
-    // SetViewBySpline(dt, catmullRom);
-    
+    SetViewBySpline(dt, catmullRom);
+
 }
 
 

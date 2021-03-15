@@ -4,6 +4,7 @@
 #include "VertexBufferObject.h"
 
 class COpenAssetImportMesh;
+class CSphere;
 
 // Class for generating a unit sphere
 class GameObject {
@@ -17,7 +18,7 @@ public:
     void Release();
 
     // Basic Collision Detection between two objects
-    bool CheckCollision(glm::vec3 bPosition, float bCollisionRadius);
+    // bool CheckCollision(glm::vec3 bPosition, float bCollisionRadius);
     
     // getters
     glm::vec3 position() { return mPosition; }
@@ -25,7 +26,11 @@ public:
     glm::vec3 rotationAxis() { return mRotationAxis; }
     float rotationAmount() { return mRotationAmount; }
     float collisionRadius(){ return mCollisionRadius;}
+    float collisionHeight(){ return mCollisionHeight;}
+    glm::vec3 collisionScale(){ return mCollisionScale;}
 
+    CSphere* &getCollisionSphere(){return mCollisionSphere;}
+    bool showCollisionSphere = true;
 
 
     // setters
@@ -44,6 +49,9 @@ protected:
     int mNumTriangles;
     vector<glm::vec3> triangles;
 
+    CSphere* mCollisionSphere;
+    
+
     // float mSpeed;
     glm::vec3 mPosition;
     float mRotationAmount;
@@ -51,6 +59,8 @@ protected:
     glm::vec3 mScale;
     glm::vec3 mForward;
     glm::vec3 mUp;
-    float mCollisionRadius = 0.f;
+    float mCollisionRadius = 1.f;
+    float mCollisionHeight = 0.1f;
+    glm::vec3 mCollisionScale = glm::vec3(1.f);
 
 };
