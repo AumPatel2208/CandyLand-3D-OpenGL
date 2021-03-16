@@ -34,6 +34,7 @@ Source code drawn from a number of sources and examples, including contributions
 #include "Sphere.h"
 #include "Car.h"
 #include "Pickup.h"
+#include "SpeedPowerUp.h"
 #include "MatrixStack.h"
 #include "OpenAssetImportMesh.h"
 #include "Audio.h"
@@ -48,6 +49,7 @@ Game::Game() {
     m_pFtFont = NULL;
     m_pBarrelMesh = NULL;
     mPickup = NULL;
+    mSpeedPowerUp = NULL;
     m_pHorseMesh = NULL;
     m_pSphere = NULL;
     mCar = NULL;
@@ -72,11 +74,10 @@ Game::~Game() {
     delete m_pFtFont;
     delete m_pBarrelMesh;
     delete mPickup;
+    delete mSpeedPowerUp;
     delete m_pHorseMesh;
     delete m_pSphere;
     delete mCar;
-    // delete mPickup;
-    // delete mGOPickup;
     delete m_pAudio;
     delete m_pCatmullRom;
     // delete m_player;
@@ -105,11 +106,10 @@ void Game::Initialise() {
     m_pFtFont = new CFreeTypeFont;
     m_pBarrelMesh = new COpenAssetImportMesh;
     mPickup = new Pickup;
+    mSpeedPowerUp = new SpeedPowerUp;
     m_pHorseMesh = new COpenAssetImportMesh;
     m_pSphere = new CSphere;
     mCar = new Car;
-    // mPickup = new Pickup;
-    // mGOPickup = new GO_Pickup;
     m_pAudio = new CAudio;
     m_pCatmullRom = new CCatmullRom;
     // m_player = new Player;
@@ -189,6 +189,7 @@ void Game::Initialise() {
     // mPickup->Create("resources\\textures\\", "dirtpile01.jpg", 25, 25); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
     // mGOPickup->Create();
     mPickup->Create();
+    mSpeedPowerUp->Create(2.f, 2.f, 2.f);
 
     // cull faces
     glEnable(GL_CULL_FACE);
@@ -375,8 +376,22 @@ void Game::Render() {
     }
     modelViewMatrixStack.Pop();
 
-
     
+    // Render the Speed PowerUP
+    modelViewMatrixStack.Push();
+    {
+        modelViewMatrixStack.Translate(mSpeedPowerUp->position());
+        modelViewMatrixStack.Rotate(mSpeedPowerUp->rotationAxis(), mSpeedPowerUp->rotationAmount());
+        modelViewMatrixStack.Scale(mSpeedPowerUp->scale());
+        pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
+        pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
+        // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
+        //pMainProgram->SetUniform("bUseTexture", false);
+        mSpeedPowerUp->Render();
+    }
+    modelViewMatrixStack.Pop();
+
+
     // Render the sphere
     if (mCar->showCollisionSphere) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -472,7 +487,7 @@ void Game::Update() {
             mPlayerLane = 0;
         else if (mPlayerLane == 0)
             mPlayerLane = -1;
-        mPlayerOffset -= m_dt *mCar->getOffsetSpeed();
+        mPlayerOffset -= m_dt * mCar->getOffsetSpeed();
         mCar->addXOffset(mPlayerOffset);
 
 

@@ -13,7 +13,8 @@ public:
     virtual ~GameObject();
     void Create(string path);
     void Create();
-    void Render();
+    virtual void Create(const float& length, const float& width, const float& height);
+    virtual void Render();
     void Update(double dt);
     void Release();
 
@@ -47,7 +48,7 @@ protected:
     string mMeshPath;
     string mFilename;
     int mNumTriangles;
-    vector<glm::vec3> triangles;
+    vector<glm::vec3> triangleVertices;
 
     CSphere* mCollisionSphere;
     

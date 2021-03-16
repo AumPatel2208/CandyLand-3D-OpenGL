@@ -17,6 +17,7 @@ class CSphere;
 class GameObject;
 class Car;
 class Pickup;
+class SpeedPowerUp;
 class COpenAssetImportMesh;
 class CAudio;
 class CCatmullRom;
@@ -45,6 +46,8 @@ private:
 	CCatmullRom *m_pCatmullRom;
 	// Player* m_player;
 	Pickup *mPickup;
+	
+	SpeedPowerUp* mSpeedPowerUp;
 
 
 

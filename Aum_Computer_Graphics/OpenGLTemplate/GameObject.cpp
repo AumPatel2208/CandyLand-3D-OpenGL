@@ -25,7 +25,7 @@ GameObject::GameObject(): mVao(0), mNumTriangles(0) {
 
     mCollisionSphere = NULL;
 
-    showCollisionSphere = true;
+    showCollisionSphere = false;
 }
 
 
@@ -49,6 +49,10 @@ void GameObject::Create() {
     
     mCollisionSphere = new CSphere;
     mCollisionSphere->Create("resources\\textures\\", "dirtpile01.jpg", 25, 25); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
+}
+
+void GameObject::Create(const float& length, const float& width, const float& height) {
+    
 }
 
 void GameObject::Render() {

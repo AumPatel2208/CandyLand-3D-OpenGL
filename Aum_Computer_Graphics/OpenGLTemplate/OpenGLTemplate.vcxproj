@@ -137,6 +137,7 @@
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Shaders.h" />
     <ClInclude Include="Skybox.h" />
+    <ClInclude Include="SpeedPowerUp.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="VertexBufferObject.h" />
@@ -159,6 +160,7 @@
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Shaders.cpp" />
     <ClCompile Include="Skybox.cpp" />
+    <ClCompile Include="SpeedPowerUp.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="VertexBufferObject.cpp" />

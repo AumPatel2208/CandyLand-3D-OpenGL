@@ -47,6 +47,8 @@
         <e p="Shaders.h" t="Include" />
         <e p="Skybox.cpp" t="Include" />
         <e p="Skybox.h" t="Include" />
+        <e p="SpeedPowerUp.cpp" t="Include" />
+        <e p="SpeedPowerUp.h" t="Include" />
         <e p="Sphere.cpp" t="Include" />
         <e p="Sphere.h" t="Include" />
         <e p="Texture.cpp" t="Include" />
