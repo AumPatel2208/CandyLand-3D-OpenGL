@@ -35,6 +35,8 @@
         <e p="Pickup.h" t="Include" />
         <e p="Plane.cpp" t="Include" />
         <e p="Plane.h" t="Include" />
+        <e p="Prism.cpp" t="Include" />
+        <e p="Prism.h" t="Include" />
         <e p="resources" t="Include">
           <e p="shaders" t="Include">
             <e p="mainShader.frag" t="Include" />

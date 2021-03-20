@@ -1,7 +1,7 @@
 #pragma once
-#include "GameObject.h"
+#include "Pickup.h"
 
-class SpeedPowerUp : public GameObject {
+class SpeedPowerUp : public Pickup {
     
 public:
     SpeedPowerUp();

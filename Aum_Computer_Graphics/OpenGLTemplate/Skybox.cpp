@@ -11,13 +11,20 @@ CSkybox::~CSkybox() {}
 // Create a skybox of a given size with six textures
 void CSkybox::Create(float size) {
 
+    // m_cubemapTexture.Create(
+    //     "resources\\skyboxes\\jajdarkland1\\flipped\\jajdarkland1_rt.jpg",
+    //     "resources\\skyboxes\\jajdarkland1\\flipped\\jajdarkland1_lf.jpg",
+    //     "resources\\skyboxes\\jajdarkland1\\flipped\\jajdarkland1_up.jpg",
+    //     "resources\\skyboxes\\jajdarkland1\\flipped\\jajdarkland1_dn.jpg",
+    //     "resources\\skyboxes\\jajdarkland1\\flipped\\jajdarkland1_bk.jpg",
+    //     "resources\\skyboxes\\jajdarkland1\\flipped\\jajdarkland1_ft.jpg");
     m_cubemapTexture.Create(
-        "resources\\skyboxes\\jajdarkland1\\flipped\\jajdarkland1_rt.jpg",
-        "resources\\skyboxes\\jajdarkland1\\flipped\\jajdarkland1_lf.jpg",
-        "resources\\skyboxes\\jajdarkland1\\flipped\\jajdarkland1_up.jpg",
-        "resources\\skyboxes\\jajdarkland1\\flipped\\jajdarkland1_dn.jpg",
-        "resources\\skyboxes\\jajdarkland1\\flipped\\jajdarkland1_bk.jpg",
-        "resources\\skyboxes\\jajdarkland1\\flipped\\jajdarkland1_ft.jpg");
+        "resources\\skyboxes\\mountain\\flipped\\right.jpg",
+        "resources\\skyboxes\\mountain\\flipped\\left.jpg",
+        "resources\\skyboxes\\mountain\\flipped\\top.jpg",
+        "resources\\skyboxes\\mountain\\flipped\\bottom.jpg",
+        "resources\\skyboxes\\mountain\\flipped\\front.jpg",
+        "resources\\skyboxes\\mountain\\flipped\\back.jpg");
 
 
     glGenVertexArrays(1, &m_vao);

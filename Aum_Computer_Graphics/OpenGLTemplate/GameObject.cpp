@@ -25,7 +25,7 @@ GameObject::GameObject(): mVao(0), mNumTriangles(0) {
 
     mCollisionSphere = NULL;
 
-    showCollisionSphere = false;
+    showCollisionSphere = true;
 }
 
 

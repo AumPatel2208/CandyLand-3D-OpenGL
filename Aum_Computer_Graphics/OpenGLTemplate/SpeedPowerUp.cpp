@@ -1,10 +1,25 @@
 #include  "Common.h"
 #include "SpeedPowerUp.h"
 
+#include "Sphere.h"
 
-SpeedPowerUp::SpeedPowerUp() : GameObject() {
+
+SpeedPowerUp::SpeedPowerUp() : Pickup() {
     mPosition = glm::vec3(15, 10, 5);
-    mScale = glm::vec3(10.f);
+    mScale = glm::vec3(1.f);
+    // mRotationAmount = 90;
+    // mRotationAxis = glm::vec3(1,0,0);
+    
+    mTexture.Load("resources\\textures\\colorful-diagonal-lines-abstract-background\\abstractLines.jpg");
+
+    mTexture.SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    mTexture.SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    mTexture.SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+    mTexture.SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    mCollisionHeight = 0.5f;
+    mCollisionRadius = 1.5f;
+    
 }
 
 void SpeedPowerUp::Create(float length, float width, float height) {
@@ -261,10 +276,14 @@ void SpeedPowerUp::Create(float length, float width, float height) {
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, (void*)sizeof(glm::vec3));
 
+    mCollisionSphere = new CSphere;
+    mCollisionSphere->Create("resources\\textures\\", "dirtpile01.jpg", 25, 25); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
 
 }
 
 void SpeedPowerUp::Render() {
+    mTexture.Bind();
+
     glBindVertexArray(mVao);
     // 14 triangles                3 points per triangle
     glDrawArrays(GL_TRIANGLES, 0, 14 * 3);

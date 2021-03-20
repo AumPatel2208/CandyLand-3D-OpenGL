@@ -8,14 +8,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c7796f2d-f175-488a-8831-6047c0722fba" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/OpenGLTemplate/SpeedPowerUp.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OpenGLTemplate/Prism.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OpenGLTemplate/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OpenGLTemplate/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OpenGLTemplate/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OpenGLTemplate/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Camera.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Camera.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Game.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Game.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Game.h" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Game.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/GameObject.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/GameObject.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/GameObject.h" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/GameObject.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/OpenGLTemplate.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/OpenGLTemplate.vcxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Skybox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Skybox.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/SpeedPowerUp.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/SpeedPowerUp.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/SpeedPowerUp.h" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/SpeedPowerUp.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +38,6 @@
       <option value="$PROJECT_DIR$/OpenGLTemplate/Player.cpp" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/GO_Pickup.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/GO_Pickup.cpp" />
-      <option value="$PROJECT_DIR$/OpenGLTemplate/Skybox.cpp" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/CatmullRom.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/CatmullRom.cpp" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Pickup.h" />
@@ -43,15 +45,18 @@
       <option value="$PROJECT_DIR$/OpenGLTemplate/GO_Car.cpp" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Pickup.cpp" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Camera.h" />
-      <option value="$PROJECT_DIR$/OpenGLTemplate/Camera.cpp" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Car.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Car.cpp" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/GameObject.h" />
-      <option value="$PROJECT_DIR$/OpenGLTemplate/GameObject.cpp" />
-      <option value="$PROJECT_DIR$/OpenGLTemplate/Game.h" />
-      <option value="$PROJECT_DIR$/OpenGLTemplate/Game.cpp" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/SpeedPowerUp.h" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/GameObject.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Skybox.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Camera.cpp" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/SpeedPowerUp.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Game.h" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Prism.h" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Game.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Prism.cpp" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1pLyEYkXJ9PTBURNnYQgCmEn482" />
@@ -153,7 +158,11 @@
       <workItem from="1615832158382" duration="3000" />
       <workItem from="1615833202716" duration="574000" />
       <workItem from="1615845023224" duration="4533000" />
-      <workItem from="1615909479491" duration="4179000" />
+      <workItem from="1615909479491" duration="9468000" />
+      <workItem from="1616103721705" duration="1894000" />
+      <workItem from="1616174819774" duration="4487000" />
+      <workItem from="1616194105125" duration="2115000" />
+      <workItem from="1616246253883" duration="11934000" />
     </task>
     <servers />
   </component>

@@ -18,6 +18,7 @@ class GameObject;
 class Car;
 class Pickup;
 class SpeedPowerUp;
+class Prism;
 class COpenAssetImportMesh;
 class CAudio;
 class CCatmullRom;
@@ -48,6 +49,7 @@ private:
 	Pickup *mPickup;
 	
 	SpeedPowerUp* mSpeedPowerUp;
+	Prism* mPrism;
 
 
 
@@ -83,10 +85,12 @@ private:
 
 	int mPlayerLane = 0; // -1 is left, +1 is right
 	float mPlayerOffset = 0.f;
+	float mMovementSpeedCarCamera = 0.0001f;
 
 	
 
 	vector<glm::vec3> pickupPositions;
+	vector<glm::vec3> speedPowerUpPositions;
 
 
 

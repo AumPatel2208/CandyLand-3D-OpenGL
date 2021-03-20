@@ -92,7 +92,8 @@ void CCamera::SetViewBySpline(double dt, CCatmullRom* catmullRom) {
     glm::vec3 normal = glm::normalize(glm::cross(tangent, glm::vec3(0, 1, 0)));
     glm::vec3 binormal = glm::normalize(glm::cross(normal, tangent));
 
-    p.y += 3.0f;
+    // p.y += 3.0f;
+    p += 3.0f * binormal;
 
     glm::vec3 up = glm::rotate(glm::vec3(0, 1, 0), m_cameraRotation, tangent);
 
