@@ -1,5 +1,7 @@
 #pragma once
 
+#include <unordered_set>
+
 #include "Common.h"
 #include "GameWindow.h"
 
@@ -24,6 +26,11 @@ class CAudio;
 class CCatmullRom;
 
 class Game {
+	struct WorldPrism {
+		string name;
+		Prism* prism;
+	};
+	
 private:
 	// Three main methods used in the game.  Initialise runs once, while Update and Render run repeatedly in the game loop.
 	void Initialise();
@@ -50,7 +57,17 @@ private:
 	
 	SpeedPowerUp* mSpeedPowerUp;
 	Prism* mPrism;
+	vector<WorldPrism> mWorldPrisms;
+	vector<glm::vec3> pickupPositions;
+	vector<glm::vec3> speedPowerUpPositions;
+	vector<glm::vec3> worldPrismsPositions;
+	vector<glm::vec3> worldPrismsHeightScales;
+	// vector<string> worldPrismsPositionsNames;
+	vector<int> worldPrismsIndexes;
 
+
+	// glm::vec3 generateWorldPrismScale();
+	
 
 
 	// Some other member variables
@@ -77,6 +94,8 @@ private:
 	void DisplayFrameRate();
 	void GameLoop();
 	void CreatePickups(int amount);
+	void createWorldPrisms();
+	void generateWorldPrismPositions(int count);
 	GameWindow m_gameWindow;
 	HINSTANCE m_hInstance;
 	int m_frameCount;
@@ -89,8 +108,7 @@ private:
 
 	
 
-	vector<glm::vec3> pickupPositions;
-	vector<glm::vec3> speedPowerUpPositions;
+
 
 
 

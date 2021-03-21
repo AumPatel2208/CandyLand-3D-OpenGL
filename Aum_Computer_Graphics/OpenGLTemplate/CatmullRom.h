@@ -25,6 +25,12 @@ public:
 
     glm::vec3 GeneratePositionOnPath();
 
+    vector<glm::vec3> GetControlPoints() {
+        return m_controlPoints;
+        // return m_centrelinePoints;
+    }
+    float GetWidth() { return width; }
+
 private:
 
     void SetControlPoints();

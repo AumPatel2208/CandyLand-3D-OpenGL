@@ -85,6 +85,12 @@ Game::~Game() {
     delete m_pCatmullRom;
     // delete m_player;
 
+    // deleting the prisms in the world
+    // if (mWorldPrisms != nullptr) {
+    for (unsigned int i = 0; i < mWorldPrisms.size(); i++)
+        delete (mWorldPrisms)[i].prism;
+    // } 
+
     if (m_pShaderPrograms != NULL) {
         for (unsigned int i = 0; i < m_pShaderPrograms->size(); i++)
             delete (*m_pShaderPrograms)[i];
@@ -93,6 +99,103 @@ Game::~Game() {
 
     //setup objects
     delete m_pHighResolutionTimer;
+}
+
+void Game::createWorldPrisms() {
+    vector<std::string> prismsToGenerate;
+    prismsToGenerate.push_back("r5h20s3");
+    prismsToGenerate.push_back("r10h10s5");
+    prismsToGenerate.push_back("r20h4s8");
+    prismsToGenerate.push_back("r50h1s6");
+    prismsToGenerate.push_back("r40h3s3");
+    prismsToGenerate.push_back("r7h20s10");
+    
+
+    for (auto& toGenerate : prismsToGenerate) {
+        WorldPrism prism;
+        prism.name = toGenerate;
+        prism.prism = new Prism;
+
+        // interpret the input string to create a prism
+        auto rPos = toGenerate.find('r');
+        auto hPos = toGenerate.find('h');
+        auto sPos = toGenerate.find('s');
+
+        auto sradius = toGenerate.substr(rPos + 1, hPos - rPos - 1);
+        auto sheight = toGenerate.substr(hPos + 1, sPos - hPos - 1);
+        auto ssideCount = toGenerate.substr(sPos + 1, toGenerate.size() - sPos - 1);
+        auto radius = std::stof(sradius);
+        auto height = std::stof(sheight);
+        auto sideCount = std::stof(ssideCount);
+
+        prism.prism->Create(radius, height, sideCount);
+
+        // generate a position that is not on the track or too close to another prism.
+
+        // // Lower and higher bound for random positions
+        // const float LO = 0.f;
+        // const float HI = 200.f;
+        //
+        // bool foundPosition = false;
+        // glm::vec3 pos;
+        // while (!foundPosition) {
+        //     // avoid distance(path.controlPoint , pos) < path.width)
+        //     //https://stackoverflow.com/questions/686353/random-float-number-generation
+        //     
+        //     float x = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+        //     float y = 10;
+        //     float z = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+        //     pos = glm::vec3(x,y,z);
+        //     
+        //     foundPosition = true;
+        //     for (auto& pathPoint : m_pCatmullRom->GetControlPoints()) {
+        //         if (glm::distance(pos, pathPoint) < m_pCatmullRom->GetWidth()) {
+        //             foundPosition = false;
+        //             break;
+        //         }
+        //     }
+        // }
+
+        // prism.prism->setPosition(pos);
+
+        mWorldPrisms.push_back(prism);
+    }
+}
+
+void Game::generateWorldPrismPositions(int count) {
+    // generate a position that is not on the track or too close to another prism.
+    // Lower and higher bound for random positions
+    const float LO = -400.f;
+    const float HI = 400.f;
+    const float height = 0.f;
+    // string prismName = mWorldPrisms[rand() % mWorldPrisms.size()].name;
+
+    for (int i = 0; i < count; ++i) {
+        bool foundPosition = false;
+        glm::vec3 pos;
+        while (!foundPosition) {
+            // avoid distance(path.controlPoint , pos) < path.width)
+            //https://stackoverflow.com/questions/686353/random-float-number-generation
+
+            float x = LO + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (HI - LO)));
+            float y = height;
+            float z = LO + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (HI - LO)));
+            pos = glm::vec3(x, y, z);
+
+            foundPosition = true;
+            for (auto& pathPoint : m_pCatmullRom->GetControlPoints()) {
+                if (glm::distance(pos, pathPoint) < m_pCatmullRom->GetWidth()*3) {
+                    foundPosition = false;
+                    break;
+                }
+            }
+        }
+        worldPrismsHeightScales.push_back(glm::vec3(1.f,1.f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (10.f - 1.f))),1.f));
+        // we have the position and the index of the shape it will use
+        worldPrismsPositions.push_back(pos);
+        worldPrismsIndexes.push_back(rand() % mWorldPrisms.size());
+    }
+
 }
 
 // Initialisation:  This method only runs once at startup
@@ -110,7 +213,7 @@ void Game::Initialise() {
     m_pBarrelMesh = new COpenAssetImportMesh;
     mPickup = new Pickup;
     mSpeedPowerUp = new SpeedPowerUp;
-    mPrism= new Prism;
+    mPrism = new Prism;
     m_pHorseMesh = new COpenAssetImportMesh;
     m_pSphere = new CSphere;
     mCar = new Car;
@@ -195,10 +298,11 @@ void Game::Initialise() {
     // mGOPickup->Create();
     mPickup->Create();
     mSpeedPowerUp->Create(1.f, 1.f, 1.f);
-    mPrism->Create(10.f, 10.f,20.f);
-    
+    mPrism->Create(10.f, 10.f, 20.f);
+
+
     // cull faces
-    // glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
 
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -208,10 +312,10 @@ void Game::Initialise() {
     m_pAudio->LoadMusicStream("Resources\\Audio\\DST-Garote.mp3"); // Royalty free music from http://www.nosoapradio.us/
     // m_pAudio->PlayMusicStream();
 
-    glm::vec3 p0 = glm::vec3(-500, 10, -200);
-    glm::vec3 p1 = glm::vec3(0, 10, -200);
-    glm::vec3 p2 = glm::vec3(0, 10, 200);
-    glm::vec3 p3 = glm::vec3(-500, 10, 200);
+    // glm::vec3 p0 = glm::vec3(-500, 10, -200);
+    // glm::vec3 p1 = glm::vec3(0, 10, -200);
+    // glm::vec3 p2 = glm::vec3(0, 10, 200);
+    // glm::vec3 p3 = glm::vec3(-500, 10, 200);
     m_pCatmullRom->CreateCentreline();
     m_pCatmullRom->CreateOffsetCurves();
     m_pCatmullRom->CreateTrack();
@@ -221,7 +325,11 @@ void Game::Initialise() {
     // pickupPositions.push_back(m_pCatmullRom->GeneratePositionOnPath());
     CreatePickups(20);
 
-
+    // needs to be called after creating the catmull rom path otherwise the prisms will go through path
+    // creating multiple sized prisms to be reused
+    createWorldPrisms();
+    // creating position points to use those prisms
+    generateWorldPrismPositions(500);
 }
 
 // Render method runs repeatedly in a loop
@@ -256,9 +364,9 @@ void Game::Render() {
     // Set light and materials in main shader program
     glm::vec4 lightPosition1 = glm::vec4(-100, 100, -100, 1); // Position of light source *in world coordinates*
     pMainProgram->SetUniform("light1.position", viewMatrix * lightPosition1); // Position of light source *in eye coordinates*
-    pMainProgram->SetUniform("light1.La", glm::vec3(1.0f, 1.0f,1.0f)); // Ambient colour of light
-    pMainProgram->SetUniform("light1.Ld", glm::vec3(1.0f, 1.0f,1.0f)); // Diffuse colour of light
-    pMainProgram->SetUniform("light1.Ls", glm::vec3(1.0f, 1.0f,1.0f)); // Specular colour of light
+    pMainProgram->SetUniform("light1.La", glm::vec3(1.0f, 1.0f, 1.0f)); // Ambient colour of light
+    pMainProgram->SetUniform("light1.Ld", glm::vec3(1.0f, 1.0f, 1.0f)); // Diffuse colour of light
+    pMainProgram->SetUniform("light1.Ls", glm::vec3(1.0f, 1.0f, 1.0f)); // Specular colour of light
     pMainProgram->SetUniform("material1.Ma", glm::vec3(1.0f)); // Ambient material reflectance
     pMainProgram->SetUniform("material1.Md", glm::vec3(0.0f)); // Diffuse material reflectance
     pMainProgram->SetUniform("material1.Ms", glm::vec3(0.0f)); // Specular material reflectance
@@ -381,28 +489,28 @@ void Game::Render() {
         mCar->Render();
     }
     modelViewMatrixStack.Pop();
-    
-    // Render the sphere on the car
-    if (mCar->showCollisionSphere) {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-        modelViewMatrixStack.Push();
-        {
-            modelViewMatrixStack.Translate(glm::vec3(mCar->position()));
-            modelViewMatrixStack.Translate(glm::vec3(0.0f, mCar->collisionHeight(), 0.0f));
-            modelViewMatrixStack.Scale(mCar->collisionRadius());
-            // modelViewMatrixStack.Scale(mCar->collisionScale());
-            modelViewMatrixStack *= mCar->getRotationOnPath();
-            pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-            pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-            // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
-            //pMainProgram->SetUniform("bUseTexture", false);
-            // m_pSphere->Render();
-            mCar->getCollisionSphere()->Render();
-        }
-        modelViewMatrixStack.Pop();
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    }
+    // // Render the sphere on the car
+    // if (mCar->showCollisionSphere) {
+    //     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //
+    //     modelViewMatrixStack.Push();
+    //     {
+    //         modelViewMatrixStack.Translate(glm::vec3(mCar->position()));
+    //         modelViewMatrixStack.Translate(glm::vec3(0.0f, mCar->collisionHeight(), 0.0f));
+    //         modelViewMatrixStack.Scale(mCar->collisionRadius());
+    //         // modelViewMatrixStack.Scale(mCar->collisionScale());
+    //         modelViewMatrixStack *= mCar->getRotationOnPath();
+    //         pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
+    //         pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
+    //         // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
+    //         //pMainProgram->SetUniform("bUseTexture", false);
+    //         // m_pSphere->Render();
+    //         mCar->getCollisionSphere()->Render();
+    //     }
+    //     modelViewMatrixStack.Pop();
+    //     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    // }
 
     // Render the Speed PowerUP
     modelViewMatrixStack.Push();
@@ -419,8 +527,7 @@ void Game::Render() {
         mSpeedPowerUp->Render();
     }
     modelViewMatrixStack.Pop();
-    
- 
+
 
     for (glm::vec3 p : speedPowerUpPositions) {
         // Render the pickup 
@@ -434,17 +541,16 @@ void Game::Render() {
             pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
             pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
             mSpeedPowerUp->Render();
-
         }
         modelViewMatrixStack.Pop();
 
     }
 
-    
+
     // Render the sphere
     if (mSpeedPowerUp->showCollisionSphere) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    
+
         modelViewMatrixStack.Push();
         {
             modelViewMatrixStack.Translate(glm::vec3(mSpeedPowerUp->position()));
@@ -463,7 +569,7 @@ void Game::Render() {
         modelViewMatrixStack.Pop();
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
-    
+
     // Render the Prism 
     modelViewMatrixStack.Push();
     {
@@ -479,6 +585,48 @@ void Game::Render() {
         // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
     }
     modelViewMatrixStack.Pop();
+
+    // // Render the WORLDPrisms
+    // for (auto worldPrism : mWorldPrisms) {
+    //     modelViewMatrixStack.Push();
+    //     {
+    //         // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
+    //         modelViewMatrixStack.Translate(worldPrism.prism->position());
+    //         // modelViewMatrixStack.Translate(30,30,30);
+    //         modelViewMatrixStack.Rotate(worldPrism.prism->rotationAxis(), worldPrism.prism->rotationAmount());
+    //         modelViewMatrixStack.Scale(worldPrism.prism->scale());
+    //         pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
+    //         pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
+    //         // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
+    //         //pMainProgram->SetUniform("bUseTexture", false);
+    //         worldPrism.prism->Render();
+    //         // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
+    //     }
+    //     modelViewMatrixStack.Pop(); 
+    // }
+
+    // Render the WORLDPrisms
+    for (int i = 0; i < worldPrismsPositions.size(); ++i) {
+
+        modelViewMatrixStack.Push();
+        {
+            // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
+            modelViewMatrixStack.Translate(worldPrismsPositions[i]);
+            // modelViewMatrixStack.Translate(30,30,30);
+            modelViewMatrixStack.Rotate(mWorldPrisms[worldPrismsIndexes[i]].prism->rotationAxis(), mWorldPrisms[worldPrismsIndexes[i]].prism->rotationAmount());
+            modelViewMatrixStack.Scale(mWorldPrisms[worldPrismsIndexes[i]].prism->scale());
+            modelViewMatrixStack.Scale(worldPrismsHeightScales[i]);
+            pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
+            pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
+            // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
+            //pMainProgram->SetUniform("bUseTexture", false);
+            mWorldPrisms[worldPrismsIndexes[i]].prism->Render();
+            // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
+        }   
+        modelViewMatrixStack.Pop(); 
+    }
+
+
 
     modelViewMatrixStack.Push();
     {
@@ -522,7 +670,7 @@ void Game::Update() {
 
     m_pCamera->Update(m_dt, m_pCatmullRom);
     mCar->Update(m_dt, m_pCatmullRom);
-     float speed = m_dt * mMovementSpeedCarCamera;
+    float speed = m_dt * mMovementSpeedCarCamera;
 
     if (GetKeyState(VK_UP) & 0x80) {
         m_pCamera->addSpeed(speed);
@@ -592,7 +740,7 @@ void Game::ManageCollisions() {
             mSpeedPowerUp->showCollisionSphere = false;
             // increase speed
             // mMovementSpeedCarCamera += 0.002f;
-            
+
             // note to remove pickup
             speedPowerUpsToRemove.push_back(p);
         }
@@ -609,7 +757,6 @@ void Game::ManageCollisions() {
         speedPowerUpPositions.erase(i);
     }
 
-    
 
 }
 
@@ -683,7 +830,7 @@ void Game::CreatePickups(int amount) {
     for (int i = 0; i < amount; ++i) {
         pickupPositions.push_back(m_pCatmullRom->GeneratePositionOnPath());
     }
-    
+
     for (int i = 0; i < amount; ++i) {
         speedPowerUpPositions.push_back(m_pCatmullRom->GeneratePositionOnPath());
     }

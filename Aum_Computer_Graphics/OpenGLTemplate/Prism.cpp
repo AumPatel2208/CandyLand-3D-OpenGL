@@ -176,7 +176,12 @@ void Prism::Create(float radius, float height, float sideCount) {
         vbo.AddData(&topNormals[i], sizeof(glm::vec3));
     }
 
-    for (int i = 0; i < sideVertices.size(); ++i) {
+    // for (int i = 0; i < sideVertices.size(); ++i) {
+    //     vbo.AddData(&sideVertices[i], sizeof(glm::vec3));
+    //     vbo.AddData(&sideTexCoords[i], sizeof(glm::vec2));
+    //     vbo.AddData(&sideNormals[i], sizeof(glm::vec3));
+    // }
+    for (int i = sideVertices.size()-1; i >= 0; --i) {
         vbo.AddData(&sideVertices[i], sizeof(glm::vec3));
         vbo.AddData(&sideTexCoords[i], sizeof(glm::vec2));
         vbo.AddData(&sideNormals[i], sizeof(glm::vec3));

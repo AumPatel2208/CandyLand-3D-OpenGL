@@ -1,15 +1,8 @@
-﻿  Prism.cpp
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Prism.cpp(80,67): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Prism.cpp(80,125): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Prism.cpp(82,69): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Prism.cpp(82,125): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Prism.cpp(85,59): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Prism.cpp(85,113): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Prism.cpp(87,61): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Prism.cpp(87,113): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Prism.cpp(203,57): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Prism.cpp(204,74): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Prism.cpp(204,74): warning C4267: 'argument': conversion from 'size_t' to 'GLint', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Prism.cpp(205,100): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Prism.cpp(205,100): warning C4267: 'argument': conversion from 'size_t' to 'GLint', possible loss of data
+﻿  Game.cpp
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Pickup.h(21,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Pickup.h(28,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(673,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(689,55): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(699,55): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(953,24): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
   OpenGLTemplate.vcxproj -> C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\x64\Debug\OpenGLTemplate.exe
