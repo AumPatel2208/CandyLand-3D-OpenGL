@@ -7,7 +7,8 @@
 
 // Classes used in game.  For a new class, declare it here and provide a pointer to an object of this class below.  Then, in Game.cpp, 
 // include the header.  In the Game constructor, set the pointer to NULL and in Game::Initialise, create a new object.  Don't forget to 
-// delete the object in the destructor.   
+// delete the object in the destructor.
+class CFrameBufferObject;
 class CCamera;
 class CSkybox;
 class CShader;
@@ -67,6 +68,7 @@ private:
 	// vector<string> worldPrismsPositionsNames;
 	vector<int> worldPrismsIndexes;
 
+	CFrameBufferObject *m_pFBO;
 
 	// glm::vec3 generateWorldPrismScale();
 	

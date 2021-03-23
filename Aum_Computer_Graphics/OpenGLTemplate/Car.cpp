@@ -10,7 +10,7 @@
 
 Car::Car():GameObject() {
     mPosition = mPosition = glm::vec3(0.0f, 10.0f, 150.0f);
-    mScale = glm::vec3(0.5f);
+    mScale = glm::vec3(0.3f);
     mCollisionRadius = 1.5f;
     // mCollisionScale = glm::vec3(0.5f,0.5f,1.f);
     mCollisionHeight = 1.f;
