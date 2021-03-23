@@ -130,33 +130,6 @@ void Game::createWorldPrisms() {
 
         prism.prism->Create(radius, height, sideCount);
 
-        // generate a position that is not on the track or too close to another prism.
-
-        // // Lower and higher bound for random positions
-        // const float LO = 0.f;
-        // const float HI = 200.f;
-        //
-        // bool foundPosition = false;
-        // glm::vec3 pos;
-        // while (!foundPosition) {
-        //     // avoid distance(path.controlPoint , pos) < path.width)
-        //     //https://stackoverflow.com/questions/686353/random-float-number-generation
-        //     
-        //     float x = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
-        //     float y = 10;
-        //     float z = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
-        //     pos = glm::vec3(x,y,z);
-        //     
-        //     foundPosition = true;
-        //     for (auto& pathPoint : m_pCatmullRom->GetControlPoints()) {
-        //         if (glm::distance(pos, pathPoint) < m_pCatmullRom->GetWidth()) {
-        //             foundPosition = false;
-        //             break;
-        //         }
-        //     }
-        // }
-
-        // prism.prism->setPosition(pos);
 
         mWorldPrisms.push_back(prism);
     }
@@ -237,6 +210,7 @@ void Game::Initialise() {
     sShaderFileNames.push_back("mainShader.frag");
     sShaderFileNames.push_back("textShader.vert");
     sShaderFileNames.push_back("textShader.frag");
+    sShaderFileNames.push_back("motionBlur.frag");
 
     for (int i = 0; i < (int)sShaderFileNames.size(); i++) {
         string sExt = sShaderFileNames[i].substr((int)sShaderFileNames[i].size() - 4, 4);
@@ -266,6 +240,14 @@ void Game::Initialise() {
     pFontProgram->AddShaderToProgram(&shShaders[3]);
     pFontProgram->LinkProgram();
     m_pShaderPrograms->push_back(pFontProgram);
+    
+    // Create the motionBlur shader program
+    CShaderProgram* pMotionBlurProgram = new CShaderProgram;
+    pMotionBlurProgram->CreateProgram();
+    pMotionBlurProgram->AddShaderToProgram(&shShaders[0]);
+    pMotionBlurProgram->AddShaderToProgram(&shShaders[1]);
+    pMotionBlurProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pMotionBlurProgram);
 
     // You can follow this pattern to load additional shaders
 
@@ -329,7 +311,7 @@ void Game::Initialise() {
     // creating multiple sized prisms to be reused
     createWorldPrisms();
     // creating position points to use those prisms
-    generateWorldPrismPositions(500);
+    generateWorldPrismPositions(300);
 }
 
 // Render method runs repeatedly in a loop
@@ -371,7 +353,12 @@ void Game::Render() {
     pMainProgram->SetUniform("material1.Md", glm::vec3(0.0f)); // Diffuse material reflectance
     pMainProgram->SetUniform("material1.Ms", glm::vec3(0.0f)); // Specular material reflectance
     pMainProgram->SetUniform("material1.shininess", 15.0f); // Shininess material property
+    
 
+    CShaderProgram* pMotionBlurProgram = (*m_pShaderPrograms)[2];
+    pMotionBlurProgram->SetUniform("uInverseModelViewMat",glm::inverse(*m_pCamera->GetPerspectiveProjectionMatrix() * viewMatrix) );
+    pMotionBlurProgram->SetUniform("uPrevModelViewProj",prevModelViewProj );
+    
 
     // Render the skybox and terrain with full ambient reflectance 
     modelViewMatrixStack.Push();
@@ -607,7 +594,7 @@ void Game::Render() {
 
     // Render the WORLDPrisms
     for (int i = 0; i < worldPrismsPositions.size(); ++i) {
-
+    
         modelViewMatrixStack.Push();
         {
             // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
@@ -641,6 +628,12 @@ void Game::Render() {
     }
     modelViewMatrixStack.Pop();
 
+
+    // glm::mat4 modelViewProjectionMatrix = *m_pCamera->GetPerspectiveProjectionMatrix() * modelViewMatrixStack.Top();
+
+    
+    prevModelViewProj = *m_pCamera->GetPerspectiveProjectionMatrix() * modelViewMatrixStack.Top();
+    
     CShaderProgram* fontProgram = (*m_pShaderPrograms)[1];
 
     RECT dimensions = m_gameWindow.GetDimensions();
@@ -658,6 +651,10 @@ void Game::Render() {
     // Swap buffers to show the rendered image
     SwapBuffers(m_gameWindow.Hdc());
 
+}
+
+void Game::RenderScene(int pass) {
+    
 }
 
 

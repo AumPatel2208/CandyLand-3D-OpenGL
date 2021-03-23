@@ -125,6 +125,7 @@
     <ClInclude Include="CatmullRom.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Cubemap.h" />
+    <ClInclude Include="FrameBufferObject.h" />
     <ClInclude Include="FreeTypeFont.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
@@ -149,6 +150,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CatmullRom.cpp" />
     <ClCompile Include="Cubemap.cpp" />
+    <ClCompile Include="FrameBufferObject.cpp" />
     <ClCompile Include="FreeTypeFont.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -173,6 +175,11 @@
     <None Include="resources\shaders\mainShader.vert" />
     <None Include="resources\shaders\textShader.frag" />
     <None Include="resources\shaders\textShader.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="resources\shaders\motionBlur.frag" />
+    <Content Include="resources\shaders\velocityBuffer.frag" />
+    <Content Include="resources\shaders\velocityBuffer.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

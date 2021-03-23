@@ -1,8 +1,8 @@
-﻿  Game.cpp
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Pickup.h(21,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Pickup.h(28,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(673,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(689,55): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(699,55): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(953,24): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
+﻿  FrameBufferObject.cpp
+  Car.cpp
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Car.cpp(47,37): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Car.cpp(51,62): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+     Creating library C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\x64\Debug\OpenGLTemplate.lib and object C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\x64\Debug\OpenGLTemplate.exp
+MSVCRTD.lib(initializers.obj) : warning LNK4098: defaultlib 'msvcrt.lib' conflicts with use of other libs; use /NODEFAULTLIB:library
   OpenGLTemplate.vcxproj -> C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\x64\Debug\OpenGLTemplate.exe

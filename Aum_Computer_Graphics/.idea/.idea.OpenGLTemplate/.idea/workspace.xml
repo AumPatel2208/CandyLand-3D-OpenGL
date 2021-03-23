@@ -8,23 +8,63 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c7796f2d-f175-488a-8831-6047c0722fba" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/OpenGLTemplate/FrameBufferObject.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OpenGLTemplate/FrameBufferObject.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/motionBlur.frag" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/velocityBuffer.frag" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/velocityBuffer.vert" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/FrameBufferObject.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.OpenGLTemplate/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OpenGLTemplate/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OpenGLTemplate/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OpenGLTemplate/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/CatmullRom.h" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/CatmullRom.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Car.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Debug/Camera.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Debug/Camera.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Debug/CatmullRom.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Debug/CatmullRom.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Debug/GameWindow.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Debug/GameWindow.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Debug/OpenGLTemplate.tlog/CL.command.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Debug/OpenGLTemplate.tlog/CL.command.1.tlog" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Debug/OpenGLTemplate.tlog/CL.read.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Debug/OpenGLTemplate.tlog/CL.read.1.tlog" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Debug/OpenGLTemplate.tlog/CL.write.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Debug/OpenGLTemplate.tlog/CL.write.1.tlog" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Debug/Plane.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Debug/Plane.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Debug/Skybox.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Debug/Skybox.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Debug/VertexBufferObjectIndexed.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Debug/VertexBufferObjectIndexed.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Debug/vc142.idb" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Debug/vc142.idb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Debug/vc142.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Debug/vc142.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Game.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Game.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Game.h" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Game.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Prism.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Prism.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/OpenGLTemplate.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/OpenGLTemplate.vcxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/OpenGLTemplate.vcxproj.user" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/OpenGLTemplate.vcxproj.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Pickup.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Pickup.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/mainShader.vert" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/mainShader.vert" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Audio.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Audio.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Camera.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Camera.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Car.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Car.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/CatmullRom.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/CatmullRom.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Cubemap.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Cubemap.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/FreeTypeFont.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/FreeTypeFont.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Game.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Game.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/GameObject.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/GameObject.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/GameWindow.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/GameWindow.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/HighResolutionTimer.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/HighResolutionTimer.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/MatrixStack.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/MatrixStack.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenAssetImportMesh.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenAssetImportMesh.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.Build.CppClean.log" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.Build.CppClean.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.log" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.command.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.command.1.tlog" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.read.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.read.1.tlog" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.write.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.write.1.tlog" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/OpenGLTemplate.write.1u.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/OpenGLTemplate.write.1u.tlog" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/link.command.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/link.command.1.tlog" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/link.read.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/link.read.1.tlog" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/link.write.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/link.write.1.tlog" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Pickup.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Pickup.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Plane.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Plane.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Prism.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Prism.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Shaders.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Shaders.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Skybox.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Skybox.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/SpeedPowerUp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/SpeedPowerUp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Sphere.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Sphere.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Texture.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Texture.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/VertexBufferObject.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/VertexBufferObject.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/VertexBufferObjectIndexed.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/VertexBufferObjectIndexed.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/vc142.idb" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/vc142.idb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/vc142.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/vc142.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/x64/Debug/OpenGLTemplate.exe" beforeDir="false" afterPath="$PROJECT_DIR$/x64/Debug/OpenGLTemplate.exe" afterDir="false" />
@@ -41,7 +81,9 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/OpenGLTemplate/include/gl/glew.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/OpenGLTemplate/include/glm/vec3.hpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/OpenGLTemplate/include/assimp/camera.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/OpenGLTemplate/include/glm/glm.hpp" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
@@ -53,10 +95,8 @@
       <option value="$PROJECT_DIR$/OpenGLTemplate/Pickup.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/GO_Car.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/GO_Car.cpp" />
-      <option value="$PROJECT_DIR$/OpenGLTemplate/Pickup.cpp" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Camera.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Car.h" />
-      <option value="$PROJECT_DIR$/OpenGLTemplate/Car.cpp" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/GameObject.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/SpeedPowerUp.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/GameObject.cpp" />
@@ -64,20 +104,29 @@
       <option value="$PROJECT_DIR$/OpenGLTemplate/Camera.cpp" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/SpeedPowerUp.cpp" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Prism.h" />
-      <option value="$PROJECT_DIR$/OpenGLTemplate/Game.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/CatmullRom.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Prism.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/poMotionBlur.vert" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/motionBlur.frag" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Game.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/mainShader.vert" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Pickup.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Car.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Game.h" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1pLyEYkXJ9PTBURNnYQgCmEn482" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="DatabaseDriversLRU" value="sybase" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -89,7 +138,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="RiderCodeInspectionGeneratedSettingsId" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager">
@@ -174,7 +223,12 @@
       <workItem from="1616174819774" duration="4487000" />
       <workItem from="1616194105125" duration="2115000" />
       <workItem from="1616246253883" duration="13380000" />
-      <workItem from="1616332159786" duration="7682000" />
+      <workItem from="1616332159786" duration="16858000" />
+      <workItem from="1616361354747" duration="556000" />
+      <workItem from="1616372327101" duration="6396000" />
+      <workItem from="1616427930365" duration="7214000" />
+      <workItem from="1616450295050" duration="2606000" />
+      <workItem from="1616510499744" duration="644000" />
     </task>
     <servers />
   </component>
@@ -196,6 +250,7 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">

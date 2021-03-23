@@ -9,9 +9,10 @@
 
 Pickup::Pickup():GameObject() {
     mPosition = mPosition = glm::vec3(0.0f, 10.0f, 0.0f);
-    mScale = glm::vec3(0.01f);
+    mScale = glm::vec3(1.f);
     mCollisionHeight = 1.f;
-    mMeshPath = "resources\\models\\among_us_obj\\among us.obj";
+    // mMeshPath = "resources\\models\\among_us_obj\\among us.obj";
+    mMeshPath = "resources\\models\\gems\\gems.obj";
 }
 
 void Pickup::Update(double dt) {

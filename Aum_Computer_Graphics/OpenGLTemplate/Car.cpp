@@ -10,11 +10,12 @@
 
 Car::Car():GameObject() {
     mPosition = mPosition = glm::vec3(0.0f, 10.0f, 150.0f);
-    mScale = glm::vec3(1.f);
+    mScale = glm::vec3(0.5f);
     mCollisionRadius = 1.5f;
     // mCollisionScale = glm::vec3(0.5f,0.5f,1.f);
     mCollisionHeight = 1.f;
-    mMeshPath = "resources\\models\\chrysler\\Crysler_new_yorker.obj";
+    // mMeshPath = "resources\\models\\chrysler\\Crysler_new_yorker.obj";
+    mMeshPath = "resources\\models\\spaceship01\\StarSparrow_FBX\\use\\ship.obj";
     mSpeed = 0.1f;
     mPositionOffsetSpeed = .005f;
     m_currentDistance = 0.0f;

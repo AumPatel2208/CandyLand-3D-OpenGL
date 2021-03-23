@@ -36,7 +36,9 @@ private:
 	void Initialise();
 	void Update();
 	void Render();
+	void RenderScene(int pass);
 
+	
 	// Pointers to game objects.  They will get allocated in Game::Initialise()
 	CSkybox *m_pSkybox;
 	CCamera *m_pCamera;
@@ -105,6 +107,7 @@ private:
 	int mPlayerLane = 0; // -1 is left, +1 is right
 	float mPlayerOffset = 0.f;
 	float mMovementSpeedCarCamera = 0.0001f;
+	glm::mat4 prevModelViewProj;
 
 	
 

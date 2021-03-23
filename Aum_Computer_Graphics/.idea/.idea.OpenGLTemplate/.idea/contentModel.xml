@@ -16,6 +16,8 @@
         <e p="Common.h" t="Include" />
         <e p="Cubemap.cpp" t="Include" />
         <e p="Cubemap.h" t="Include" />
+        <e p="FrameBufferObject.cpp" t="Include" />
+        <e p="FrameBufferObject.h" t="Include" />
         <e p="FreeTypeFont.cpp" t="Include" />
         <e p="FreeTypeFont.h" t="Include" />
         <e p="Game.cpp" t="Include" />
@@ -41,8 +43,11 @@
           <e p="shaders" t="Include">
             <e p="mainShader.frag" t="Include" />
             <e p="mainShader.vert" t="Include" />
+            <e p="motionBlur.frag" t="Include" />
             <e p="textShader.frag" t="Include" />
             <e p="textShader.vert" t="Include" />
+            <e p="velocityBuffer.frag" t="Include" />
+            <e p="velocityBuffer.vert" t="Include" />
           </e>
         </e>
         <e p="Shaders.cpp" t="Include" />

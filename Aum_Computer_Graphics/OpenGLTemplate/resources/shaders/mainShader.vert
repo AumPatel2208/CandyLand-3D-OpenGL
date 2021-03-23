@@ -58,6 +58,21 @@ vec3 PhongModel(vec4 eyePosition, vec3 eyeNorm)
 	if (sDotN > 0.0f) 
 		specular = light1.Ls * material1.Ms * pow(max(dot(r, v), 0.0f), material1.shininess + eps);
 	
+	
+	// toon shader
+	float intensity;
+	vec4 color;
+	intensity = dot(light1.Ld, normalize(inNormal));
+	if(intensity > 0.95)
+		color = vec4(1.0,0.5,0.5,1.0);
+	else if (intensity > 0.5)
+		color = vec4(0.6,0.3,0.3,1.0);
+	else if (intensity > 0.25)
+		color = vec4(0.4,0.2,0.2,1.0);
+	else
+		color = vec4(0.2,0.1,0.1,1.0);
+	
+//	return ambient + vec3(color.x,color.y,color.z) + diffuse + specular;
 
 	return ambient + diffuse + specular;
 
