@@ -1,9 +1,9 @@
 #pragma once
 
-#include <unordered_set>
 
 #include "Common.h"
 #include "GameWindow.h"
+#include "Texture.h"
 
 // Classes used in game.  For a new class, declare it here and provide a pointer to an object of this class below.  Then, in Game.cpp, 
 // include the header.  In the Game constructor, set the pointer to NULL and in Game::Initialise, create a new object.  Don't forget to 
@@ -54,6 +54,8 @@ private:
 	// GO_Pickup *mGOPickup;
 	CHighResolutionTimer *m_pHighResolutionTimer;
 	CAudio *m_pAudio;
+	CPlane *m_pPlane;
+
 	CCatmullRom *m_pCatmullRom;
 	// Player* m_player;
 	Pickup *mPickup;
@@ -100,6 +102,15 @@ private:
 	void CreatePickups(int amount);
 	void createWorldPrisms();
 	void generateWorldPrismPositions(int count);
+	void speedSetter();
+	void accelerate(float accelerant);
+	const float maxSpeed = 0.15f;
+	const float minSpeed = 0.f;
+	float currentSpeed = 0.f;
+	const float boostSpeed = 0.3f;
+	float mMovementSpeedCarCamera = 0.0001f;
+
+	
 	GameWindow m_gameWindow;
 	HINSTANCE m_hInstance;
 	int m_frameCount;
@@ -108,10 +119,13 @@ private:
 
 	int mPlayerLane = 0; // -1 is left, +1 is right
 	float mPlayerOffset = 0.f;
-	float mMovementSpeedCarCamera = 0.0001f;
-	glm::mat4 prevModelViewProj;
-
+	// glm::mat4 prevModelViewProj;
+	float mSpeedPowerUpTimer = 0.f;
 	
+	unsigned int quadVAO, quadVBO;
+
+	// HUD
+	CTexture mHudTexture;
 
 
 

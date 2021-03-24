@@ -44,6 +44,7 @@
             <e p="mainShader.frag" t="Include" />
             <e p="mainShader.vert" t="Include" />
             <e p="motionBlur.frag" t="Include" />
+            <e p="motionBlur.vert" t="Include" />
             <e p="textShader.frag" t="Include" />
             <e p="textShader.vert" t="Include" />
             <e p="velocityBuffer.frag" t="Include" />

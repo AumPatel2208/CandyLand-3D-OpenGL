@@ -11,6 +11,9 @@ public:
 	~CPlane();
 	void Create(string sDirectory, string sFilename, float fWidth, float fHeight, float fTextureRepeat);
 	void Render();
+	// Render the plane as a triangle strip
+	void Render(bool bindTexture);
+	
 	void Release();
 private:
 	UINT m_vao;

@@ -96,6 +96,15 @@ void CPlane::Render()
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	
 }
+// Render the plane as a triangle strip
+void CPlane::Render(bool bindTexture)
+{
+	glBindVertexArray(m_vao);
+	if (bindTexture)
+		m_texture.Bind();
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	
+}
 
 // Release resources
 void CPlane::Release()

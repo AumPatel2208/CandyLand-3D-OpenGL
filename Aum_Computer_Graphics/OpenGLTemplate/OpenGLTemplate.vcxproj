@@ -178,6 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="resources\shaders\motionBlur.frag" />
+    <Content Include="resources\shaders\motionBlur.vert" />
     <Content Include="resources\shaders\velocityBuffer.frag" />
     <Content Include="resources\shaders\velocityBuffer.vert" />
   </ItemGroup>

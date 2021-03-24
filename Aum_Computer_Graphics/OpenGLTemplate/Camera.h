@@ -52,6 +52,14 @@ public:
         m_cameraSpeed += speed;
     }
 
+    void setSpeed (float speed) {
+        m_cameraSpeed = speed;
+    }
+
+    float getSpeed() {
+        return m_cameraSpeed;
+    }
+
     float collisionRadius(){return mCollisionRadius;}
 
     void FlipCameraState(){cameraState= !cameraState;}
@@ -74,6 +82,11 @@ private:
     
 	bool cameraState = false;
 
+    const int FIRST_PERSON = 0;
+    const int THIRD_PERSON = 1;
+    const int SIDE_VIEW = 2;
+    const int TOP_VIEW = 3;
+    int cameraType = 0;
 
     float mCollisionRadius = 2.f;;
 

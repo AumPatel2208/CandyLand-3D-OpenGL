@@ -1,6 +1,7 @@
 #pragma once
 #pragma once
 #include "GameObject.h"
+#include "SpeedPowerUp.h"
 #include "Texture.h"
 
 class CCatmullRom;
@@ -16,7 +17,13 @@ public:
     void addSpeed(float speed) {
         mSpeed += speed;
     }
-
+    void setSpeed (float speed) {
+        mSpeed = speed;
+    }
+    float getSpeed() {
+        return mSpeed;
+    }
+    
     void setPosition(glm::vec3 pos) {
         mPosition = pos;
     }
@@ -28,7 +35,8 @@ public:
     void addXOffset(float offset) {
         mPositionOffset = offset;
     }
-    glm::mat4 getRotationOnPath(){return rotationOnPath;};
+    glm::mat4 getRotationOnPath(){return rotationOnPath;}
+    
 
 private:
     float m_currentDistance;

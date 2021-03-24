@@ -59,6 +59,7 @@ Game::Game() {
     m_pHighResolutionTimer = NULL;
     m_pAudio = NULL;
     m_pCatmullRom = NULL;
+    m_pPlane = NULL;
 
     m_dt = 0.0;
     m_framesPerSecond = 0;
@@ -86,6 +87,7 @@ Game::~Game() {
     delete mCar;
     delete m_pAudio;
     delete m_pCatmullRom;
+    delete m_pPlane;
     // delete m_player;
 
     // deleting the prisms in the world
@@ -176,6 +178,7 @@ void Game::generateWorldPrismPositions(int count) {
 
 }
 
+
 // Initialisation:  This method only runs once at startup
 void Game::Initialise() {
     // Set the clear colour and depth
@@ -198,6 +201,7 @@ void Game::Initialise() {
     m_pAudio = new CAudio;
     m_pCatmullRom = new CCatmullRom;
     m_pFBO = new CFrameBufferObject;
+    m_pPlane = new CPlane;
     // m_player = new Player;
 
     RECT dimensions = m_gameWindow.GetDimensions();
@@ -216,6 +220,7 @@ void Game::Initialise() {
     sShaderFileNames.push_back("mainShader.frag");
     sShaderFileNames.push_back("textShader.vert");
     sShaderFileNames.push_back("textShader.frag");
+    sShaderFileNames.push_back("motionBlur.vert");
     sShaderFileNames.push_back("motionBlur.frag");
 
     for (int i = 0; i < (int)sShaderFileNames.size(); i++) {
@@ -250,8 +255,8 @@ void Game::Initialise() {
     // Create the motionBlur shader program
     CShaderProgram* pMotionBlurProgram = new CShaderProgram;
     pMotionBlurProgram->CreateProgram();
-    pMotionBlurProgram->AddShaderToProgram(&shShaders[0]);
-    pMotionBlurProgram->AddShaderToProgram(&shShaders[1]);
+    pMotionBlurProgram->AddShaderToProgram(&shShaders[4]);
+    pMotionBlurProgram->AddShaderToProgram(&shShaders[5]);
     pMotionBlurProgram->LinkProgram();
     m_pShaderPrograms->push_back(pMotionBlurProgram);
 
@@ -264,6 +269,10 @@ void Game::Initialise() {
     // Create the planar terrain
     // https://3djungle.net/textures/ground/7137/
     m_pPlanarTerrain->Create("resources\\textures\\", "Ground Seamless Texture #7137 512x512.jpg", 2000.0f, 2000.0f, 50.0f); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
+
+    // Create the plane for the tv
+    // temp texture as the fbo texture will override it
+    m_pPlane->Create("resources\\textures\\", "grassfloor01.jpg", 40.0f, 30.0f, 1.0f); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
 
     m_pFtFont->LoadSystemFont("arial.ttf", 32);
     m_pFtFont->SetShaderProgram(pFontProgram);
@@ -301,7 +310,7 @@ void Game::Initialise() {
     // m_pAudio->PlayMusicStream();
 
     m_pFBO->Create(width, height);
-    
+
     // glm::vec3 p0 = glm::vec3(-500, 10, -200);
     // glm::vec3 p1 = glm::vec3(0, 10, -200);
     // glm::vec3 p2 = glm::vec3(0, 10, 200);
@@ -320,6 +329,62 @@ void Game::Initialise() {
     createWorldPrisms();
     // creating position points to use those prisms
     generateWorldPrismPositions(50);
+
+
+    // CREATING QUAD
+    // https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_opengl/5.1.framebuffers/framebuffers.cpp   
+    // float quadVertices[] = {
+    //     // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
+    //     // positions   // texCoords
+    //     -1.0f, 1.0f, 0.0f, 1.0f,
+    //     -1.0f, -1.0f, 0.0f, 0.0f,
+    //     1.0f, -1.0f, 1.0f, 0.0f,
+    //
+    //     -1.0f, 1.0f,  0.0f, 1.0f,
+    //     1.0f, -1.0f,  1.0f, 0.0f,
+    //     1.0f, 1.0f, 1.0f, 1.0f
+    // };
+    float quadVertices[] = {
+        // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
+        // positions   // texCoords
+        -1.0f, 1.0f, 0.0f, 0.0f,
+        -1.0f, -1.0f, 0.0f, 1.0f,
+        1.0f, -1.0f, 1.0f, 1.0f,
+
+        -1.0f, 1.0f, 0.0f, 0.0f,
+        1.0f, -1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f, 0.0f
+    };
+    // float quadVertices[] = {
+    //     // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
+    //     // positions   // texCoords
+    //     -1.0f, 1.0f,  0.0f, 0.0f,
+    //     1.0f, -1.0f, 1.0f, 1.0f,
+    //     -1.0f, -1.0f,0.0f, 1.0f,
+    //
+    //     -1.0f, 1.0f, 0.0f, 0.0f,
+    //     1.0f, 1.0f, 1.0f, 0.0f,
+    //     1.0f, -1.0f, 1.0f, 1.0f
+    // }; 
+    // screen quad VAO
+    glGenVertexArrays(1, &quadVAO);
+    glGenBuffers(1, &quadVBO);
+    glBindVertexArray(quadVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+
+    // HUD SETUP
+    mHudTexture.Load("resources\\textures\\hud\\hud.png");
+
+    mHudTexture.SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    mHudTexture.SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    mHudTexture.SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+    mHudTexture.SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
 }
 
 // Render method runs repeatedly in a loop
@@ -328,340 +393,40 @@ void Game::Render() {
     RenderScene(0);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     RenderScene(1);
-    // old render section
-    /*
-    {
-        // Clear the buffers and enable depth testing (z-buffering)
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glEnable(GL_DEPTH_TEST);
 
-        // Set up a matrix stack
-        glutil::MatrixStack modelViewMatrixStack;
-        modelViewMatrixStack.SetIdentity();
-
-        // Use the main shader program 
-        CShaderProgram* pMainProgram = (*m_pShaderPrograms)[0];
-        pMainProgram->UseProgram();
-        pMainProgram->SetUniform("bUseTexture", true);
-        pMainProgram->SetUniform("sampler0", 0);
-        pMainProgram->SetUniform("CubeMapTex", 1);
-
-
-        // Set the projection matrix
-        pMainProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
-
-        // Call LookAt to create the view matrix and put this on the modelViewMatrix stack. 
-        // Store the view matrix and the normal matrix associated with the view matrix for later (they're useful for lighting -- since lighting is done in eye coordinates)
-        modelViewMatrixStack.LookAt(m_pCamera->GetPosition(), m_pCamera->GetView(), m_pCamera->GetUpVector());
-        glm::mat4 viewMatrix = modelViewMatrixStack.Top();
-        glm::mat3 viewNormalMatrix = m_pCamera->ComputeNormalMatrix(viewMatrix);
-
-
-        // Set light and materials in main shader program
-        glm::vec4 lightPosition1 = glm::vec4(-100, 100, -100, 1); // Position of light source *in world coordinates*
-        pMainProgram->SetUniform("light1.position", viewMatrix * lightPosition1); // Position of light source *in eye coordinates*
-        pMainProgram->SetUniform("light1.La", glm::vec3(1.0f, 1.0f, 1.0f)); // Ambient colour of light
-        pMainProgram->SetUniform("light1.Ld", glm::vec3(1.0f, 1.0f, 1.0f)); // Diffuse colour of light
-        pMainProgram->SetUniform("light1.Ls", glm::vec3(1.0f, 1.0f, 1.0f)); // Specular colour of light
-        pMainProgram->SetUniform("material1.Ma", glm::vec3(1.0f)); // Ambient material reflectance
-        pMainProgram->SetUniform("material1.Md", glm::vec3(0.0f)); // Diffuse material reflectance
-        pMainProgram->SetUniform("material1.Ms", glm::vec3(0.0f)); // Specular material reflectance
-        pMainProgram->SetUniform("material1.shininess", 15.0f); // Shininess material property
-
-
-        CShaderProgram* pMotionBlurProgram = (*m_pShaderPrograms)[2];
-        pMotionBlurProgram->SetUniform("uInverseModelViewMat", glm::inverse(*m_pCamera->GetPerspectiveProjectionMatrix() * viewMatrix));
-        pMotionBlurProgram->SetUniform("uPrevModelViewProj", prevModelViewProj);
-
-
-        // Render the skybox and terrain with full ambient reflectance 
-        modelViewMatrixStack.Push();
-        {
-            pMainProgram->SetUniform("renderSkybox", true);
-            // Translate the modelview matrix to the camera eye point so skybox stays centred around camera
-            glm::vec3 vEye = m_pCamera->GetPosition();
-            modelViewMatrixStack.Translate(vEye);
-            pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-            pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-            m_pSkybox->Render();
-            pMainProgram->SetUniform("renderSkybox", false);
-        }
-        modelViewMatrixStack.Pop();
-
-        // Render the planar terrain
-        modelViewMatrixStack.Push();
-        {
-            pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-            pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-            m_pPlanarTerrain->Render();
-        }
-        modelViewMatrixStack.Pop();
-
-
-        // Turn on diffuse + specular materials
-        pMainProgram->SetUniform("material1.Ma", glm::vec3(0.5f)); // Ambient material reflectance
-        pMainProgram->SetUniform("material1.Md", glm::vec3(0.5f)); // Diffuse material reflectance
-        pMainProgram->SetUniform("material1.Ms", glm::vec3(1.0f)); // Specular material reflectance	
-
-
-        // Render the horse 
-        modelViewMatrixStack.Push();
-        {
-            modelViewMatrixStack.Translate(glm::vec3(0.0f, 0.0f, 0.0f));
-            modelViewMatrixStack.Rotate(glm::vec3(0.0f, 1.0f, 0.0f), 180.0f);
-            modelViewMatrixStack.Scale(2.5f);
-            pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-            pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-            m_pHorseMesh->Render();
-        }
-        modelViewMatrixStack.Pop();
-
-        // render player
-        // m_player->Render(modelViewMatrixStack, pMainProgram, m_pCamera);
-
-        // Render the barrel 
-        modelViewMatrixStack.Push();
-        {
-            modelViewMatrixStack.Translate(glm::vec3(100.0f, 0.0f, 0.0f));
-            modelViewMatrixStack.Scale(5.0f);
-            pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-            pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-            m_pBarrelMesh->Render();
-        }
-        modelViewMatrixStack.Pop();
-
-        for (glm::vec3 p : pickupPositions) {
-            // Render the pickup 
-            modelViewMatrixStack.Push();
-            {
-                // modelViewMatrixStack.Translate(mPickup->position());
-                modelViewMatrixStack.Translate(p);
-                modelViewMatrixStack.Translate(glm::vec3(0, mPickup->spinHeight, 0));
-                modelViewMatrixStack.Rotate(mPickup->rotationAxis(), mPickup->rotationAmount());
-                modelViewMatrixStack.Rotate(glm::vec3(0, 1, 0), mPickup->spinAmount);
-                // modelViewMatrixStack.Scale(2.5f);
-                modelViewMatrixStack.Scale(mPickup->scale());
-                pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-                pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-                mPickup->Render();
-                // if(mPickup->showCollisionSphere) {
-                //    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-                //    mPickup->getCollisionSphere()->Render();
-                //     // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-                // }
-            }
-            modelViewMatrixStack.Pop();
-
-        }
-
-
-        // Render the sphere
-        if (mPickup->showCollisionSphere) {
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-            modelViewMatrixStack.Push();
-            {
-                modelViewMatrixStack.Translate(glm::vec3(mPickup->position()));
-                modelViewMatrixStack.Translate(glm::vec3(0.0f, mPickup->collisionHeight(), 0.0f));
-                modelViewMatrixStack.Scale(mPickup->collisionRadius());
-                pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-                pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-                // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
-                //pMainProgram->SetUniform("bUseTexture", false);
-                // m_pSphere->Render();
-                mPickup->getCollisionSphere()->Render();
-            }
-            modelViewMatrixStack.Pop();
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        }
-
-
-        // Render the car
-        modelViewMatrixStack.Push();
-        {
-            modelViewMatrixStack.Translate(mCar->position());
-            modelViewMatrixStack *= mCar->getRotationOnPath();
-            modelViewMatrixStack.Rotate(mCar->rotationAxis(), mCar->rotationAmount());
-            modelViewMatrixStack.Scale(mCar->scale());
-            pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-            pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-            // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
-            //pMainProgram->SetUniform("bUseTexture", false);
-            mCar->Render();
-        }
-        modelViewMatrixStack.Pop();
-
-        // // Render the sphere on the car
-        // if (mCar->showCollisionSphere) {
-        //     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        //
-        //     modelViewMatrixStack.Push();
-        //     {
-        //         modelViewMatrixStack.Translate(glm::vec3(mCar->position()));
-        //         modelViewMatrixStack.Translate(glm::vec3(0.0f, mCar->collisionHeight(), 0.0f));
-        //         modelViewMatrixStack.Scale(mCar->collisionRadius());
-        //         // modelViewMatrixStack.Scale(mCar->collisionScale());
-        //         modelViewMatrixStack *= mCar->getRotationOnPath();
-        //         pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-        //         pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-        //         // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
-        //         //pMainProgram->SetUniform("bUseTexture", false);
-        //         // m_pSphere->Render();
-        //         mCar->getCollisionSphere()->Render();
-        //     }
-        //     modelViewMatrixStack.Pop();
-        //     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        // }
-
-        // Render the Speed PowerUP
-        modelViewMatrixStack.Push();
-        {
-            modelViewMatrixStack.Translate(mSpeedPowerUp->position());
-            modelViewMatrixStack.Translate(glm::vec3(0, mSpeedPowerUp->spinHeight, 0));
-            modelViewMatrixStack.Rotate(mSpeedPowerUp->rotationAxis(), mSpeedPowerUp->rotationAmount());
-            modelViewMatrixStack.Rotate(glm::vec3(0, 1, 0), mSpeedPowerUp->spinAmount);
-            modelViewMatrixStack.Scale(mSpeedPowerUp->scale());
-            pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-            pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-            // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
-            //pMainProgram->SetUniform("bUseTexture", false);
-            mSpeedPowerUp->Render();
-        }
-        modelViewMatrixStack.Pop();
-
-
-        for (glm::vec3 p : speedPowerUpPositions) {
-            // Render the pickup 
-            modelViewMatrixStack.Push();
-            {
-                modelViewMatrixStack.Translate(p);
-                modelViewMatrixStack.Translate(glm::vec3(0, mSpeedPowerUp->spinHeight, 0));
-                modelViewMatrixStack.Rotate(mSpeedPowerUp->rotationAxis(), mSpeedPowerUp->rotationAmount());
-                modelViewMatrixStack.Rotate(glm::vec3(0, 1, 0), mSpeedPowerUp->spinAmount);
-                modelViewMatrixStack.Scale(mSpeedPowerUp->scale());
-                pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-                pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-                mSpeedPowerUp->Render();
-            }
-            modelViewMatrixStack.Pop();
-
-        }
-
-
-        // Render the sphere
-        if (mSpeedPowerUp->showCollisionSphere) {
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-            modelViewMatrixStack.Push();
-            {
-                modelViewMatrixStack.Translate(glm::vec3(mSpeedPowerUp->position()));
-                modelViewMatrixStack.Translate(glm::vec3(0, mSpeedPowerUp->spinHeight, 0));
-                modelViewMatrixStack.Translate(glm::vec3(0.0f, mSpeedPowerUp->collisionHeight(), 0.0f));
-                modelViewMatrixStack.Rotate(glm::vec3(0, 1, 0), mSpeedPowerUp->spinAmount);
-                modelViewMatrixStack.Scale(mSpeedPowerUp->collisionRadius());
-                // modelViewMatrixStack.Scale(mSpeedPowerUp->collisionScale());
-                pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-                pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-                // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
-                //pMainProgram->SetUniform("bUseTexture", false);
-                // m_pSphere->Render();
-                mSpeedPowerUp->getCollisionSphere()->Render();
-            }
-            modelViewMatrixStack.Pop();
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        }
-
-        // Render the Prism 
-        modelViewMatrixStack.Push();
-        {
-            // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
-            modelViewMatrixStack.Translate(mPrism->position());
-            modelViewMatrixStack.Rotate(mPrism->rotationAxis(), mPrism->rotationAmount());
-            modelViewMatrixStack.Scale(mPrism->scale());
-            pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-            pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-            // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
-            //pMainProgram->SetUniform("bUseTexture", false);
-            mPrism->Render();
-            // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
-        }
-        modelViewMatrixStack.Pop();
-
-        // // Render the WORLDPrisms
-        // for (auto worldPrism : mWorldPrisms) {
-        //     modelViewMatrixStack.Push();
-        //     {
-        //         // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
-        //         modelViewMatrixStack.Translate(worldPrism.prism->position());
-        //         // modelViewMatrixStack.Translate(30,30,30);
-        //         modelViewMatrixStack.Rotate(worldPrism.prism->rotationAxis(), worldPrism.prism->rotationAmount());
-        //         modelViewMatrixStack.Scale(worldPrism.prism->scale());
-        //         pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-        //         pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-        //         // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
-        //         //pMainProgram->SetUniform("bUseTexture", false);
-        //         worldPrism.prism->Render();
-        //         // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
-        //     }
-        //     modelViewMatrixStack.Pop(); 
-        // }
-
-        // Render the WORLDPrisms
-        for (int i = 0; i < worldPrismsPositions.size(); ++i) {
-
-            modelViewMatrixStack.Push();
-            {
-                // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
-                modelViewMatrixStack.Translate(worldPrismsPositions[i]);
-                // modelViewMatrixStack.Translate(30,30,30);
-                modelViewMatrixStack.Rotate(mWorldPrisms[worldPrismsIndexes[i]].prism->rotationAxis(), mWorldPrisms[worldPrismsIndexes[i]].prism->rotationAmount());
-                modelViewMatrixStack.Scale(mWorldPrisms[worldPrismsIndexes[i]].prism->scale());
-                modelViewMatrixStack.Scale(worldPrismsHeightScales[i]);
-                pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-                pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-                // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
-                //pMainProgram->SetUniform("bUseTexture", false);
-                mWorldPrisms[worldPrismsIndexes[i]].prism->Render();
-                // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
-            }
-            modelViewMatrixStack.Pop();
-        }
-
-
-        modelViewMatrixStack.Push();
-        {
-            // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
-            pMainProgram->SetUniform("bUseTexture", false); // turn off texturing
-            pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-            pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-            m_pCatmullRom->RenderCentreline();
-            m_pCatmullRom->RenderOffsetCurves();
-            m_pCatmullRom->RenderTrack();
-            // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
-        }
-        modelViewMatrixStack.Pop();
-
-
-        // glm::mat4 modelViewProjectionMatrix = *m_pCamera->GetPerspectiveProjectionMatrix() * modelViewMatrixStack.Top();
-
-
-        prevModelViewProj = *m_pCamera->GetPerspectiveProjectionMatrix() * modelViewMatrixStack.Top();
-
-        CShaderProgram* fontProgram = (*m_pShaderPrograms)[1];
-
-        RECT dimensions = m_gameWindow.GetDimensions();
-        int height = dimensions.bottom - dimensions.top;
-        // Use the font shader program and render the text
-        fontProgram->UseProgram();
-        glDisable(GL_DEPTH_TEST);
-        fontProgram->SetUniform("matrices.modelViewMatrix", glm::mat4(1));
-        fontProgram->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
-        fontProgram->SetUniform("vColour", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-        m_pFtFont->Render(20, height - 40, 20, "Score: %i", mPlayerScore);
-    }
-    */
     // Draw the 2D graphics after the 3D graphics
     DisplayFrameRate();
+
+    RECT dimensions = m_gameWindow.GetDimensions();
+    int height = dimensions.bottom - dimensions.top;
+
+    CShaderProgram* fontProgram = (*m_pShaderPrograms)[1];
+
+    fontProgram->UseProgram();
+
+    // render an image on the hud quad
+
+    
+    // // glDisable(GL_CULL_FACE);
+    // glBindVertexArray(quadVAO);
+    // glDisable(GL_DEPTH_TEST);
+    // // glBindTexture(GL_TEXTURE_2D, m_pFBO.);
+    // // pBlur->SetUniform("tex",);
+    // mHudTexture.Bind();
+    // fontProgram->SetUniform("matrices.modelViewMatrix", glm::mat4(1));
+    // fontProgram->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
+    // glDrawArrays(GL_TRIANGLES, 0, 6);
+    // // glEnable(GL_CULL_FACE);
+
+
+    // Use the font shader program and render the text
+    // fontProgram->UseProgram();
+    glDisable(GL_DEPTH_TEST);
+    fontProgram->SetUniform("matrices.modelViewMatrix", glm::mat4(1));
+    fontProgram->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
+    fontProgram->SetUniform("vColour", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    m_pFtFont->Render(20, height - 40, 20, "Score: %i", mPlayerScore);
+
 
     // Swap buffers to show the rendered image
     SwapBuffers(m_gameWindow.Hdc());
@@ -708,10 +473,24 @@ void Game::RenderScene(int pass) {
     pMainProgram->SetUniform("material1.shininess", 15.0f); // Shininess material property
 
 
-    CShaderProgram* pMotionBlurProgram = (*m_pShaderPrograms)[2];
-    pMotionBlurProgram->SetUniform("uInverseModelViewMat", glm::inverse(*m_pCamera->GetPerspectiveProjectionMatrix() * viewMatrix));
-    pMotionBlurProgram->SetUniform("uPrevModelViewProj", prevModelViewProj);
-
+    // if (pass == 1) {
+    //     // Render the plane for the TV
+    //     // Back face actually places the horse the right way round
+    //     // glDisable(GL_CULL_FACE);
+    //     modelViewMatrixStack.Push();
+    //     modelViewMatrixStack.Translate(glm::vec3(0.0f, 30.0f, 0.0f));
+    //     // modelViewMatrixStack.Rotate(glm::vec3(1.0f, 0.0f, 0.0f), 90.0);
+    //     // modelViewMatrixStack.Rotate(glm::vec3(0.0f, 0.0f, 1.0f), 180.0);
+    //     // modelViewMatrixStack.Scale(-1.0);
+    //     pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
+    //     pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
+    //     // To turn off texture mapping and use the plane colour only (currently white material), uncomment the next line
+    //     //pMainProgram->SetUniform("bUseTexture", false);
+    //     m_pFBO->BindTexture(0);
+    //     m_pPlane->Render(false);
+    //     modelViewMatrixStack.Pop();
+    //     glEnable(GL_CULL_FACE);
+    // }
 
     // Render the skybox and terrain with full ambient reflectance 
     modelViewMatrixStack.Push();
@@ -769,6 +548,7 @@ void Game::RenderScene(int pass) {
     }
     modelViewMatrixStack.Pop();
 
+    // render the series of pickups
     for (glm::vec3 p : pickupPositions) {
         // Render the pickup 
         modelViewMatrixStack.Push();
@@ -794,7 +574,7 @@ void Game::RenderScene(int pass) {
     }
 
 
-    // Render the sphere
+    // Render the collision sphere on basic pickup
     if (mPickup->showCollisionSphere) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -887,7 +667,7 @@ void Game::RenderScene(int pass) {
     }
 
 
-    // Render the sphere
+    // Render the collision sphere for speed powerup
     if (mSpeedPowerUp->showCollisionSphere) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -925,25 +705,6 @@ void Game::RenderScene(int pass) {
         // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
     }
     modelViewMatrixStack.Pop();
-
-    // // Render the WORLDPrisms
-    // for (auto worldPrism : mWorldPrisms) {
-    //     modelViewMatrixStack.Push();
-    //     {
-    //         // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
-    //         modelViewMatrixStack.Translate(worldPrism.prism->position());
-    //         // modelViewMatrixStack.Translate(30,30,30);
-    //         modelViewMatrixStack.Rotate(worldPrism.prism->rotationAxis(), worldPrism.prism->rotationAmount());
-    //         modelViewMatrixStack.Scale(worldPrism.prism->scale());
-    //         pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-    //         pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-    //         // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
-    //         //pMainProgram->SetUniform("bUseTexture", false);
-    //         worldPrism.prism->Render();
-    //         // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
-    //     }
-    //     modelViewMatrixStack.Pop(); 
-    // }
 
     // Render the WORLDPrisms
     for (int i = 0; i < worldPrismsPositions.size(); ++i) {
@@ -984,19 +745,48 @@ void Game::RenderScene(int pass) {
     // glm::mat4 modelViewProjectionMatrix = *m_pCamera->GetPerspectiveProjectionMatrix() * modelViewMatrixStack.Top();
 
 
-    prevModelViewProj = *m_pCamera->GetPerspectiveProjectionMatrix() * modelViewMatrixStack.Top();
+    // prevModelViewProj = *m_pCamera->GetPerspectiveProjectionMatrix() * modelViewMatrixStack.Top();
 
-    CShaderProgram* fontProgram = (*m_pShaderPrograms)[1];
+    // 2d rendering
 
-    RECT dimensions = m_gameWindow.GetDimensions();
-    int height = dimensions.bottom - dimensions.top;
-    // Use the font shader program and render the text
-    fontProgram->UseProgram();
+    // radial blur shader
+    CShaderProgram* pBlur = (*m_pShaderPrograms)[2];
+    pBlur->UseProgram();
+
+
+    // // 2d quad rendering the image
+    // if (pass == 1 && mSpeedPowerUpTimer > 0) {
+    //     glBindVertexArray(quadVAO);
+    //     // glDisable(GL_DEPTH_TEST);
+    //     // glBindTexture(GL_TEXTURE_2D, m_pFBO.);
+    //     // pBlur->SetUniform("tex",);
+    //     m_pFBO->BindTexture(0);
+    //     glDrawArrays(GL_TRIANGLES, 0, 6);
+    // }
+    // 
+    // glDisable(GL_CULL_FACE);
+    glBindVertexArray(quadVAO);
     glDisable(GL_DEPTH_TEST);
-    fontProgram->SetUniform("matrices.modelViewMatrix", glm::mat4(1));
-    fontProgram->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
-    fontProgram->SetUniform("vColour", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    m_pFtFont->Render(20, height - 40, 20, "Score: %i", mPlayerScore);
+    // glBindTexture(GL_TEXTURE_2D, m_pFBO.);
+    // pBlur->SetUniform("tex",);
+    mHudTexture.Bind();
+    pBlur->SetUniform("matrices.modelViewMatrix", glm::mat4(1));
+    pBlur->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    
+    // glEnable(GL_CULL_FACE);
+    // 2d quad rendering the image
+    // if (pass == 1) {
+    //     // glDisable(GL_CULL_FACE);
+    //     glBindVertexArray(quadVAO);
+    //     // glDisable(GL_DEPTH_TEST);
+    //     // glBindTexture(GL_TEXTURE_2D, m_pFBO.);
+    //     // pBlur->SetUniform("tex",);
+    //     m_pFBO->BindTexture(0);
+    //     glDrawArrays(GL_TRIANGLES, 0, 6);
+    //     // glEnable(GL_CULL_FACE);
+    // }
+
 
 }
 
@@ -1010,15 +800,17 @@ void Game::Update() {
 
     m_pCamera->Update(m_dt, m_pCatmullRom);
     mCar->Update(m_dt, m_pCatmullRom);
-    float speed = m_dt * mMovementSpeedCarCamera;
+    float accelerant = m_dt * mMovementSpeedCarCamera;
 
     if (GetKeyState(VK_UP) & 0x80) {
-        m_pCamera->addSpeed(speed);
-        mCar->addSpeed(speed);
+        // m_pCamera->addSpeed(accelerant);
+        // mCar->addSpeed(accelerant);
+        accelerate(accelerant);
     }
     else if (GetKeyState(VK_DOWN) & 0x80) {
-        m_pCamera->addSpeed(-speed);
-        mCar->addSpeed(-speed);
+        // m_pCamera->addSpeed(-accelerant);
+        // mCar->addSpeed(-accelerant);
+        accelerate(-accelerant);
     }
 
     if (GetKeyState(VK_LEFT) & 0x80) {
@@ -1044,7 +836,17 @@ void Game::Update() {
     mPickup->Update(m_dt);
     mSpeedPowerUp->Update(m_dt);
 
+
+    // set the speed of the camera and car
+    speedSetter();
+
     m_pAudio->Update();
+    if (mSpeedPowerUpTimer <= 0.f) { }
+    else {
+        // m_pCamera->addSpeed(speed*2.f);
+        // mCar->addSpeed(speed*2.f);
+        mSpeedPowerUpTimer -= static_cast<float>(m_dt);
+    }
 }
 
 void Game::ManageCollisions() {
@@ -1072,14 +874,14 @@ void Game::ManageCollisions() {
         pickupPositions.erase(i);
     }
 
-    // PICKUP COLLISIONS
+    // SPEED COLLISIONS
     vector<vector<glm::vec3>::iterator> speedPowerUpsToRemove;
 
     for (auto p = speedPowerUpPositions.begin(); p != speedPowerUpPositions.end(); ++p) {
         if (CheckCollision(*p, mSpeedPowerUp->collisionRadius(), m_pCamera->GetPosition(), m_pCamera->collisionRadius())) {
             mSpeedPowerUp->showCollisionSphere = false;
-            // increase speed
-            // mMovementSpeedCarCamera += 0.002f;
+
+            mSpeedPowerUpTimer = 1000.f;
 
             // note to remove pickup
             speedPowerUpsToRemove.push_back(p);
@@ -1087,6 +889,8 @@ void Game::ManageCollisions() {
         if (CheckCollision(*p, mSpeedPowerUp->collisionRadius(), mCar->position(), mCar->collisionRadius())) {
             mSpeedPowerUp->showCollisionSphere = false;
             // mMovementSpeedCarCamera += 0.002f;
+            mSpeedPowerUpTimer = 1000.f;
+
             // note to remove pickup
             speedPowerUpsToRemove.push_back(p);
         }
@@ -1108,6 +912,34 @@ bool Game::CheckCollision(glm::vec3 aPos, float aRadius, glm::vec3 bPos, float b
     }
 
     return false;
+}
+
+void Game::speedSetter() {
+    if (mSpeedPowerUpTimer > 0) {
+        m_pCamera->setSpeed(boostSpeed);
+        mCar->setSpeed(boostSpeed);
+    }
+    else {
+        m_pCamera->setSpeed(currentSpeed);
+        mCar->setSpeed(currentSpeed);
+    }
+
+}
+
+void Game::accelerate(float accelerant) {
+    if (currentSpeed <= maxSpeed && currentSpeed >= minSpeed) {
+        currentSpeed += accelerant;
+    }
+
+    // keep within the boundary
+    if (currentSpeed > maxSpeed) {
+        if (mSpeedPowerUpTimer <= 0.f) {
+            currentSpeed = maxSpeed;
+        }
+    }
+    if (currentSpeed < minSpeed) {
+        currentSpeed = minSpeed;
+    }
 }
 
 
