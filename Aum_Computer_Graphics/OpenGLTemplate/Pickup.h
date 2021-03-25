@@ -12,11 +12,12 @@ public:
     // void Update(double dt, CCatmullRom*& catmullRom);
     float spinAmount = 0.f;
     float spinHeight = 0.f;
-    float spinHeightMax = 0.5f;
+    float spinHeightMax = 0.6f;
+    float spinHeightMin = 0.f;
     float heightIncrements = 0.001f;
 
     void incrementSpinHeight(double dt) {
-        if (spinHeight >= 0.5f || spinHeight <= 0.f)
+        if (spinHeight >= spinHeightMax || spinHeight <= spinHeightMin)
             heightIncrements *= -1;
         spinHeight+= heightIncrements*dt;
     }

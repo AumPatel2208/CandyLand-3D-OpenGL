@@ -82,25 +82,91 @@ void CCamera::SetViewBySpline(double dt, CCatmullRom* catmullRom) {
 
 
     m_currentDistance += dt * m_cameraSpeed; // increment by 0.1
+
     glm::vec3 p;
     glm::vec3 pNext;
+
     catmullRom->Sample(m_currentDistance, p);
-    catmullRom->Sample(m_currentDistance + dt * 0.1f, pNext);
+    catmullRom->Sample(m_currentDistance +  0.1f, pNext);
 
     glm::vec3 tangent = pNext - p;
     tangent = glm::normalize(tangent);
     glm::vec3 normal = glm::normalize(glm::cross(tangent, glm::vec3(0, 1, 0)));
     glm::vec3 binormal = glm::normalize(glm::cross(normal, tangent));
-
-    // p.y += 3.0f;
-    p += 3.0f * binormal;
-
     glm::vec3 up = glm::rotate(glm::vec3(0, 1, 0), m_cameraRotation, tangent);
 
     // car->setPosition(pNext);
 
-    if (cameraState)
+    // First Person Camera
+    if (cameraType == FIRST_PERSON) {
+        catmullRom->Sample(m_currentDistance, p);
+        catmullRom->Sample(m_currentDistance +  0.1f, pNext);
+        glm::vec3 tangent = pNext - p;
+        tangent = glm::normalize(tangent);
+        glm::vec3 normal = glm::normalize(glm::cross(tangent, glm::vec3(0, 1, 0)));
+        glm::vec3 binormal = glm::normalize(glm::cross(normal, tangent));
+
+        p = p + normal * mPositionOffset;
+        p += 1.0f * binormal;
+        glm::vec3 up = glm::rotate(glm::vec3(0, 1, 0), m_cameraRotation, tangent);
         Set(p, p + 10.0f * tangent, up);
+
+    }
+        // Third Person Camera
+    else if (cameraType == THIRD_PERSON) {
+        catmullRom->Sample(m_currentDistance - firstPersonCameraOffsetFromCar, p);
+        catmullRom->Sample(m_currentDistance - firstPersonCameraOffsetFromCar +  0.1f, pNext);
+        glm::vec3 tangent = pNext - p;
+        tangent = glm::normalize(tangent);
+        glm::vec3 normal = glm::normalize(glm::cross(tangent, glm::vec3(0, 1, 0)));
+        glm::vec3 binormal = glm::normalize(glm::cross(normal, tangent));
+
+        p += 3.0f * binormal;
+        glm::vec3 up = glm::rotate(glm::vec3(0, 1, 0), m_cameraRotation, tangent);
+        Set(p, p + 10.0f * tangent, up);
+    }
+        // Side View Camera
+    else if (cameraType == SIDE_VIEW) {
+        catmullRom->Sample(m_currentDistance, p);
+        catmullRom->Sample(m_currentDistance +  0.1f, pNext);
+        glm::vec3 tangent = pNext - p;
+        tangent = glm::normalize(tangent);
+        glm::vec3 normal = glm::normalize(glm::cross(tangent, glm::vec3(0, 1, 0)));
+        glm::vec3 binormal = glm::normalize(glm::cross(normal, tangent));
+
+        p += 10.0f * normal;
+        glm::vec3 up = glm::rotate(glm::vec3(0, 1, 0), m_cameraRotation, tangent);
+        Set(p, pNext + tangent , up);
+    }
+    // Other Side View Camera
+    else if (cameraType == OTHER_SIDE_VIEW) {
+        catmullRom->Sample(m_currentDistance, p);
+        catmullRom->Sample(m_currentDistance +  0.1f, pNext);
+        glm::vec3 tangent = pNext - p;
+        tangent = glm::normalize(tangent);
+        glm::vec3 normal = glm::normalize(glm::cross(tangent, glm::vec3(0, 1, 0)));
+        glm::vec3 binormal = glm::normalize(glm::cross(normal, tangent));
+
+        p += -10.0f * normal;
+        glm::vec3 up = glm::rotate(glm::vec3(0, 1, 0), m_cameraRotation, tangent);
+        Set(p, pNext + tangent , up);
+    }
+        // Top View Camera
+    else if (cameraType == TOP_VIEW) {
+        catmullRom->Sample(m_currentDistance, p);
+        catmullRom->Sample(m_currentDistance +  0.1f, pNext);
+        glm::vec3 tangent = pNext - p;
+        tangent = glm::normalize(tangent);
+        glm::vec3 normal = glm::normalize(glm::cross(tangent, glm::vec3(0, 1, 0)));
+        glm::vec3 binormal = glm::normalize(glm::cross(normal, tangent));
+
+        p += 15.0f * binormal;
+        glm::vec3 up = glm::rotate(glm::vec3(0, 1, 0), m_cameraRotation, tangent);
+        Set(p, pNext + tangent , up);
+    }
+        // Free View Camera
+    else if (cameraType == FREE_VIEW) { }
+ 
 }
 
 // Rotate the camera view point -- this effectively rotates the camera since it is looking at the view point

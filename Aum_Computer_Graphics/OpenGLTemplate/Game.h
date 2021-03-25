@@ -3,6 +3,7 @@
 
 #include "Common.h"
 #include "GameWindow.h"
+#include "HudManager.h"
 #include "Texture.h"
 
 // Classes used in game.  For a new class, declare it here and provide a pointer to an object of this class below.  Then, in Game.cpp, 
@@ -61,6 +62,7 @@ private:
 	Pickup *mPickup;
 	
 	SpeedPowerUp* mSpeedPowerUp;
+	GameObject* mRock;
 	Prism* mPrism;
 	vector<WorldPrism> mWorldPrisms;
 	vector<glm::vec3> pickupPositions;
@@ -104,10 +106,10 @@ private:
 	void generateWorldPrismPositions(int count);
 	void speedSetter();
 	void accelerate(float accelerant);
-	const float maxSpeed = 0.15f;
+	const float maxSpeed = 0.1f;
 	const float minSpeed = 0.f;
 	float currentSpeed = 0.f;
-	const float boostSpeed = 0.3f;
+	const float boostSpeed = 0.2f;
 	float mMovementSpeedCarCamera = 0.0001f;
 
 	
@@ -126,6 +128,8 @@ private:
 
 	// HUD
 	CTexture mHudTexture;
+
+	HudManager mHudManager = {};
 
 
 

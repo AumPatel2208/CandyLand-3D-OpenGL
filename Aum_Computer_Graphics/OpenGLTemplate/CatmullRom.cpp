@@ -315,6 +315,10 @@ void CCatmullRom::CreateOffsetCurves() {
 
 void CCatmullRom::CreateTrack() {
 
+    // Load texture
+    
+
+    
     // Generate a VAO called m_vaoTrack and a VBO to get the offset curve points and indices on the graphics card
     // Use VAO to store state associated with vertices
     glGenVertexArrays(1, &m_vaoTrack);
@@ -433,7 +437,7 @@ void CCatmullRom::RenderOffsetCurves() {
 void CCatmullRom::RenderTrack() {
     // Bind the VAO m_vaoTrack and render it
     glBindVertexArray(m_vaoTrack);
-    // m_texture.Bind();
+    m_texture.Bind();
     // glPointSize(5);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, m_trackTrianglePoints.size());
 

@@ -131,6 +131,8 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="Car.h" />
+    <ClInclude Include="HudItem.h" />
+    <ClInclude Include="HudManager.h" />
     <ClInclude Include="Pickup.h" />
     <ClInclude Include="HighResolutionTimer.h" />
     <ClInclude Include="MatrixStack.h" />
@@ -156,6 +158,8 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="Car.cpp" />
+    <ClCompile Include="HudItem.cpp" />
+    <ClCompile Include="HudManager.cpp" />
     <ClCompile Include="Pickup.cpp" />
     <ClCompile Include="HighResolutionTimer.cpp" />
     <ClCompile Include="MatrixStack.cpp" />
@@ -177,6 +181,8 @@
     <None Include="resources\shaders\textShader.vert" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="resources\shaders\hudShader.frag" />
+    <Content Include="resources\shaders\hudShader.vert" />
     <Content Include="resources\shaders\motionBlur.frag" />
     <Content Include="resources\shaders\motionBlur.vert" />
     <Content Include="resources\shaders\velocityBuffer.frag" />

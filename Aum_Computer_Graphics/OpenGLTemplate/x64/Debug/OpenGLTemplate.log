@@ -1,8 +1,8 @@
 ﻿  Game.cpp
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Pickup.h(21,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Pickup.h(28,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(803,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(821,55): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(831,55): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(1125,24): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Pickup.h(22,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Pickup.h(29,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(857,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(875,55): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(885,55): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(1211,24): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
   OpenGLTemplate.vcxproj -> C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\x64\Debug\OpenGLTemplate.exe

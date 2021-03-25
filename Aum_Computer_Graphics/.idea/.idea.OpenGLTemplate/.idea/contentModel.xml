@@ -28,6 +28,10 @@
         <e p="GameWindow.h" t="Include" />
         <e p="HighResolutionTimer.cpp" t="Include" />
         <e p="HighResolutionTimer.h" t="Include" />
+        <e p="HudItem.cpp" t="Include" />
+        <e p="HudItem.h" t="Include" />
+        <e p="HudManager.cpp" t="Include" />
+        <e p="HudManager.h" t="Include" />
         <e p="MatrixStack.cpp" t="Include" />
         <e p="MatrixStack.h" t="Include" />
         <e p="OpenAssetImportMesh.cpp" t="Include" />
@@ -41,6 +45,8 @@
         <e p="Prism.h" t="Include" />
         <e p="resources" t="Include">
           <e p="shaders" t="Include">
+            <e p="hudShader.frag" t="Include" />
+            <e p="hudShader.vert" t="Include" />
             <e p="mainShader.frag" t="Include" />
             <e p="mainShader.vert" t="Include" />
             <e p="motionBlur.frag" t="Include" />

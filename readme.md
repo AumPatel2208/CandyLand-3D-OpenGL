@@ -1,10 +1,22 @@
 # Computer Graphics Coursework
 
+## Questions to Ask
+
+- [ ] Quad texture being flipped
+- [ ] Quad textures for hud not rendering on top of each other
+- [ ] 
+
+
+
+
+
+
+
 Marking: 
 The coursework is marked out of 100%, with the final mark scaled to 75% for the module.
 
 1. #### Deliverables -- Project report and source code (15%):
-    
+   
     -  Prepare a project report (maximum 15 pages) in Word or PDF format. (10%) 
         - Overview of your project; a description of your concept and game or application.
         - Include a prototype sketch or annotated screengrab showing a top-down view of your scene.
@@ -14,35 +26,35 @@ The coursework is marked out of 100%, with the final mark scaled to 75% for the 
     o Include a discussion section reflecting on the project. Consider the strengths and weaknesses of the game implemented and what you have accomplished in the time provided. Also discuss what would be required to expand the project into a more complete game.
     -  Source code to be commented and follow a logical design, organisation, and coding style (i.e., use of classes). (5%)
 2. #### Route and camera (25%):
-    
+   
     -  Route (15%)
         - ~~Create a 3D non-linear centreline for your path, based on splines with C1 or higher continuity.~~ 
         - ~~Create primitives based on the centreline to generate a visualisation of the path/track on which the game or simulation will occur.~~ 
           - MAKE THE PRIMITIVES BE ALTERED BY TNB
         - ~~Ensure your primitives have correctly oriented normals and texture coordinates. Render the track with appropriate texturing and lighting.~~
         - ~~Note: the route must be generated programmatically, using OpenGL primitives. Building the path in 3D modelling software and loading it as a mesh is not permitted.~~
-    -  Camera / viewing (10%) 
-        - The graphics template code allows the user to control camera movement in a “free view” mode. Retain this type of camera movement as an option (useful for debugging and visualisation).
-        - Implement at least two of the following camera modes:
+    -  ~~Camera / viewing (10%)~~ 
+        - ~~The graphics template code allows the user to control camera movement in a “free view” mode. Retain this type of camera movement as an option (useful for debugging and visualisation).~~
+        - ~~Implement at least two of the following camera modes:~~
            1. ~~First person: Add a keyboard control to place the camera so that it provides a first person view allowing the player to move along the route.~~ 
-           2. Third person: Add a keyboard control to place the camera either in or behind the player (rendered as a mesh). 
-           3. Side view: Add a keyboard control to place the camera to the side of the player character (mesh) moving along the route.
-           4. Top view: Add a keyboard control to place the camera so that it provides a top view of your scene, but follows the player moving along the route.
-              - You will likely find it helpful to use a TNB frame for specifying the camera viewing geometry.
+           2. ~~Third person: Add a keyboard control to place the camera either in or behind the player (rendered as a mesh).~~ 
+           3. ~~Side view: Add a keyboard control to place the camera to the side of the player character (mesh) moving along the route.~~
+           4. ~~Top view: Add a keyboard control to place the camera so that it provides a top view of your scene, but follows the player moving along the route.~~
+              - ~~You will likely find it helpful to use a TNB frame for specifying the camera viewing geometr~~y.
 3. #### Basic objects, meshes, and lighting (30%)
-    
+   
     -  Basic objects (10%)
         - ~~Create at least two different basic objects from primitives. Examples could include a cube, tetrahedron, torus, cylinder, cone, disk (other surfaces are possible). Render these objects using triangle primitive types (GL_TRIANGLES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN). Note that the basic objects (plane, sphere) given in the template code do not count towards this requirement; nor do meshes loaded into the scene. However, shapes created in labs can count towards this section.~~
         -  ~~Apply appropriate texture coordinates and normals for your objects. Render these objects using texture mapping and lighting.~~ 
         -  ~~Transform the models to have an appropriate location, orientation and scale within the scene.~~
-    -  Meshes (10%)
-        - Load at least two different texture-mapped mesh models (with appropriate normals) to the scene using the model loader code provided in template code. Populate the scene with objects that match your theme. Note the mesh models (horse, barrel) already provided in the template do not count towards these four models. 
+    -  ~~Meshes (10%)~~
+        - ~~Load at least two different texture-mapped mesh models (with appropriate normals) to the scene using the model loader code provided in template code. Populate the scene with objects that match your theme. Note the mesh models (horse, barrel) already provided in the template do not count towards these four models.~~ 
         - ~~Transform the models to have an appropriate location, orientation and scale within the scene.~~
         - ~~Create parts of your scene using repeated mesh objects (e.g. rows of pickups, obstacles, etc.).~~ 
     -  Lighting (10%)
         - The OpenGL template has a general lighting for all objects. Implement at least one additional dynamic light in your scene. 
 4. #### Head’s up display (HUD), gameplay, and advanced rendering (30%)
-    
+   
     -  HUD (5%)
        
         - Include a head’s up display to provide information to user (time, speed, score, fuel, place, etc.). 
@@ -89,7 +101,7 @@ We will cover most of these in lecture / labs. Pick techniques that are interest
 
 
 5. #### Optional (unmarked)
-    
+   
     -  Include audio in your application to enhance the experience. 
 
 

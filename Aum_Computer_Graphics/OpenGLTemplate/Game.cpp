@@ -67,6 +67,7 @@ Game::Game() {
     m_elapsedTime = 0.0f;
 
     m_pFBO = NULL;
+    mRock = NULL;
 
 
 }
@@ -88,6 +89,7 @@ Game::~Game() {
     delete m_pAudio;
     delete m_pCatmullRom;
     delete m_pPlane;
+    delete mRock;
     // delete m_player;
 
     // deleting the prisms in the world
@@ -202,6 +204,8 @@ void Game::Initialise() {
     m_pCatmullRom = new CCatmullRom;
     m_pFBO = new CFrameBufferObject;
     m_pPlane = new CPlane;
+    mRock = new GameObject;
+
     // m_player = new Player;
 
     RECT dimensions = m_gameWindow.GetDimensions();
@@ -222,6 +226,8 @@ void Game::Initialise() {
     sShaderFileNames.push_back("textShader.frag");
     sShaderFileNames.push_back("motionBlur.vert");
     sShaderFileNames.push_back("motionBlur.frag");
+    sShaderFileNames.push_back("hudShader.vert");
+    sShaderFileNames.push_back("hudShader.frag");
 
     for (int i = 0; i < (int)sShaderFileNames.size(); i++) {
         string sExt = sShaderFileNames[i].substr((int)sShaderFileNames[i].size() - 4, 4);
@@ -259,6 +265,14 @@ void Game::Initialise() {
     pMotionBlurProgram->AddShaderToProgram(&shShaders[5]);
     pMotionBlurProgram->LinkProgram();
     m_pShaderPrograms->push_back(pMotionBlurProgram);
+    
+    // Create the hud shader program
+    CShaderProgram* pHudProgram = new CShaderProgram;
+    pHudProgram->CreateProgram();
+    pHudProgram->AddShaderToProgram(&shShaders[6]);
+    pHudProgram->AddShaderToProgram(&shShaders[7]);
+    pHudProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pHudProgram);
 
     // You can follow this pattern to load additional shaders
 
@@ -287,6 +301,7 @@ void Game::Initialise() {
     // Create a sphere
     m_pSphere->Create("resources\\textures\\", "dirtpile01.jpg", 25, 25); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
 
+    mRock->Create("resources\\models\\Rock_6\\Rock_6.fbx");
     // create car
     // mCar->Create("resources\\textures\\", "dirtpile01.jpg", 25, 25); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
     mCar->Create(); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
@@ -377,9 +392,10 @@ void Game::Initialise() {
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
-
+    mHudManager.Create();
+    
     // HUD SETUP
-    mHudTexture.Load("resources\\textures\\hud\\hud.png");
+    mHudTexture.Load("resources\\textures\\hud\\santa_png\\santa.png");
 
     mHudTexture.SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     mHudTexture.SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -473,10 +489,11 @@ void Game::RenderScene(int pass) {
     pMainProgram->SetUniform("material1.shininess", 15.0f); // Shininess material property
 
 
+    // RENDERING TV
     // if (pass == 1) {
     //     // Render the plane for the TV
     //     // Back face actually places the horse the right way round
-    //     // glDisable(GL_CULL_FACE);
+    //     glDisable(GL_CULL_FACE);
     //     modelViewMatrixStack.Push();
     //     modelViewMatrixStack.Translate(glm::vec3(0.0f, 30.0f, 0.0f));
     //     // modelViewMatrixStack.Rotate(glm::vec3(1.0f, 0.0f, 0.0f), 90.0);
@@ -492,6 +509,7 @@ void Game::RenderScene(int pass) {
     //     glEnable(GL_CULL_FACE);
     // }
 
+    
     // Render the skybox and terrain with full ambient reflectance 
     modelViewMatrixStack.Push();
     {
@@ -547,7 +565,40 @@ void Game::RenderScene(int pass) {
         m_pBarrelMesh->Render();
     }
     modelViewMatrixStack.Pop();
+    
+    // Render the Rocks 
+    modelViewMatrixStack.Push();
+    {
+        modelViewMatrixStack.Translate(glm::vec3(500.0f, 0.0f, 500.0f));
+        modelViewMatrixStack.Scale(0.5f);
+        pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
+        pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
+        mRock->Render();
+    }
+    modelViewMatrixStack.Pop();
+    modelViewMatrixStack.Push();
+    {
+        modelViewMatrixStack.Translate(glm::vec3(400.0f, 0.0f, 0.0f));
+        modelViewMatrixStack.Scale(0.1f);
+        pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
+        pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
+        mRock->Render();
+    }
+    modelViewMatrixStack.Pop();
+    modelViewMatrixStack.Push();
+    {
+        modelViewMatrixStack.Translate(glm::vec3(400.0f, 0.0f, -100.0f));
+        modelViewMatrixStack.Scale(0.2f);
+        pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
+        pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
+        mRock->Render();
+    }
+    modelViewMatrixStack.Pop();
 
+
+
+
+    
     // render the series of pickups
     for (glm::vec3 p : pickupPositions) {
         // Render the pickup 
@@ -741,17 +792,11 @@ void Game::RenderScene(int pass) {
     }
     modelViewMatrixStack.Pop();
 
-
-    // glm::mat4 modelViewProjectionMatrix = *m_pCamera->GetPerspectiveProjectionMatrix() * modelViewMatrixStack.Top();
-
-
-    // prevModelViewProj = *m_pCamera->GetPerspectiveProjectionMatrix() * modelViewMatrixStack.Top();
-
+    
     // 2d rendering
-
     // radial blur shader
-    CShaderProgram* pBlur = (*m_pShaderPrograms)[2];
-    pBlur->UseProgram();
+    // CShaderProgram* pBlur = (*m_pShaderPrograms)[2];
+    // pBlur->UseProgram();
 
 
     // // 2d quad rendering the image
@@ -765,15 +810,16 @@ void Game::RenderScene(int pass) {
     // }
     // 
     // glDisable(GL_CULL_FACE);
-    glBindVertexArray(quadVAO);
-    glDisable(GL_DEPTH_TEST);
+    // glBindVertexArray(quadVAO);
+    // glDisable(GL_DEPTH_TEST);
     // glBindTexture(GL_TEXTURE_2D, m_pFBO.);
     // pBlur->SetUniform("tex",);
-    mHudTexture.Bind();
-    pBlur->SetUniform("matrices.modelViewMatrix", glm::mat4(1));
-    pBlur->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    
+    // mHudTexture.Bind();
+    // pBlur->SetUniform("matrices.modelViewMatrix", glm::mat4(1));
+    // pBlur->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
+    // glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    // THIS ONE
     // glEnable(GL_CULL_FACE);
     // 2d quad rendering the image
     // if (pass == 1) {
@@ -787,7 +833,15 @@ void Game::RenderScene(int pass) {
     //     // glEnable(GL_CULL_FACE);
     // }
 
-
+    CShaderProgram* pHudShader = (*m_pShaderPrograms)[3];
+    pHudShader->UseProgram();
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    // Draw hud
+    glBindVertexArray(quadVAO);
+    mHudTexture.Bind();
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    mHudManager.Render(pHudShader);
 }
 
 
@@ -820,7 +874,7 @@ void Game::Update() {
             mPlayerLane = -1;
         mPlayerOffset -= m_dt * mCar->getOffsetSpeed();
         mCar->addXOffset(mPlayerOffset);
-
+        m_pCamera->setPositionOffset(mCar->getOffset());
 
     }
     else if (GetKeyState(VK_RIGHT) & 0x80) {
@@ -830,6 +884,7 @@ void Game::Update() {
             mPlayerLane = 1;
         mPlayerOffset += m_dt * mCar->getOffsetSpeed();
         mCar->addXOffset(mPlayerOffset);
+        m_pCamera->setPositionOffset(mCar->getOffset());
     }
 
     ManageCollisions();
@@ -869,11 +924,28 @@ void Game::ManageCollisions() {
         }
     }
 
-    // remove pickup
-    for (auto& i : pickupsToRemove) {
-        pickupPositions.erase(i);
-    }
+    // // remove pickup
+    // for (auto& i : pickupsToRemove) {
+    //     pickupPositions.erase(i);
+    // }
 
+    vector<glm::vec3> removedPickupPositions;
+    
+    for (auto p = pickupPositions.begin(); p != pickupPositions.end(); ++p) {
+        bool isFound = false;
+        for (auto && toRemove : pickupsToRemove) {
+            if(toRemove==p) {
+                isFound = true;
+                break;
+            }
+        }
+        if(isFound) continue;
+
+        removedPickupPositions.push_back(*p);
+    }
+    pickupPositions = removedPickupPositions;
+
+    
     // SPEED COLLISIONS
     vector<vector<glm::vec3>::iterator> speedPowerUpsToRemove;
 
@@ -896,11 +968,25 @@ void Game::ManageCollisions() {
         }
     }
 
-    // remove pickup
-    for (auto& i : speedPowerUpsToRemove) {
-        speedPowerUpPositions.erase(i);
-    }
+    // // remove pickup
+    // for (auto& i : speedPowerUpsToRemove) {
+    //     speedPowerUpPositions.erase(i);
+    // }
+    vector<glm::vec3> removedSpeedPowerUpPositions;
+    
+    for (auto p = speedPowerUpPositions.begin(); p != speedPowerUpPositions.end(); ++p) {
+        bool isFound = false;
+        for (auto && toRemove : speedPowerUpsToRemove) {
+            if(toRemove==p) {
+                isFound = true;
+                break;
+            }
+        }
+        if(isFound) continue;
 
+        removedSpeedPowerUpPositions.push_back(*p);
+    }
+    speedPowerUpPositions = removedSpeedPowerUpPositions;
 
 }
 
@@ -1085,8 +1171,8 @@ LRESULT Game::ProcessEvents(HWND window, UINT message, WPARAM w_param, LPARAM l_
             m_pAudio->PlayEventSound();
             break;
 
-        case 0x46:
-            m_pCamera->FlipCameraState();
+        case 0x46: // 'F' change camera state
+            m_pCamera->ChangeCameraType();
             break;
 
         }

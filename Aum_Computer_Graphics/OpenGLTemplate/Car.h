@@ -31,6 +31,9 @@ public:
     float getOffsetSpeed() {
         return mPositionOffsetSpeed;
     }
+    float getOffset() {
+        return mPositionOffset;
+    }
     
     void addXOffset(float offset) {
         mPositionOffset = offset;

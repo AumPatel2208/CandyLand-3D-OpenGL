@@ -10,7 +10,7 @@ SpeedPowerUp::SpeedPowerUp() : Pickup() {
     // mRotationAmount = 90;
     // mRotationAxis = glm::vec3(1,0,0);
     
-    mTexture.Load("resources\\textures\\colorful-diagonal-lines-abstract-background\\abstractLines.jpg");
+    mTexture.Load("resources\\textures\\holographic\\Indieground_Holographic_Textures_Square_03.jpg");
 
     mTexture.SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     mTexture.SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -216,11 +216,11 @@ void SpeedPowerUp::Create(float length, float width, float height) {
 
         vbo.AddData(&triangleVertices[8], sizeof(glm::vec3));
         vbo.AddData(&triangleNormals[0], sizeof(glm::vec3));
-        vbo.AddData(&triangleTextureCoordinates[4], sizeof(glm::vec2));
+        vbo.AddData(&triangleTextureCoordinates[1], sizeof(glm::vec2));
 
         vbo.AddData(&triangleVertices[7], sizeof(glm::vec3));
         vbo.AddData(&triangleNormals[0], sizeof(glm::vec3));
-        vbo.AddData(&triangleTextureCoordinates[1], sizeof(glm::vec2));
+        vbo.AddData(&triangleTextureCoordinates[4], sizeof(glm::vec2));
 
 
         // left 2

@@ -62,7 +62,17 @@ public:
 
     float collisionRadius(){return mCollisionRadius;}
 
-    void FlipCameraState(){cameraState= !cameraState;}
+    void ChangeCameraType() {
+
+        cameraType+=1;
+        if(cameraType>FREE_VIEW) {
+            cameraType = 0;
+        }
+    }
+
+    void setPositionOffset(float offset) {
+        mPositionOffset = offset;
+    }
 
 private:
     glm::vec3 m_position; // The position of the camera's centre of projection
@@ -80,13 +90,18 @@ private:
     float m_cameraSpeed;
     float m_currentDistance;
     
-	bool cameraState = false;
 
-    const int FIRST_PERSON = 0;
-    const int THIRD_PERSON = 1;
-    const int SIDE_VIEW = 2;
-    const int TOP_VIEW = 3;
+    // offset from car in first person
+    const float firstPersonCameraOffsetFromCar = 10;
+    
+    static const glm::uint FIRST_PERSON = 0;
+    static const glm::uint THIRD_PERSON = 1;
+    static const glm::uint SIDE_VIEW = 2;
+    static const glm::uint OTHER_SIDE_VIEW = 3;
+    static const glm::uint TOP_VIEW = 4;
+    static const glm::uint FREE_VIEW = 5;
     int cameraType = 0;
+    float mPositionOffset = 0;
 
     float mCollisionRadius = 2.f;;
 

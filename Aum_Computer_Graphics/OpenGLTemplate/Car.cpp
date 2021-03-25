@@ -47,15 +47,17 @@ void Car::Update(double dt, CCatmullRom*& catmullRom) {
     m_currentDistance += dt * mSpeed; // increment by 0.1
     glm::vec3 p;
     glm::vec3 pNext;
-    catmullRom->Sample(m_currentDistance + mOffsetFromCamera, p);
-    catmullRom->Sample(m_currentDistance + mOffsetFromCamera + dt * 0.1f, pNext);
+    // catmullRom->Sample(m_currentDistance + mOffsetFromCamera, p);
+    // catmullRom->Sample(m_currentDistance + mOffsetFromCamera + dt * 0.1f, pNext);
+    catmullRom->Sample(m_currentDistance , p);
+    catmullRom->Sample(m_currentDistance  + dt * 0.1f, pNext);
     
     glm::vec3 tangent = pNext - p;
     tangent = glm::normalize(tangent);
     glm::vec3 normal = glm::normalize(glm::cross(tangent, glm::vec3(0, 1, 0)));
     glm::vec3 binormal = glm::normalize(glm::cross(normal, tangent));
 
-    p.y += .5f;
+    p += .5f*binormal;
 
     // rotationOnPath = glm::mat4(glm::mat3(tangent,normal,binormal));
     rotationOnPath = glm::mat4(glm::mat3(tangent,binormal,normal));
