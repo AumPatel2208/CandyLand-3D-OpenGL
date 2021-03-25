@@ -29,6 +29,7 @@ struct MaterialInfo
 // Lights and materials passed in as uniform variables from client programme
 uniform LightInfo light1; 
 uniform MaterialInfo material1; 
+uniform bool isFloor;
 
 // Layout of vertex attributes in VBO
 layout (location = 0) in vec3 inPosition;
@@ -40,6 +41,13 @@ out vec3 vColour;	// Colour computed using reflectance model
 out vec2 vTexCoord;	// Texture coordinate
 
 out vec3 worldPosition;	// used for skybox
+// FOG: Open GL Game Tutorial 16: fog https://www.youtube.com/watch?v=qslBNLeSPUc
+out float visibility;
+float density = 0.005;
+float gradient = 1.5;
+
+//const float density = 0.0005;
+//const float gradient = 1;
 
 // This function implements the Phong shading model
 // The code is based on the OpenGL 4.0 Shading Language Cookbook, Chapter 2, pp. 62 - 63, with a few tweaks. 
@@ -81,9 +89,18 @@ vec3 PhongModel(vec4 eyePosition, vec3 eyeNorm)
 // This is the entry point into the vertex shader
 void main()
 {	
-
-// Save the world position for rendering the skybox
+	// have a weaker fog for the floor
+	if(isFloor){
+		density = 0.0005;
+		gradient = 1;
+	}else{
+		density = 0.005;
+		gradient = 1.5;	
+	}
+	// Save the world position for rendering the skybox
 	worldPosition = inPosition;
+	// fog code
+	vec4 positionRelativeToCam = matrices.modelViewMatrix * vec4(worldPosition, 1);
 
 	// Transform the vertex spatial position using 
 	gl_Position = matrices.projMatrix * matrices.modelViewMatrix * vec4(inPosition, 1.0f);
@@ -91,7 +108,13 @@ void main()
 	// Get the vertex normal and vertex position in eye coordinates
 	vec3 vEyeNorm = normalize(matrices.normalMatrix * inNormal);
 	vec4 vEyePosition = matrices.modelViewMatrix * vec4(inPosition, 1.0f);
-		
+	
+	// fog
+	float distance = length(positionRelativeToCam.xyz );
+	visibility = exp(-pow((distance*density), gradient));
+	visibility = clamp(visibility, 0.0, 1.0);
+	
+	
 	// Apply the Phong model to compute the vertex colour
 	vColour = PhongModel(vEyePosition, vEyeNorm);
 	

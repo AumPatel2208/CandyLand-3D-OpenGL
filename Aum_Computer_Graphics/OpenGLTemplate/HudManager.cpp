@@ -56,17 +56,16 @@ void HudManager::Create() {
 
 void HudManager::Render(CShaderProgram* shader) {
 
-
     //
     // // Draw santa
-    // glBindVertexArray(quadVAO);
-    // santa.Bind(0);
-    // glDrawArrays(GL_TRIANGLES, 0, 6);
+    glBindVertexArray(quadVAO);
+    santa.Bind(0);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 
     // shader->UseProgram();
     // Draw Speedometer
     glBindVertexArray(quadVAO);
-    speedometer.Bind(1);
+    speedometer.Bind(0);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
 

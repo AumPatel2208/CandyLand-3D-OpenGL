@@ -4,7 +4,8 @@
 
 - [ ] Quad texture being flipped
 - [ ] Quad textures for hud not rendering on top of each other
-- [ ] 
+
+Talk to in private to fix it.
 
 
 
@@ -70,7 +71,7 @@ The coursework is marked out of 100%, with the final mark scaled to 75% for the 
             - Easier: 
                 -  Blinking (e.g. Lab 1; or rendering/not rendering an object using a timer)
                 -  Wobble
-                -  **Fog**
+                -  ~~**Fog**~~
                 -  Animation using discard in the fragment shader
                 -  Toon shader
                 -  Camera shake 
@@ -83,15 +84,15 @@ The coursework is marked out of 100%, with the final mark scaled to 75% for the 
                 
                 - Bloom
                 
-                - Blur (regular, **radial**, motion)
+                - **Blur** (regular, **radial**, motion)
 	    
 			    - Shadows 
 			    
-	    	- Perlin (or related) noise
-	
-			- Bump mapping
-	
-			- Use of a geometry, tessellation, or compute shader
+	    	    - Perlin (or related) noise
+	    
+			    - Bump mapping
+	    
+			    - Use of a geometry, tessellation, or compute shader
     
           
 

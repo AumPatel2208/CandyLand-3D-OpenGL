@@ -71,7 +71,7 @@ private:
 	vector<glm::vec3> worldPrismsHeightScales;
 	// vector<string> worldPrismsPositionsNames;
 	vector<int> worldPrismsIndexes;
-
+	glm::vec3 skyColour = glm::vec3(0.5f,0.5f,0.5f);
 	CFrameBufferObject *m_pFBO;
 
 	// glm::vec3 generateWorldPrismScale();
@@ -106,6 +106,7 @@ private:
 	void generateWorldPrismPositions(int count);
 	void speedSetter();
 	void accelerate(float accelerant);
+	void updateSkyColour();
 	const float maxSpeed = 0.1f;
 	const float minSpeed = 0.f;
 	float currentSpeed = 0.f;

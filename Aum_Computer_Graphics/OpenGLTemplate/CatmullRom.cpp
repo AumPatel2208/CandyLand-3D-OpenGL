@@ -312,11 +312,10 @@ void CCatmullRom::CreateOffsetCurves() {
 
 }
 
-
 void CCatmullRom::CreateTrack() {
 
     // Load texture
-    
+    m_texture.Load("resources\\textures\\track\\Glass Seamless Texture #3524.jpg");
 
     
     // Generate a VAO called m_vaoTrack and a VBO to get the offset curve points and indices on the graphics card
@@ -324,33 +323,14 @@ void CCatmullRom::CreateTrack() {
     glGenVertexArrays(1, &m_vaoTrack);
     glBindVertexArray(m_vaoTrack);
 
-    GLsizei stride = sizeof(glm::vec3) * 3 + sizeof(glm::vec2) + sizeof(glm::vec3);
+    GLsizei stride = sizeof(glm::vec3) + sizeof(glm::vec2) + sizeof(glm::vec3);
 
     CVertexBufferObject vboTrack;
     vboTrack.Create();
     vboTrack.Bind();
     glm::vec2 texCoord(0.0f, 0.0f);
     glm::vec3 normal(0.0f, 1.0f, 0.0f);
-    // for (int i = 0; i < m_centrelinePoints.size() - 2; ++i) {
-    // 	// Quad: l[i]   r[i] l[1]
-    // 	//       l[i+1] r[i] r[i+1]
-    //
-    // 	glm::vec3 p1 = m_leftOffsetPoints[i];
-    // 	glm::vec3 p2 = m_rightOffsetPoints[i];
-    // 	glm::vec3 p3 = m_leftOffsetPoints[i + 1];
-    //
-    //
-    // 	vboTrack.AddData(&p1, sizeof(glm::vec3));
-    // 	vboTrack.AddData(&p2, sizeof(glm::vec3));
-    // 	vboTrack.AddData(&p3, sizeof(glm::vec3));
-    //
-    // 	m_trackTriangles.push_back(p1);
-    // 	m_trackTriangles.push_back(p2);
-    // 	m_trackTriangles.push_back(p3);
-    //
-    // 	vboTrack.AddData(&texCoord, sizeof(glm::vec2));
-    // 	vboTrack.AddData(&normal, sizeof(glm::vec3));
-    // }
+
 
     // put the points in
     for (int i = 0; i < m_leftOffsetPoints.size() - 1; ++i) {
@@ -364,27 +344,25 @@ void CCatmullRom::CreateTrack() {
 
 
     // one set of triangles
-    for (int i = 0; i < m_trackTrianglePoints.size() - 2; ++i) {
+    for (int i = 0; i < m_trackTrianglePoints.size(); ++i) {
         vboTrack.AddData(&m_trackTrianglePoints[i], sizeof(glm::vec3));
-        vboTrack.AddData(&m_trackTrianglePoints[i + 1], sizeof(glm::vec3));
-        vboTrack.AddData(&m_trackTrianglePoints[i + 2], sizeof(glm::vec3));
         vboTrack.AddData(&texCoord, sizeof(glm::vec2));
         vboTrack.AddData(&normal, sizeof(glm::vec3));
     }
 
 
     // janky fix for not having a triangle have a point at 0,0,0
-    vboTrack.AddData(&m_trackTrianglePoints[0], sizeof(glm::vec3));
-    vboTrack.AddData(&m_trackTrianglePoints[m_trackTrianglePoints.size() - 2], sizeof(glm::vec3));
-    vboTrack.AddData(&m_trackTrianglePoints[m_trackTrianglePoints.size() - 1], sizeof(glm::vec3));
-    vboTrack.AddData(&texCoord, sizeof(glm::vec2));
-    vboTrack.AddData(&normal, sizeof(glm::vec3));
-
-    vboTrack.AddData(&m_trackTrianglePoints[0], sizeof(glm::vec3));
-    vboTrack.AddData(&m_trackTrianglePoints[m_trackTrianglePoints.size() - 1], sizeof(glm::vec3));
-    vboTrack.AddData(&m_trackTrianglePoints[1], sizeof(glm::vec3));
-    vboTrack.AddData(&texCoord, sizeof(glm::vec2));
-    vboTrack.AddData(&normal, sizeof(glm::vec3));
+    // vboTrack.AddData(&m_trackTrianglePoints[0], sizeof(glm::vec3));
+    // vboTrack.AddData(&m_trackTrianglePoints[m_trackTrianglePoints.size() - 2], sizeof(glm::vec3));
+    // vboTrack.AddData(&m_trackTrianglePoints[m_trackTrianglePoints.size() - 1], sizeof(glm::vec3));
+    // vboTrack.AddData(&texCoord, sizeof(glm::vec2));
+    // vboTrack.AddData(&normal, sizeof(glm::vec3));
+    //
+    // vboTrack.AddData(&m_trackTrianglePoints[0], sizeof(glm::vec3));
+    // vboTrack.AddData(&m_trackTrianglePoints[m_trackTrianglePoints.size() - 1], sizeof(glm::vec3));
+    // vboTrack.AddData(&m_trackTrianglePoints[1], sizeof(glm::vec3));
+    // vboTrack.AddData(&texCoord, sizeof(glm::vec2));
+    // vboTrack.AddData(&normal, sizeof(glm::vec3));
 
 
     // Upload the VBO to the GPU
@@ -403,6 +381,79 @@ void CCatmullRom::CreateTrack() {
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, (void*)((sizeof(glm::vec3) * 3) + sizeof(glm::vec2)));
 
 }
+
+//
+// void CCatmullRom::CreateTrack() {
+//
+//     // Load texture
+//     m_texture.Load("resources\\textures\\track\\Glass Seamless Texture #3524.jpg");
+//
+//     
+//     // Generate a VAO called m_vaoTrack and a VBO to get the offset curve points and indices on the graphics card
+//     // Use VAO to store state associated with vertices
+//     glGenVertexArrays(1, &m_vaoTrack);
+//     glBindVertexArray(m_vaoTrack);
+//
+//     GLsizei stride = sizeof(glm::vec3) * 3 + sizeof(glm::vec2) + sizeof(glm::vec3);
+//
+//     CVertexBufferObject vboTrack;
+//     vboTrack.Create();
+//     vboTrack.Bind();
+//     glm::vec2 texCoord(0.0f, 0.0f);
+//     glm::vec3 normal(0.0f, 1.0f, 0.0f);
+//
+//
+//     // put the points in
+//     for (int i = 0; i < m_leftOffsetPoints.size() - 1; ++i) {
+//         m_trackTrianglePoints.push_back(m_leftOffsetPoints[i]);
+//         m_trackTrianglePoints.push_back(m_rightOffsetPoints[i]);
+//     }
+//     m_trackTrianglePoints.push_back(m_leftOffsetPoints[0]);
+//     m_trackTrianglePoints.push_back(m_rightOffsetPoints[0]);
+//     m_trackTrianglePoints.push_back(m_leftOffsetPoints[1]);
+//     m_trackTrianglePoints.push_back(m_rightOffsetPoints[1]);
+//
+//
+//     // one set of triangles
+//     for (int i = 0; i < m_trackTrianglePoints.size() - 2; ++i) {
+//         vboTrack.AddData(&m_trackTrianglePoints[i], sizeof(glm::vec3));
+//         vboTrack.AddData(&m_trackTrianglePoints[i + 1], sizeof(glm::vec3));
+//         vboTrack.AddData(&m_trackTrianglePoints[i + 2], sizeof(glm::vec3));
+//         vboTrack.AddData(&texCoord, sizeof(glm::vec2));
+//         vboTrack.AddData(&normal, sizeof(glm::vec3));
+//     }
+//
+//
+//     // janky fix for not having a triangle have a point at 0,0,0
+//     vboTrack.AddData(&m_trackTrianglePoints[0], sizeof(glm::vec3));
+//     vboTrack.AddData(&m_trackTrianglePoints[m_trackTrianglePoints.size() - 2], sizeof(glm::vec3));
+//     vboTrack.AddData(&m_trackTrianglePoints[m_trackTrianglePoints.size() - 1], sizeof(glm::vec3));
+//     vboTrack.AddData(&texCoord, sizeof(glm::vec2));
+//     vboTrack.AddData(&normal, sizeof(glm::vec3));
+//
+//     vboTrack.AddData(&m_trackTrianglePoints[0], sizeof(glm::vec3));
+//     vboTrack.AddData(&m_trackTrianglePoints[m_trackTrianglePoints.size() - 1], sizeof(glm::vec3));
+//     vboTrack.AddData(&m_trackTrianglePoints[1], sizeof(glm::vec3));
+//     vboTrack.AddData(&texCoord, sizeof(glm::vec2));
+//     vboTrack.AddData(&normal, sizeof(glm::vec3));
+//
+//
+//     // Upload the VBO to the GPU
+//     vboTrack.UploadDataToGPU(GL_STATIC_DRAW);
+//     // Set the vertex attribute locations
+//     // Vertex positions
+//     glEnableVertexAttribArray(0);
+//     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0);
+//
+//     // Texture coordinates
+//     glEnableVertexAttribArray(1);
+//     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (void*)(sizeof(glm::vec3) * 3));
+//
+//     // Normal vectors
+//     glEnableVertexAttribArray(2);
+//     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, (void*)((sizeof(glm::vec3) * 3) + sizeof(glm::vec2)));
+//
+// }
 
 
 void CCatmullRom::RenderCentreline() {

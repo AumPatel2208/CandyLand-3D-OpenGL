@@ -11,6 +11,10 @@ uniform bool bUseTexture;    // A flag indicating if texture-mapping should be a
 uniform bool renderSkybox;
 in vec3 worldPosition;
 
+// FOG: Open GL Game Tutorial 16: fog https://www.youtube.com/watch?v=qslBNLeSPUc
+in float visibility;
+uniform vec3 skyColour;
+
 
 void main()
 {
@@ -18,6 +22,8 @@ void main()
 
 	if (renderSkybox) {
 		vOutputColour = texture(CubeMapTex, worldPosition);
+		// fog
+		vOutputColour = mix(vec4(skyColour, 1.0), vOutputColour, visibility);
 
 	} else {
 
@@ -28,6 +34,9 @@ void main()
 			vOutputColour = vTexColour*vec4(vColour, 1.0f);	// Combine object colour and texture 
 		else
 			vOutputColour = vec4(vColour, 1.0f);	// Just use the colour instead
+		
+		// fog
+		vOutputColour = mix(vec4(skyColour, 1.0), vOutputColour, visibility);
 	}
 	
 	

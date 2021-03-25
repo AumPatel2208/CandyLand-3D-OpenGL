@@ -362,14 +362,25 @@ void Game::Initialise() {
     float quadVertices[] = {
         // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
         // positions   // texCoords
-        -1.0f, 1.0f, 0.0f, 0.0f,
         -1.0f, -1.0f, 0.0f, 1.0f,
-        1.0f, -1.0f, 1.0f, 1.0f,
-
         -1.0f, 1.0f, 0.0f, 0.0f,
-        1.0f, -1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f, 0.0f
+        1.0f, 1.0f, 1.0f, 0.0f,
+    
+        -1.0f, -1.0f,  0.0f, 1.0f,
+        1.0f, 1.0f,  1.0f, 0.0f,
+        1.0f, -1.0f, 1.0f, 1.0f
     };
+    // float quadVertices[] = {
+    //     // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
+    //     // positions   // texCoords
+    //     -1.0f, 1.0f, 0.0f, 0.0f,
+    //     -1.0f, -1.0f, 0.0f, 1.0f,
+    //     1.0f, -1.0f, 1.0f, 1.0f,
+    //
+    //     -1.0f, 1.0f, 0.0f, 0.0f,
+    //     1.0f, -1.0f, 1.0f, 1.0f,
+    //     1.0f, 1.0f, 1.0f, 0.0f
+    // };
     // float quadVertices[] = {
     //     // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
     //     // positions   // texCoords
@@ -465,7 +476,8 @@ void Game::RenderScene(int pass) {
     pMainProgram->SetUniform("bUseTexture", true);
     pMainProgram->SetUniform("sampler0", 0);
     pMainProgram->SetUniform("CubeMapTex", 1);
-
+    pMainProgram->SetUniform("isFloor", false);
+    
 
     // Set the projection matrix
     pMainProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
@@ -487,7 +499,11 @@ void Game::RenderScene(int pass) {
     pMainProgram->SetUniform("material1.Md", glm::vec3(0.0f)); // Diffuse material reflectance
     pMainProgram->SetUniform("material1.Ms", glm::vec3(0.0f)); // Specular material reflectance
     pMainProgram->SetUniform("material1.shininess", 15.0f); // Shininess material property
-
+    //
+    // 
+    // Fog's colour
+    pMainProgram->SetUniform("skyColour", skyColour); // Shininess material property
+    
 
     // RENDERING TV
     // if (pass == 1) {
@@ -527,9 +543,12 @@ void Game::RenderScene(int pass) {
     // Render the planar terrain
     modelViewMatrixStack.Push();
     {
+        pMainProgram->SetUniform("isFloor", true); 
+ 
         pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
         pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
         m_pPlanarTerrain->Render();
+        pMainProgram->SetUniform("isFloor", false); 
     }
     modelViewMatrixStack.Pop();
 
@@ -782,7 +801,7 @@ void Game::RenderScene(int pass) {
     modelViewMatrixStack.Push();
     {
         // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
-        pMainProgram->SetUniform("bUseTexture", false); // turn off texturing
+        pMainProgram->SetUniform("bUseTexture", true); // turn off texturing
         pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
         pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
         m_pCatmullRom->RenderCentreline();
@@ -795,8 +814,8 @@ void Game::RenderScene(int pass) {
     
     // 2d rendering
     // radial blur shader
-    // CShaderProgram* pBlur = (*m_pShaderPrograms)[2];
-    // pBlur->UseProgram();
+    CShaderProgram* pBlur = (*m_pShaderPrograms)[2];
+    pBlur->UseProgram();
 
 
     // // 2d quad rendering the image
@@ -820,8 +839,8 @@ void Game::RenderScene(int pass) {
     // glDrawArrays(GL_TRIANGLES, 0, 6);
 
     // THIS ONE
-    // glEnable(GL_CULL_FACE);
-    // 2d quad rendering the image
+    glDisable(GL_CULL_FACE);
+    // // 2d quad rendering the image
     // if (pass == 1) {
     //     // glDisable(GL_CULL_FACE);
     //     glBindVertexArray(quadVAO);
@@ -838,9 +857,9 @@ void Game::RenderScene(int pass) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     // Draw hud
-    glBindVertexArray(quadVAO);
-    mHudTexture.Bind();
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    // glBindVertexArray(quadVAO);
+    // mHudTexture.Bind();
+    // glDrawArrays(GL_TRIANGLES, 0, 6);
     mHudManager.Render(pHudShader);
 }
 
@@ -895,6 +914,8 @@ void Game::Update() {
     // set the speed of the camera and car
     speedSetter();
 
+    updateSkyColour();
+    
     m_pAudio->Update();
     if (mSpeedPowerUpTimer <= 0.f) { }
     else {
@@ -1026,6 +1047,20 @@ void Game::accelerate(float accelerant) {
     if (currentSpeed < minSpeed) {
         currentSpeed = minSpeed;
     }
+}
+
+void Game::updateSkyColour() {
+    // could be interpolated slower for a much less epileptic change
+    const float HI = 100;
+    const float LO = -100;
+    
+    float r = LO + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (HI - LO))); 
+    float g = LO + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (HI - LO))); 
+    float b = LO + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (HI - LO)));
+    r/=10000;
+    g/=10000;
+    b/=10000;
+    skyColour += glm::vec3(r,g, b);
 }
 
 
