@@ -7,32 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c7796f2d-f175-488a-8831-6047c0722fba" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/OpenGLTemplate/resources/textures/track/Glass Seamless Texture #3524.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OpenGLTemplate/resources/textures/track/source.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.OpenGLTemplate/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OpenGLTemplate/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/CatmullRom.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/CatmullRom.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Game.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Game.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Game.h" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Game.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/HudManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/HudManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/mainShader.frag" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/mainShader.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/mainShader.vert" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/mainShader.vert" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/CatmullRom.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/CatmullRom.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Game.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Game.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/HudManager.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/HudManager.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.log" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.command.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.command.1.tlog" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.read.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.read.1.tlog" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.write.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.write.1.tlog" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/OpenGLTemplate.write.1u.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/OpenGLTemplate.write.1u.tlog" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/link.read.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/link.read.1.tlog" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/vc142.idb" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/vc142.idb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/vc142.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/vc142.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/x64/Debug/OpenGLTemplate.exe" beforeDir="false" afterPath="$PROJECT_DIR$/x64/Debug/OpenGLTemplate.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/x64/Debug/OpenGLTemplate.ilk" beforeDir="false" afterPath="$PROJECT_DIR$/x64/Debug/OpenGLTemplate.ilk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/x64/Debug/OpenGLTemplate.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/x64/Debug/OpenGLTemplate.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/../readme.md" afterDir="false" />
-    </list>
+    <list default="true" id="c7796f2d-f175-488a-8831-6047c0722fba" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -204,7 +179,7 @@
       <workItem from="1616510499744" duration="13543000" />
       <workItem from="1616591796929" duration="20601000" />
       <workItem from="1616672317992" duration="5777000" />
-      <workItem from="1616684360747" duration="13960000" />
+      <workItem from="1616684360747" duration="14038000" />
     </task>
     <servers />
   </component>
