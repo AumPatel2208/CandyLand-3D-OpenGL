@@ -8,7 +8,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c7796f2d-f175-488a-8831-6047c0722fba" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/motionBlur.vert" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/motionBlur.vert" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.OpenGLTemplate/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OpenGLTemplate/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Camera.h" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Camera.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Car.h" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Car.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Game.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Game.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Game.h" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Game.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Camera.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Camera.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Car.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Car.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Game.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Game.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/GameObject.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/GameObject.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.log" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.command.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.command.1.tlog" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.read.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.read.1.tlog" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.write.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.write.1.tlog" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/OpenGLTemplate.write.1u.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/OpenGLTemplate.write.1u.tlog" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/vc142.idb" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/vc142.idb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/vc142.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/vc142.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/x64/Debug/OpenGLTemplate.exe" beforeDir="false" afterPath="$PROJECT_DIR$/x64/Debug/OpenGLTemplate.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/x64/Debug/OpenGLTemplate.ilk" beforeDir="false" afterPath="$PROJECT_DIR$/x64/Debug/OpenGLTemplate.ilk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/x64/Debug/OpenGLTemplate.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/x64/Debug/OpenGLTemplate.pdb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +64,6 @@
       <option value="$PROJECT_DIR$/OpenGLTemplate/Plane.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/motionBlur.vert" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/motionBlur.frag" />
-      <option value="$PROJECT_DIR$/OpenGLTemplate/Car.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Camera.cpp" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Camera.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Pickup.cpp" />
@@ -59,10 +76,11 @@
       <option value="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/hudShader.vert" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/hudShader.frag" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/CatmullRom.cpp" />
-      <option value="$PROJECT_DIR$/OpenGLTemplate/HudManager.cpp" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/mainShader.vert" />
-      <option value="$PROJECT_DIR$/OpenGLTemplate/Game.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/mainShader.frag" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/HudManager.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Car.h" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Game.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Game.cpp" />
     </changedPaths>
   </component>
@@ -186,7 +204,7 @@
       <workItem from="1616804029105" duration="139000" />
       <workItem from="1616804190044" duration="4669000" />
       <workItem from="1616809007076" duration="3380000" />
-      <workItem from="1616861980531" duration="314000" />
+      <workItem from="1616861980531" duration="3174000" />
     </task>
     <servers />
   </component>

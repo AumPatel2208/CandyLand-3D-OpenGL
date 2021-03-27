@@ -147,8 +147,8 @@ void Game::createWorldPrisms() {
 void Game::generateWorldPrismPositions(int count) {
     // generate a position that is not on the track or too close to another prism.
     // Lower and higher bound for random positions
-    const float LO = -400.f;
-    const float HI = 400.f;
+    const float LO = -200.f;
+    const float HI = 200.f;
     const float height = 0.f;
     // string prismName = mWorldPrisms[rand() % mWorldPrisms.size()].name;
 
@@ -345,6 +345,7 @@ void Game::Initialise() {
     // creating position points to use those prisms
     generateWorldPrismPositions(50);
 
+    mPlayerXOffsetLimit = m_pCatmullRom->GetWidth()/2.f;
 
     // CREATING QUAD
     // https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_opengl/5.1.framebuffers/framebuffers.cpp   
@@ -360,28 +361,6 @@ void Game::Initialise() {
         1.0f, 1.0f, 1.0f, 1.0f
     };
 
-    // float quadVertices[] = {
-    //     // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
-    //     // positions   // texCoords
-    //     -1.0f, 1.0f, 0.0f, 0.0f,
-    //     -1.0f, -1.0f, 0.0f, 1.0f,
-    //     1.0f, -1.0f, 1.0f, 1.0f,
-    //
-    //     -1.0f, 1.0f, 0.0f, 0.0f,
-    //     1.0f, -1.0f, 1.0f, 1.0f,
-    //     1.0f, 1.0f, 1.0f, 0.0f
-    // };
-    // float quadVertices[] = {
-    //     // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
-    //     // positions   // texCoords
-    //     -1.0f, 1.0f,  0.0f, 0.0f,
-    //     1.0f, -1.0f, 1.0f, 1.0f,
-    //     -1.0f, -1.0f,0.0f, 1.0f,
-    //
-    //     -1.0f, 1.0f, 0.0f, 0.0f,
-    //     1.0f, 1.0f, 1.0f, 0.0f,
-    //     1.0f, -1.0f, 1.0f, 1.0f
-    // }; 
     // screen quad VAO
     glGenVertexArrays(1, &quadVAO);
     glGenBuffers(1, &quadVBO);
@@ -411,15 +390,11 @@ void Game::Render() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     RenderScene(1);
 
-    // Draw the 2D graphics after the 3D graphics
-    DisplayFrameRate();
+
 
     RECT dimensions = m_gameWindow.GetDimensions();
     int height = dimensions.bottom - dimensions.top;
 
-    CShaderProgram* fontProgram = (*m_pShaderPrograms)[1];
-
-    fontProgram->UseProgram();
 
     // render an image on the hud quad
 
@@ -435,6 +410,22 @@ void Game::Render() {
     // glDrawArrays(GL_TRIANGLES, 0, 6);
     // // glEnable(GL_CULL_FACE);
 
+    // 2d rendering
+    // radial blur shader
+    CShaderProgram* pBlur = (*m_pShaderPrograms)[2];
+    pBlur->UseProgram();
+   
+    // THIS ONE
+    // 2d quad rendering the blur
+    if (mSpeedPowerUpTimer > 0) {
+        glBindVertexArray(quadVAO);
+        m_pFBO->BindTexture(0);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+    }
+
+    // Font Shader
+    CShaderProgram* fontProgram = (*m_pShaderPrograms)[1];
+    fontProgram->UseProgram();
 
     // Use the font shader program and render the text
     // fontProgram->UseProgram();
@@ -443,7 +434,9 @@ void Game::Render() {
     fontProgram->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
     fontProgram->SetUniform("vColour", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
     m_pFtFont->Render(20, height - 40, 20, "Score: %i", mPlayerScore);
-
+    
+    // Draw the 2D graphics after the 3D graphics
+    DisplayFrameRate();
 
     // Swap buffers to show the rendered image
     SwapBuffers(m_gameWindow.Hdc());
@@ -482,9 +475,12 @@ void Game::RenderScene(int pass) {
     // Set light and materials in main shader program
     glm::vec4 lightPosition1 = glm::vec4(-100, 100, -100, 1); // Position of light source *in world coordinates*
     pMainProgram->SetUniform("light1.position", viewMatrix * lightPosition1); // Position of light source *in eye coordinates*
-    pMainProgram->SetUniform("light1.La", glm::vec3(1.0f, 1.0f, 1.0f)); // Ambient colour of light
-    pMainProgram->SetUniform("light1.Ld", glm::vec3(1.0f, 1.0f, 1.0f)); // Diffuse colour of light
-    pMainProgram->SetUniform("light1.Ls", glm::vec3(1.0f, 1.0f, 1.0f)); // Specular colour of light
+    // pMainProgram->SetUniform("light1.La", glm::vec3(1.0f, 1.0f, 1.0f)); // Ambient colour of light
+    // pMainProgram->SetUniform("light1.Ld", glm::vec3(1.0f, 1.0f, 1.0f)); // Diffuse colour of light
+    // pMainProgram->SetUniform("light1.Ls", glm::vec3(1.0f, 1.0f, 1.0f)); // Specular colour of light
+    pMainProgram->SetUniform("light1.La", glm::vec3(.5f, .5f, .5f)); // Ambient colour of light
+    pMainProgram->SetUniform("light1.Ld", glm::vec3(.5f, .5f, .5f)); // Diffuse colour of light
+    pMainProgram->SetUniform("light1.Ls", glm::vec3(.5f, .5f, .5f)); // Specular colour of light
     pMainProgram->SetUniform("material1.Ma", glm::vec3(1.0f)); // Ambient material reflectance
     pMainProgram->SetUniform("material1.Md", glm::vec3(0.0f)); // Diffuse material reflectance
     pMainProgram->SetUniform("material1.Ms", glm::vec3(0.0f)); // Specular material reflectance
@@ -514,7 +510,7 @@ void Game::RenderScene(int pass) {
     // to increase the spread of light, decrease these numbers
     pMainProgram->SetUniform("pointLight1.linear", 0.35f); // depends on distance you want
     pMainProgram->SetUniform("pointLight1.quadratic", 0.44f); //
-    pMainProgram->SetUniform("pointLight1.intensity", 10.f); //
+    pMainProgram->SetUniform("pointLight1.intensity", 7.f); //
 
     // RENDERING TV
     // if (pass == 1) {
@@ -624,55 +620,64 @@ void Game::RenderScene(int pass) {
         mRock->Render();
     }
     modelViewMatrixStack.Pop();
+      modelViewMatrixStack.Push();
+    {
+        modelViewMatrixStack.Translate(glm::vec3(-500.0f, 0.0f, 200.0f));
+        modelViewMatrixStack.Scale(0.5f);
+        pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
+        pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
+        mRock->Render();
+    }
+    modelViewMatrixStack.Pop();
+    modelViewMatrixStack.Push();
+    {
+        modelViewMatrixStack.Translate(glm::vec3(-300.0f, 0.0f, 0.0f));
+        modelViewMatrixStack.Scale(0.1f);
+        pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
+        pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
+        mRock->Render();
+    }
+    modelViewMatrixStack.Pop();
+    modelViewMatrixStack.Push();
+    {
+        modelViewMatrixStack.Translate(glm::vec3(100.0f, 0.0f, -200.0f));
+        modelViewMatrixStack.Scale(0.2f);
+        pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
+        pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
+        mRock->Render();
+    }
+    modelViewMatrixStack.Pop();
 
+    
     
     pMainProgram->SetUniform("numberOfLights", (int)(pickupPositions.size() + speedPowerUpPositions.size()));
     for (int i = 0; i < pickupPositions.size(); ++i) {
         // render the series of pickups
-        pMainProgram->SetUniform("pointLights[" + to_string(i) + "].position", viewMatrix * glm::vec4(pickupPositions[i].x, pickupPositions[i].y + 2.f, pickupPositions[i].z, 1.f));
+        pMainProgram->SetUniform("pointLights[" + to_string(i) + "].position", viewMatrix * glm::vec4(pickupPositions[i].x, pickupPositions[i].y + 3.f, pickupPositions[i].z, 1.f));
         pMainProgram->SetUniform("pointLights[" + to_string(i) + "].La", glm::vec3(0.57f, 0.64f, 0.12f));
         pMainProgram->SetUniform("pointLights[" + to_string(i) + "].Ld", glm::vec3(0.57f, 0.64f, 0.12f));
         pMainProgram->SetUniform("pointLights[" + to_string(i) + "].Ls", glm::vec3(0.57f, 0.64f, 0.12f));
         pMainProgram->SetUniform("pointLights[" + to_string(i) + "].constant", 1.0f); // keep 1
         // to increase the spread of light, decrease these numbers
-        pMainProgram->SetUniform("pointLights[" + to_string(i) + "].linear", 0.7f); // depends on distance you want
-        pMainProgram->SetUniform("pointLights[" + to_string(i) + "].quadratic", 1.8f); //
-        pMainProgram->SetUniform("pointLights[" + to_string(i) + "].intensity", 7.f); //
+        pMainProgram->SetUniform("pointLights[" + to_string(i) + "].linear", 0.22f); // depends on distance you want
+        pMainProgram->SetUniform("pointLights[" + to_string(i) + "].quadratic", 0.20f); //
+        pMainProgram->SetUniform("pointLights[" + to_string(i) + "].intensity", 5.f); //
     }
     for (int i = 0; i < speedPowerUpPositions.size() ; ++i) {
         // render the series of pickups
-        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].position", viewMatrix * glm::vec4(speedPowerUpPositions[i].x, speedPowerUpPositions[i].y + 2.f, speedPowerUpPositions[i].z, 1.f));
-        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].La", glm::vec3(0.10f, 0.30f, 0.70f));
-        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].Ld", glm::vec3(0.10f, 0.30f, 0.70f));
-        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].Ls", glm::vec3(0.10f, 0.30f, 0.70f));
+        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].position", viewMatrix * glm::vec4(speedPowerUpPositions[i].x, speedPowerUpPositions[i].y + 3.f, speedPowerUpPositions[i].z, 1.f));
+        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].La", glm::vec3(0.10f, 0.30f, 0.90f));
+        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].Ld", glm::vec3(0.10f, 0.30f, 0.90f));
+        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].Ls", glm::vec3(0.10f, 0.30f, 0.90f));
         pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].constant", 1.0f); // keep 1
         // to increase the spread of light, decrease these numbers
-        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].linear", 0.35f); // depends on distance you want
-        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].quadratic", .44f); //
+        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].linear", 0.22f); // depends on distance you want
+        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].quadratic", .20f); //
         pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].intensity", 7.f); //
     }
-    //
-    // // aa
-    // pMainProgram->SetUniform("pointLight3.position", viewMatrix * glm::vec4(pickupPositions[3].x, pickupPositions[3].y + 2.f, pickupPositions[3].z, 1.f));
-    // pMainProgram->SetUniform("pointLight3.La", glm::vec3(0.f, 1.f, 0.f));
-    // pMainProgram->SetUniform("pointLight3.Ld", glm::vec3(0.f, 1.f, 0.f));
-    // pMainProgram->SetUniform("pointLight3.Ls", glm::vec3(0.f, 1.f, 0.f));
-    // pMainProgram->SetUniform("pointLight3.constant", 1.0f); // keep 1
-    // // to increase the spread of light, decrease these numbers
-    // pMainProgram->SetUniform("pointLight3.linear", 0.35f); // depends on distance you want
-    // pMainProgram->SetUniform("pointLight3.quadratic", 0.44f); //
-    // pMainProgram->SetUniform("pointLight3.intensity", 10.f); //
+
 
     for (glm::vec3 p : pickupPositions) {
-        // pMainProgram->SetUniform("pointLights[" + to_string(lightIndex) + "].position", viewMatrix * glm::vec4(p, 1.f));
-        // pMainProgram->SetUniform("pointLights[" + to_string(lightIndex) + "].La", glm::vec3(0.f, 1.f, 0.f));
-        // pMainProgram->SetUniform("pointLights[" + to_string(lightIndex) + "].Ld", glm::vec3(0.f, 1.f, 0.f));
-        // pMainProgram->SetUniform("pointLights[" + to_string(lightIndex) + "].Ls", glm::vec3(0.f, 1.f, 0.f));
-        // pMainProgram->SetUniform("pointLights[" + to_string(lightIndex) + "].constant", 1.0f); // keep 1
-        // // to increase the spread of light, decrease these numbers
-        // pMainProgram->SetUniform("pointLights[" + to_string(lightIndex) + "].linear", 0.35f); // depends on distance you want
-        // pMainProgram->SetUniform("pointLights[" + to_string(lightIndex) + "].quadratic", 0.44f); //
-        // pMainProgram->SetUniform("pointLights[" + to_string(lightIndex) + "].intensity", 10.f); //
 
         // Render the pickup 
         modelViewMatrixStack.Push();
@@ -687,11 +692,7 @@ void Game::RenderScene(int pass) {
             pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
             pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
             mPickup->Render();
-            // if(mPickup->showCollisionSphere) {
-            //    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-            //    mPickup->getCollisionSphere()->Render();
-            //     // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-            // }
+
         }
         modelViewMatrixStack.Pop();
     }
@@ -804,8 +805,7 @@ void Game::RenderScene(int pass) {
             // modelViewMatrixStack.Scale(mSpeedPowerUp->collisionScale());
             pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
             pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-            // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
-            //pMainProgram->SetUniform("bUseTexture", false);
+
             // m_pSphere->Render();
             mSpeedPowerUp->getCollisionSphere()->Render();
         }
@@ -822,8 +822,6 @@ void Game::RenderScene(int pass) {
         modelViewMatrixStack.Scale(mPrism->scale());
         pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
         pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-        // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
-        //pMainProgram->SetUniform("bUseTexture", false);
         mPrism->Render();
         // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
     }
@@ -865,45 +863,18 @@ void Game::RenderScene(int pass) {
     modelViewMatrixStack.Pop();
 
 
-    // 2d rendering
-    // radial blur shader
-    CShaderProgram* pBlur = (*m_pShaderPrograms)[2];
-    pBlur->UseProgram();
-
-
-    // // 2d quad rendering the image
+    // // 2d rendering
+    // // radial blur shader
+    // CShaderProgram* pBlur = (*m_pShaderPrograms)[2];
+    // pBlur->UseProgram();
+    //
+    // // THIS ONE
+    // // 2d quad rendering the blur
     // if (pass == 1 && mSpeedPowerUpTimer > 0) {
     //     glBindVertexArray(quadVAO);
-    //     // glDisable(GL_DEPTH_TEST);
-    //     // glBindTexture(GL_TEXTURE_2D, m_pFBO.);
-    //     // pBlur->SetUniform("tex",);
     //     m_pFBO->BindTexture(0);
     //     glDrawArrays(GL_TRIANGLES, 0, 6);
     // }
-    // 
-    // glDisable(GL_CULL_FACE);
-    // glBindVertexArray(quadVAO);
-    // glDisable(GL_DEPTH_TEST);
-    // glBindTexture(GL_TEXTURE_2D, m_pFBO.);
-    // pBlur->SetUniform("tex",);
-    // mHudTexture.Bind();
-    // pBlur->SetUniform("matrices.modelViewMatrix", glm::mat4(1));
-    // pBlur->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
-    // glDrawArrays(GL_TRIANGLES, 0, 6);
-
-    // THIS ONE
-    // glDisable(GL_CULL_FACE);
-    // 2d quad rendering the image
-    if (pass == 1 && mSpeedPowerUpTimer > 0) {
-        // glDisable(GL_CULL_FACE);
-        glBindVertexArray(quadVAO);
-        // glDisable(GL_DEPTH_TEST);
-        // glBindTexture(GL_TEXTURE_2D, m_pFBO.);
-        // pBlur->SetUniform("tex",);
-        m_pFBO->BindTexture(0);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        // glEnable(GL_CULL_FACE);
-    }
 
     CShaderProgram* pHudShader = (*m_pShaderPrograms)[3];
     pHudShader->UseProgram();
@@ -944,9 +915,10 @@ void Game::Update() {
             mPlayerLane = 0;
         else if (mPlayerLane == 0)
             mPlayerLane = -1;
-        mPlayerOffset -= m_dt * mCar->getOffsetSpeed();
-        mCar->addXOffset(mPlayerOffset);
-        m_pCamera->setPositionOffset(mCar->getOffset());
+        
+        mPlayerXOffset -= m_dt * mCar->getXOffsetSpeed();
+        mCar->setXOffset(mPlayerXOffset);
+        m_pCamera->setXOffset(mCar->getXOffset());
 
     }
     else if (GetKeyState(VK_RIGHT) & 0x80) {
@@ -954,9 +926,9 @@ void Game::Update() {
             mPlayerLane = 0;
         else if (mPlayerLane == 0)
             mPlayerLane = 1;
-        mPlayerOffset += m_dt * mCar->getOffsetSpeed();
-        mCar->addXOffset(mPlayerOffset);
-        m_pCamera->setPositionOffset(mCar->getOffset());
+        mPlayerXOffset += m_dt * mCar->getXOffsetSpeed();
+        mCar->setXOffset(mPlayerXOffset);
+        m_pCamera->setXOffset(mCar->getXOffset());
     }
 
     ManageCollisions();

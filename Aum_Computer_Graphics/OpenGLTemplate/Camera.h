@@ -70,7 +70,7 @@ public:
         }
     }
 
-    void setPositionOffset(float offset) {
+    void setXOffset(float offset) {
         mPositionOffset = offset;
     }
 

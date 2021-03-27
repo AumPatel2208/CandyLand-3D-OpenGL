@@ -28,14 +28,14 @@ public:
         mPosition = pos;
     }
 
-    float getOffsetSpeed() {
+    float getXOffsetSpeed() {
         return mPositionOffsetSpeed;
     }
-    float getOffset() {
+    float getXOffset() {
         return mPositionOffset;
     }
     
-    void addXOffset(float offset) {
+    void setXOffset(float offset) {
         mPositionOffset = offset;
     }
     glm::mat4 getRotationOnPath(){return rotationOnPath;}

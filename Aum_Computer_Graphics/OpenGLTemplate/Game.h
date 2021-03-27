@@ -136,7 +136,9 @@ private:
 	double mSeconds = 0;
 
 	int mPlayerLane = 0; // -1 is left, +1 is right
-	float mPlayerOffset = 0.f;
+	float mPlayerXOffset = 0.f;
+	// const float mPlayerXOffsetLimit = 10.f;
+	float mPlayerXOffsetLimit;
 	// glm::mat4 prevModelViewProj;
 	float mSpeedPowerUpTimer = 0.f;
 	
