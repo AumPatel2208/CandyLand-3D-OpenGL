@@ -27,6 +27,19 @@ class COpenAssetImportMesh;
 class CAudio;
 class CCatmullRom;
 
+struct LightInfo {
+	glm::vec4 position;
+	glm::vec3 La;
+	glm::vec3 Ld;
+	glm::vec3 Ls;
+
+	// https://learnopengl.com/Lighting/Light-casters
+	float constant;
+	float linear;
+	float quadratic;
+	float intensity;
+};
+
 class Game {
 	struct WorldPrism {
 		string name;
@@ -74,6 +87,7 @@ private:
 	glm::vec3 skyColour = glm::vec3(0.5f,0.5f,0.5f);
 	CFrameBufferObject *m_pFBO;
 
+	vector<LightInfo> mPointLights;
 	// glm::vec3 generateWorldPrismScale();
 	
 
@@ -112,6 +126,7 @@ private:
 	float currentSpeed = 0.f;
 	const float boostSpeed = 0.2f;
 	float mMovementSpeedCarCamera = 0.0001f;
+	
 
 	
 	GameWindow m_gameWindow;

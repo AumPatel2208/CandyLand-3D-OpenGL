@@ -80,6 +80,21 @@
     <ClInclude Include="Car.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FrameBufferObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HudItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HudManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Prism.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedPowerUp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Audio.cpp">
@@ -142,6 +157,21 @@
     <ClCompile Include="Car.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FrameBufferObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HudItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HudManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Prism.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedPowerUp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\mainShader.frag">
@@ -154,6 +184,24 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="resources\shaders\textShader.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="resources\shaders\hudShader.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="resources\shaders\hudShader.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="resources\shaders\motionBlur.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="resources\shaders\motionBlur.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="resources\shaders\velocityBuffer.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="resources\shaders\velocityBuffer.vert">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

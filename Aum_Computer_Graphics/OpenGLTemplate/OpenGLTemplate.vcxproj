@@ -175,10 +175,16 @@
     <ClCompile Include="VertexBufferObjectIndexed.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="resources\shaders\hudShader.frag" />
+    <None Include="resources\shaders\hudShader.vert" />
     <None Include="resources\shaders\mainShader.frag" />
     <None Include="resources\shaders\mainShader.vert" />
+    <None Include="resources\shaders\motionBlur.frag" />
+    <None Include="resources\shaders\motionBlur.vert" />
     <None Include="resources\shaders\textShader.frag" />
     <None Include="resources\shaders\textShader.vert" />
+    <None Include="resources\shaders\velocityBuffer.frag" />
+    <None Include="resources\shaders\velocityBuffer.vert" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="resources\shaders\hudShader.frag" />

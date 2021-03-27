@@ -26,6 +26,8 @@ struct MaterialInfo
 	float shininess;
 };
 
+
+
 // Lights and materials passed in as uniform variables from client programme
 uniform LightInfo light1; 
 uniform MaterialInfo material1; 
@@ -43,6 +45,9 @@ out vec2 vTexCoord;	// Texture coordinate
 out vec3 worldPosition;	// used for skybox
 // FOG: Open GL Game Tutorial 16: fog https://www.youtube.com/watch?v=qslBNLeSPUc
 out float visibility;
+out MaterialInfo materialOut;
+out vec4 eyePosition;
+out vec3 eyeNormal;
 float density = 0.005;
 float gradient = 1.5;
 
@@ -68,17 +73,17 @@ vec3 PhongModel(vec4 eyePosition, vec3 eyeNorm)
 	
 	
 	// toon shader
-	float intensity;
-	vec4 color;
-	intensity = dot(light1.Ld, normalize(inNormal));
-	if(intensity > 0.95)
-		color = vec4(1.0,0.5,0.5,1.0);
-	else if (intensity > 0.5)
-		color = vec4(0.6,0.3,0.3,1.0);
-	else if (intensity > 0.25)
-		color = vec4(0.4,0.2,0.2,1.0);
-	else
-		color = vec4(0.2,0.1,0.1,1.0);
+//	float intensity;
+//	vec4 color;
+//	intensity = dot(light1.Ld, normalize(inNormal));
+//	if(intensity > 0.95)
+//		color = vec4(1.0,0.5,0.5,1.0);
+//	else if (intensity > 0.5)
+//		color = vec4(0.6,0.3,0.3,1.0);
+//	else if (intensity > 0.25)
+//		color = vec4(0.4,0.2,0.2,1.0);
+//	else
+//		color = vec4(0.2,0.1,0.1,1.0);
 	
 //	return ambient + vec3(color.x,color.y,color.z) + diffuse + specular;
 
@@ -120,5 +125,9 @@ void main()
 	
 	// Pass through the texture coordinate
 	vTexCoord = inCoord;
+	
+	eyePosition = vEyePosition;
+	eyeNormal = vEyeNorm;
+	materialOut = material1;
 } 
 	

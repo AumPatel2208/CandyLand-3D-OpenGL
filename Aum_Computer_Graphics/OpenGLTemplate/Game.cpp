@@ -265,7 +265,7 @@ void Game::Initialise() {
     pMotionBlurProgram->AddShaderToProgram(&shShaders[5]);
     pMotionBlurProgram->LinkProgram();
     m_pShaderPrograms->push_back(pMotionBlurProgram);
-    
+
     // Create the hud shader program
     CShaderProgram* pHudProgram = new CShaderProgram;
     pHudProgram->CreateProgram();
@@ -348,28 +348,18 @@ void Game::Initialise() {
 
     // CREATING QUAD
     // https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_opengl/5.1.framebuffers/framebuffers.cpp   
-    // float quadVertices[] = {
-    //     // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
-    //     // positions   // texCoords
-    //     -1.0f, 1.0f, 0.0f, 1.0f,
-    //     -1.0f, -1.0f, 0.0f, 0.0f,
-    //     1.0f, -1.0f, 1.0f, 0.0f,
-    //
-    //     -1.0f, 1.0f,  0.0f, 1.0f,
-    //     1.0f, -1.0f,  1.0f, 0.0f,
-    //     1.0f, 1.0f, 1.0f, 1.0f
-    // };
     float quadVertices[] = {
         // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
         // positions   // texCoords
-        -1.0f, -1.0f, 0.0f, 1.0f,
-        -1.0f, 1.0f, 0.0f, 0.0f,
-        1.0f, 1.0f, 1.0f, 0.0f,
+        -1.0f, 1.0f, 0.0f, 1.0f,
+        -1.0f, -1.0f, 0.0f, 0.0f,
+        1.0f, -1.0f, 1.0f, 0.0f,
     
-        -1.0f, -1.0f,  0.0f, 1.0f,
-        1.0f, 1.0f,  1.0f, 0.0f,
-        1.0f, -1.0f, 1.0f, 1.0f
+        -1.0f, 1.0f,  0.0f, 1.0f,
+        1.0f, -1.0f,  1.0f, 0.0f,
+        1.0f, 1.0f, 1.0f, 1.0f
     };
+
     // float quadVertices[] = {
     //     // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
     //     // positions   // texCoords
@@ -404,7 +394,7 @@ void Game::Initialise() {
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
     mHudManager.Create();
-    
+
     // HUD SETUP
     mHudTexture.Load("resources\\textures\\hud\\santa_png\\santa.png");
 
@@ -433,7 +423,7 @@ void Game::Render() {
 
     // render an image on the hud quad
 
-    
+    //
     // // glDisable(GL_CULL_FACE);
     // glBindVertexArray(quadVAO);
     // glDisable(GL_DEPTH_TEST);
@@ -477,7 +467,7 @@ void Game::RenderScene(int pass) {
     pMainProgram->SetUniform("sampler0", 0);
     pMainProgram->SetUniform("CubeMapTex", 1);
     pMainProgram->SetUniform("isFloor", false);
-    
+
 
     // Set the projection matrix
     pMainProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
@@ -499,11 +489,32 @@ void Game::RenderScene(int pass) {
     pMainProgram->SetUniform("material1.Md", glm::vec3(0.0f)); // Diffuse material reflectance
     pMainProgram->SetUniform("material1.Ms", glm::vec3(0.0f)); // Specular material reflectance
     pMainProgram->SetUniform("material1.shininess", 15.0f); // Shininess material property
-    //
-    // 
+
     // Fog's colour
     pMainProgram->SetUniform("skyColour", skyColour); // Shininess material property
-    
+
+
+    // Point light setting
+    // vec4 position;
+    // vec3 La;
+    // vec3 Ld;
+    // vec3 Ls;
+    //
+    // // https://learnopengl.com/Lighting/Light-casters
+    // float constant;
+    // float linear;
+    // float quadratic;
+    // 
+    // pMainProgram->SetUniform("pointLight1.position", viewMatrix * glm::vec4(0.f,10.f,0.f,1.f)); 
+    pMainProgram->SetUniform("pointLight1.position", viewMatrix * glm::vec4(mCar->position().x, mCar->position().y + 2.f, mCar->position().z, 1.f));
+    pMainProgram->SetUniform("pointLight1.La", glm::vec3(0.f, 1.f, 0.f));
+    pMainProgram->SetUniform("pointLight1.Ld", glm::vec3(0.f, 1.f, 0.f));
+    pMainProgram->SetUniform("pointLight1.Ls", glm::vec3(0.f, 1.f, 0.f));
+    pMainProgram->SetUniform("pointLight1.constant", 1.0f); // keep 1
+    // to increase the spread of light, decrease these numbers
+    pMainProgram->SetUniform("pointLight1.linear", 0.35f); // depends on distance you want
+    pMainProgram->SetUniform("pointLight1.quadratic", 0.44f); //
+    pMainProgram->SetUniform("pointLight1.intensity", 10.f); //
 
     // RENDERING TV
     // if (pass == 1) {
@@ -525,7 +536,7 @@ void Game::RenderScene(int pass) {
     //     glEnable(GL_CULL_FACE);
     // }
 
-    
+
     // Render the skybox and terrain with full ambient reflectance 
     modelViewMatrixStack.Push();
     {
@@ -543,12 +554,12 @@ void Game::RenderScene(int pass) {
     // Render the planar terrain
     modelViewMatrixStack.Push();
     {
-        pMainProgram->SetUniform("isFloor", true); 
- 
+        pMainProgram->SetUniform("isFloor", true);
+
         pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
         pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
         m_pPlanarTerrain->Render();
-        pMainProgram->SetUniform("isFloor", false); 
+        pMainProgram->SetUniform("isFloor", false);
     }
     modelViewMatrixStack.Pop();
 
@@ -584,7 +595,7 @@ void Game::RenderScene(int pass) {
         m_pBarrelMesh->Render();
     }
     modelViewMatrixStack.Pop();
-    
+
     // Render the Rocks 
     modelViewMatrixStack.Push();
     {
@@ -614,12 +625,55 @@ void Game::RenderScene(int pass) {
     }
     modelViewMatrixStack.Pop();
 
-
-
-
     
-    // render the series of pickups
+    pMainProgram->SetUniform("numberOfLights", (int)(pickupPositions.size() + speedPowerUpPositions.size()));
+    for (int i = 0; i < pickupPositions.size(); ++i) {
+        // render the series of pickups
+        pMainProgram->SetUniform("pointLights[" + to_string(i) + "].position", viewMatrix * glm::vec4(pickupPositions[i].x, pickupPositions[i].y + 2.f, pickupPositions[i].z, 1.f));
+        pMainProgram->SetUniform("pointLights[" + to_string(i) + "].La", glm::vec3(0.57f, 0.64f, 0.12f));
+        pMainProgram->SetUniform("pointLights[" + to_string(i) + "].Ld", glm::vec3(0.57f, 0.64f, 0.12f));
+        pMainProgram->SetUniform("pointLights[" + to_string(i) + "].Ls", glm::vec3(0.57f, 0.64f, 0.12f));
+        pMainProgram->SetUniform("pointLights[" + to_string(i) + "].constant", 1.0f); // keep 1
+        // to increase the spread of light, decrease these numbers
+        pMainProgram->SetUniform("pointLights[" + to_string(i) + "].linear", 0.7f); // depends on distance you want
+        pMainProgram->SetUniform("pointLights[" + to_string(i) + "].quadratic", 1.8f); //
+        pMainProgram->SetUniform("pointLights[" + to_string(i) + "].intensity", 7.f); //
+    }
+    for (int i = 0; i < speedPowerUpPositions.size() ; ++i) {
+        // render the series of pickups
+        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].position", viewMatrix * glm::vec4(speedPowerUpPositions[i].x, speedPowerUpPositions[i].y + 2.f, speedPowerUpPositions[i].z, 1.f));
+        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].La", glm::vec3(0.10f, 0.30f, 0.70f));
+        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].Ld", glm::vec3(0.10f, 0.30f, 0.70f));
+        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].Ls", glm::vec3(0.10f, 0.30f, 0.70f));
+        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].constant", 1.0f); // keep 1
+        // to increase the spread of light, decrease these numbers
+        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].linear", 0.35f); // depends on distance you want
+        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].quadratic", .44f); //
+        pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].intensity", 7.f); //
+    }
+    //
+    // // aa
+    // pMainProgram->SetUniform("pointLight3.position", viewMatrix * glm::vec4(pickupPositions[3].x, pickupPositions[3].y + 2.f, pickupPositions[3].z, 1.f));
+    // pMainProgram->SetUniform("pointLight3.La", glm::vec3(0.f, 1.f, 0.f));
+    // pMainProgram->SetUniform("pointLight3.Ld", glm::vec3(0.f, 1.f, 0.f));
+    // pMainProgram->SetUniform("pointLight3.Ls", glm::vec3(0.f, 1.f, 0.f));
+    // pMainProgram->SetUniform("pointLight3.constant", 1.0f); // keep 1
+    // // to increase the spread of light, decrease these numbers
+    // pMainProgram->SetUniform("pointLight3.linear", 0.35f); // depends on distance you want
+    // pMainProgram->SetUniform("pointLight3.quadratic", 0.44f); //
+    // pMainProgram->SetUniform("pointLight3.intensity", 10.f); //
+
     for (glm::vec3 p : pickupPositions) {
+        // pMainProgram->SetUniform("pointLights[" + to_string(lightIndex) + "].position", viewMatrix * glm::vec4(p, 1.f));
+        // pMainProgram->SetUniform("pointLights[" + to_string(lightIndex) + "].La", glm::vec3(0.f, 1.f, 0.f));
+        // pMainProgram->SetUniform("pointLights[" + to_string(lightIndex) + "].Ld", glm::vec3(0.f, 1.f, 0.f));
+        // pMainProgram->SetUniform("pointLights[" + to_string(lightIndex) + "].Ls", glm::vec3(0.f, 1.f, 0.f));
+        // pMainProgram->SetUniform("pointLights[" + to_string(lightIndex) + "].constant", 1.0f); // keep 1
+        // // to increase the spread of light, decrease these numbers
+        // pMainProgram->SetUniform("pointLights[" + to_string(lightIndex) + "].linear", 0.35f); // depends on distance you want
+        // pMainProgram->SetUniform("pointLights[" + to_string(lightIndex) + "].quadratic", 0.44f); //
+        // pMainProgram->SetUniform("pointLights[" + to_string(lightIndex) + "].intensity", 10.f); //
+
         // Render the pickup 
         modelViewMatrixStack.Push();
         {
@@ -640,7 +694,6 @@ void Game::RenderScene(int pass) {
             // }
         }
         modelViewMatrixStack.Pop();
-
     }
 
 
@@ -811,7 +864,7 @@ void Game::RenderScene(int pass) {
     }
     modelViewMatrixStack.Pop();
 
-    
+
     // 2d rendering
     // radial blur shader
     CShaderProgram* pBlur = (*m_pShaderPrograms)[2];
@@ -839,18 +892,18 @@ void Game::RenderScene(int pass) {
     // glDrawArrays(GL_TRIANGLES, 0, 6);
 
     // THIS ONE
-    glDisable(GL_CULL_FACE);
-    // // 2d quad rendering the image
-    // if (pass == 1) {
-    //     // glDisable(GL_CULL_FACE);
-    //     glBindVertexArray(quadVAO);
-    //     // glDisable(GL_DEPTH_TEST);
-    //     // glBindTexture(GL_TEXTURE_2D, m_pFBO.);
-    //     // pBlur->SetUniform("tex",);
-    //     m_pFBO->BindTexture(0);
-    //     glDrawArrays(GL_TRIANGLES, 0, 6);
-    //     // glEnable(GL_CULL_FACE);
-    // }
+    // glDisable(GL_CULL_FACE);
+    // 2d quad rendering the image
+    if (pass == 1 && mSpeedPowerUpTimer > 0) {
+        // glDisable(GL_CULL_FACE);
+        glBindVertexArray(quadVAO);
+        // glDisable(GL_DEPTH_TEST);
+        // glBindTexture(GL_TEXTURE_2D, m_pFBO.);
+        // pBlur->SetUniform("tex",);
+        m_pFBO->BindTexture(0);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        // glEnable(GL_CULL_FACE);
+    }
 
     CShaderProgram* pHudShader = (*m_pShaderPrograms)[3];
     pHudShader->UseProgram();
@@ -860,7 +913,7 @@ void Game::RenderScene(int pass) {
     // glBindVertexArray(quadVAO);
     // mHudTexture.Bind();
     // glDrawArrays(GL_TRIANGLES, 0, 6);
-    mHudManager.Render(pHudShader);
+    // mHudManager.Render(pHudShader);
 }
 
 
@@ -915,7 +968,7 @@ void Game::Update() {
     speedSetter();
 
     updateSkyColour();
-    
+
     m_pAudio->Update();
     if (mSpeedPowerUpTimer <= 0.f) { }
     else {
@@ -951,22 +1004,22 @@ void Game::ManageCollisions() {
     // }
 
     vector<glm::vec3> removedPickupPositions;
-    
+
     for (auto p = pickupPositions.begin(); p != pickupPositions.end(); ++p) {
         bool isFound = false;
-        for (auto && toRemove : pickupsToRemove) {
-            if(toRemove==p) {
+        for (auto&& toRemove : pickupsToRemove) {
+            if (toRemove == p) {
                 isFound = true;
                 break;
             }
         }
-        if(isFound) continue;
+        if (isFound) continue;
 
         removedPickupPositions.push_back(*p);
     }
     pickupPositions = removedPickupPositions;
 
-    
+
     // SPEED COLLISIONS
     vector<vector<glm::vec3>::iterator> speedPowerUpsToRemove;
 
@@ -994,16 +1047,16 @@ void Game::ManageCollisions() {
     //     speedPowerUpPositions.erase(i);
     // }
     vector<glm::vec3> removedSpeedPowerUpPositions;
-    
+
     for (auto p = speedPowerUpPositions.begin(); p != speedPowerUpPositions.end(); ++p) {
         bool isFound = false;
-        for (auto && toRemove : speedPowerUpsToRemove) {
-            if(toRemove==p) {
+        for (auto&& toRemove : speedPowerUpsToRemove) {
+            if (toRemove == p) {
                 isFound = true;
                 break;
             }
         }
-        if(isFound) continue;
+        if (isFound) continue;
 
         removedSpeedPowerUpPositions.push_back(*p);
     }
@@ -1053,14 +1106,14 @@ void Game::updateSkyColour() {
     // could be interpolated slower for a much less epileptic change
     const float HI = 100;
     const float LO = -100;
-    
-    float r = LO + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (HI - LO))); 
-    float g = LO + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (HI - LO))); 
+
+    float r = LO + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (HI - LO)));
+    float g = LO + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (HI - LO)));
     float b = LO + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (HI - LO)));
-    r/=10000;
-    g/=10000;
-    b/=10000;
-    skyColour += glm::vec3(r,g, b);
+    r /= 10000;
+    g /= 10000;
+    b /= 10000;
+    skyColour += glm::vec3(r, g, b);
 }
 
 
