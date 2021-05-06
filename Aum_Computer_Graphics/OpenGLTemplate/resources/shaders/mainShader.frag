@@ -1,19 +1,20 @@
 #version 400 core
 
-in vec3 vColour;// Interpolated colour using colour calculated in the vertex shader
-in vec2 vTexCoord;// Interpolated texture coordinate using texture coordinate from the vertex shader
+in vec3 vColour;			// Interpolated colour using colour calculated in the vertex shader
+in vec2 vTexCoord;			// Interpolated texture coordinate using texture coordinate from the vertex shader
 
-out vec4 vOutputColour;// The output colour
+out vec4 vOutputColour;		// The output colour
 
-uniform sampler2D sampler0;// The texture sampler
+uniform sampler2D sampler0;  // The texture sampler
 uniform samplerCube CubeMapTex;
-uniform bool bUseTexture;// A flag indicating if texture-mapping should be applied
+uniform bool bUseTexture;    // A flag indicating if texture-mapping should be applied
 uniform bool renderSkybox;
 in vec3 worldPosition;
 
 // FOG: Open GL Game Tutorial 16: fog https://www.youtube.com/watch?v=qslBNLeSPUc
 in float visibility;
 uniform vec3 skyColour;
+
 
 // Structure holding light information:  its position as well as ambient, diffuse, and specular colours
 struct LightInfo
@@ -37,7 +38,6 @@ struct MaterialInfo
     vec3 Ms;
     float shininess;
 };
-
 in MaterialInfo materialOut;
 in vec4 eyePosition;
 in vec3 eyeNormal;
@@ -45,13 +45,11 @@ uniform LightInfo pointLight1;
 //uniform LightInfo pointLight2;
 //uniform LightInfo pointLight3;
 
-#define MAX_NO_LIGHTS 500 
+// if this number is too large a maximum register limit can be set
+#define MAX_NO_LIGHTS 100
 uniform LightInfo pointLights[MAX_NO_LIGHTS];
-
 uniform int numberOfLights;
 //uniform LightInfo pointLights[MAX_NO_LIGHTS];
-
-
 
 vec3 PointLightPhong(vec4 pEyePos, vec3 pEyeNorm, LightInfo pPointLight){
     vec3 s = normalize(vec3(pPointLight.position - pEyePos));
@@ -80,9 +78,10 @@ vec3 PointLightPhong(vec4 pEyePos, vec3 pEyeNorm, LightInfo pPointLight){
 
 void main()
 {
-    vec3 pointLightColours = PointLightPhong(eyePosition, eyeNormal, pointLight1);
-//    pointLightColours += PointLightPhong(eyePosition, eyeNormal, pointLight2);
-//    pointLightColours += PointLightPhong(eyePosition, eyeNormal, pointLight3);
+	
+	vec3 pointLightColours = PointLightPhong(eyePosition, eyeNormal, pointLight1);
+	//pointLightColours += PointLightPhong(eyePosition, eyeNormal, pointLight2);
+    //pointLightColours += PointLightPhong(eyePosition, eyeNormal, pointLight3);
     // Multiple number of lights
     int cap = numberOfLights;
     if (numberOfLights > MAX_NO_LIGHTS){
@@ -91,30 +90,29 @@ void main()
     for (int i = 0; i<cap; i++){
         pointLightColours +=PointLightPhong(eyePosition, eyeNormal, pointLights[i]); 
     }
-    
 
-//    
-//    // adding the lights into the colour
-//    for(int i = 0; i < cap; i++){
-//        pointLightColours = PointLightPhong(eyePosition, eyeNormal, pointLights[i]); 
-//    }
 
-    if (renderSkybox) {
-        vOutputColour = texture(CubeMapTex, worldPosition);
-        // fog
+	if (renderSkybox) {
+		vOutputColour = texture(CubeMapTex, worldPosition);
+		// fog
         vOutputColour = mix(vec4(skyColour, 1.0), vOutputColour, visibility);
 
-    } else {
+	} else {
 
-        // Get the texel colour from the texture sampler
-        vec4 vTexColour = texture(sampler0, vTexCoord);
+		// Get the texel colour from the texture sampler
+		vec4 vTexColour = texture(sampler0, vTexCoord);	
 
-        if (bUseTexture)
-            vOutputColour = vTexColour*vec4(vColour + pointLightColours, 1.0f);// Combine object colour and texture 
-        else
-            vOutputColour = vec4(vColour + pointLightColours, 1.0f);// Just use the colour instead
+		if (bUseTexture){
+			vOutputColour = vTexColour*vec4(vColour  + pointLightColours ,1.0f);	// Combine object colour and texture 
+			//vOutputColour = vTexColour*vec4(vColour ,1.0f);	// Combine object colour and texture 
+		}
+		else{
+			vOutputColour = vec4(vColour + pointLightColours, 1.0f);	// Just use the colour instead
+		}
 
-        // fog
+		// fog
         vOutputColour = mix(vec4(skyColour, 1.0), vOutputColour, visibility);
-    }
+	}
+	
+	
 }
