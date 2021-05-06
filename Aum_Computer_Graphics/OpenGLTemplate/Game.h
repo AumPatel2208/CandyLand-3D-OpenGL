@@ -51,6 +51,7 @@ private:
 	void Initialise();
 	void Update();
 	void Render();
+	void RenderMenu(int pass);
 	void RenderScene(int pass);
 
 	
@@ -119,6 +120,7 @@ private:
 	void createWorldPrisms();
 	void generateWorldPrismPositions(int count);
 	void speedSetter();
+	void speedUISetter();
 	void accelerate(float accelerant);
 	void updateSkyColour();
 	const float maxSpeed = 0.1f;
@@ -144,6 +146,7 @@ private:
 	
 	unsigned int quadVAO, quadVBO;
 
+	
 	// HUD
 	CTexture mHudTexture;
 

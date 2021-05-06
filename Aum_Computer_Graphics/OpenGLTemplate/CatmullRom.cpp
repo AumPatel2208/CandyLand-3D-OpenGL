@@ -36,10 +36,15 @@ void CCatmullRom::SetControlPoints() {
     // m_controlPoints.push_back(glm::vec3(0, 5, -100));
     // m_controlPoints.push_back(glm::vec3(71, 5, -71));
 
-    float xOffset = 0;
-    float zOffset = 0;
-    float yOffset = 35;
 
+    const float xScale = 10.f;
+    const float zScale = 10.f;
+    const float yScale = 10.f;
+    const float xOffset = 0 * xScale;
+    const float zOffset = 0 * zScale;
+    const float yOffset = 10 * yScale;
+    ///// PATH A  ////////
+    /*
     m_controlPoints.push_back(glm::vec3(xOffset + 0, yOffset + 0, zOffset + -80));
     m_controlPoints.push_back(glm::vec3(xOffset + 30, yOffset + 0, zOffset + -60));
     m_controlPoints.push_back(glm::vec3(xOffset + 90, yOffset + -30, zOffset + -30));
@@ -60,6 +65,84 @@ void CCatmullRom::SetControlPoints() {
     // changed due to crimp
     m_controlPoints.push_back(glm::vec3(xOffset + -40, yOffset + 0, zOffset + -90));
     // m_controlPoints.push_back(glm::vec3(xOffset + -30, yOffset + 0, zOffset + -80));
+    */
+
+    ///// PATH B  ////////
+
+
+    m_controlPoints.emplace_back(xOffset + xScale * 59.0, yOffset + yScale * 5.0, zOffset + zScale * 7.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 62.0, yOffset + yScale * 7.0, zOffset + zScale * 10.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 65.0, yOffset + yScale * 9.0, zOffset + zScale * 12.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 69.0, yOffset + yScale * 10.0, zOffset + zScale * 12.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 72.0, yOffset + yScale * 10.0, zOffset + zScale * 12.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 77.0, yOffset + yScale * 10.0, zOffset + zScale * 11.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 79.0, yOffset + yScale * 10.0, zOffset + zScale * 7.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 80.0, yOffset + yScale * 10.0, zOffset + zScale * 2.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 79.0, yOffset + yScale * 10.0, zOffset + zScale * -3.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 73.0, yOffset + yScale * 10.0, zOffset + zScale * -7.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 64.0, yOffset + yScale * 10.0, zOffset + zScale * -7.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 57.0, yOffset + yScale * 9.0, zOffset + zScale * -7.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 51.0, yOffset + yScale * 7.0, zOffset + zScale * -5.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 43.0, yOffset + yScale * 4.0, zOffset + zScale * -3.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 36.0, yOffset + yScale * 1.0, zOffset + zScale * 0.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 31.0, yOffset + yScale * 0.0, zOffset + zScale * 6.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 25.0, yOffset + yScale * 0.0, zOffset + zScale * 10.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 17.0, yOffset + yScale * 0.0, zOffset + zScale * 10.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 11.0, yOffset + yScale * 0.0, zOffset + zScale * 7.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 10.0, yOffset + yScale * 0.0, zOffset + zScale * 0.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 10.0, yOffset + yScale * 2.0, zOffset + zScale * -6.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 10.0, yOffset + yScale * 7.0, zOffset + zScale * -13.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 10.0, yOffset + yScale * 15.0, zOffset + zScale * -19.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 10.0, yOffset + yScale * 27.0, zOffset + zScale * -26.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 10.0, yOffset + yScale * 30.0, zOffset + zScale * -31.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 10.0, yOffset + yScale * 30.0, zOffset + zScale * -37.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 10.0, yOffset + yScale * 26.0, zOffset + zScale * -42.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 10.0, yOffset + yScale * 20.0, zOffset + zScale * -47.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 10.0, yOffset + yScale * 11.0, zOffset + zScale * -52.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 10.0, yOffset + yScale * 2.0, zOffset + zScale * -58.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 10.0, yOffset + yScale * -5.0, zOffset + zScale * -65.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 10.0, yOffset + yScale * -9.0, zOffset + zScale * -74.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 10.0, yOffset + yScale * -9.0, zOffset + zScale * -84.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 7.0, yOffset + yScale * -9.0, zOffset + zScale * -95.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -4.0, yOffset + yScale * -9.0, zOffset + zScale * -100.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -20.0, yOffset + yScale * -9.0, zOffset + zScale * -100.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -28.0, yOffset + yScale * -9.0, zOffset + zScale * -105.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -44.0, yOffset + yScale * -6.0, zOffset + zScale * -108.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -55.0, yOffset + yScale * -3.0, zOffset + zScale * -106.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -67.0, yOffset + yScale * -2.0, zOffset + zScale * -100.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -73.0, yOffset + yScale * -1.0, zOffset + zScale * -93.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -71.0, yOffset + yScale * -1.0, zOffset + zScale * -83.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -67.0, yOffset + yScale * -1.0, zOffset + zScale * -77.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -58.0, yOffset + yScale * -1.0, zOffset + zScale * -74.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -55.0, yOffset + yScale * -1.0, zOffset + zScale * -71.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -53.0, yOffset + yScale * -1.0, zOffset + zScale * -65.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -53.0, yOffset + yScale * -1.0, zOffset + zScale * -60.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -56.0, yOffset + yScale * -1.0, zOffset + zScale * -54.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -56.0, yOffset + yScale * -1.0, zOffset + zScale * -47.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -52.0, yOffset + yScale * -2.0, zOffset + zScale * -42.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -45.0, yOffset + yScale * -3.0, zOffset + zScale * -37.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -37.0, yOffset + yScale * -5.0, zOffset + zScale * -34.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -27.0, yOffset + yScale * -5.0, zOffset + zScale * -35.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -17.0, yOffset + yScale * -3.0, zOffset + zScale * -34.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -10.0, yOffset + yScale * 0.0, zOffset + zScale * -34.0);
+    m_controlPoints.emplace_back(xOffset + xScale * -2.0, yOffset + yScale * 3.0, zOffset + zScale * -34.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 7.0, yOffset + yScale * 5.0, zOffset + zScale * -34.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 14.0, yOffset + yScale * 5.0, zOffset + zScale * -34.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 19.0, yOffset + yScale * 7.0, zOffset + zScale * -34.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 23.0, yOffset + yScale * 10.0, zOffset + zScale * -34.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 28.0, yOffset + yScale * 15.0, zOffset + zScale * -34.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 32.0, yOffset + yScale * 21.0, zOffset + zScale * -34.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 42.0, yOffset + yScale * 28.0, zOffset + zScale * -34.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 50.0, yOffset + yScale * 28.0, zOffset + zScale * -34.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 59.0, yOffset + yScale * 22.0, zOffset + zScale * -34.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 62.0, yOffset + yScale * 17.0, zOffset + zScale * -30.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 62.0, yOffset + yScale * 10.0, zOffset + zScale * -24.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 60.0, yOffset + yScale * 5.0, zOffset + zScale * -14.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 58.0, yOffset + yScale * 3.0, zOffset + zScale * -7.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 57.0, yOffset + yScale * 3.0, zOffset + zScale * -4.0);
+    m_controlPoints.emplace_back(xOffset + xScale * 57.0, yOffset + yScale * 3.0, zOffset + zScale * 0.0);
+    // m_controlPoints.emplace_back(xOffset + xScale * 59.0, yOffset + yScale * 5.0, zOffset + zScale * 7.0);
+
 
     // Optionally, set upvectors (m_controlUpVectors, one for each control point as well)
 }
@@ -129,7 +212,7 @@ bool CCatmullRom::Sample(float d, glm::vec3& p, glm::vec3& up) {
 
 glm::vec3 CCatmullRom::GeneratePositionOnPath() {
     // srand (time(NULL));
-    float distance = rand() % 1000;
+    float distance = rand() % 100000;
 
     glm::vec3 position;
     glm::vec3 up;
@@ -199,7 +282,7 @@ void CCatmullRom::CreateCentreline() {
 
     // Call UniformlySampleControlPoints with the number of samples required
     // This will generate points along the centreline, and store them in m_centrelinePoints.
-    UniformlySampleControlPoints(500);
+    UniformlySampleControlPoints(1000);
 
     // Create a VAO called m_vaoCentreline and a VBO to get the points onto the graphics card
     // Use VAO to store state associated with vertices
@@ -317,7 +400,7 @@ void CCatmullRom::CreateTrack() {
     // Load texture
     m_texture.Load("resources\\textures\\track\\Glass Seamless Texture #3524.jpg");
 
-    
+
     // Generate a VAO called m_vaoTrack and a VBO to get the offset curve points and indices on the graphics card
     // Use VAO to store state associated with vertices
     glGenVertexArrays(1, &m_vaoTrack);

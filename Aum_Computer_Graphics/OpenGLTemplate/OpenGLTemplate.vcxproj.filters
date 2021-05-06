@@ -12,7 +12,7 @@
     <Filter Include="Source Files\BasicShapes">
       <UniqueIdentifier>{d5eb352f-53f3-4c3a-a234-5f58e6eec535}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders">
+    <Filter Include="Source Files\Shaders">
       <UniqueIdentifier>{8bf5c3e1-be9e-4c62-8c2d-5c0d5c307b94}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -175,34 +175,34 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\mainShader.frag">
-      <Filter>Shaders</Filter>
+      <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="resources\shaders\mainShader.vert">
-      <Filter>Shaders</Filter>
+      <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="resources\shaders\textShader.frag">
-      <Filter>Shaders</Filter>
+      <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="resources\shaders\textShader.vert">
-      <Filter>Shaders</Filter>
+      <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="resources\shaders\hudShader.frag">
-      <Filter>Shaders</Filter>
+      <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="resources\shaders\hudShader.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="resources\shaders\motionBlur.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="resources\shaders\motionBlur.vert">
-      <Filter>Shaders</Filter>
+      <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="resources\shaders\velocityBuffer.frag">
-      <Filter>Shaders</Filter>
+      <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="resources\shaders\velocityBuffer.vert">
-      <Filter>Shaders</Filter>
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="resources\shaders\radialBlur.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="resources\shaders\radialBlur.frag">
+      <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

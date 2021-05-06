@@ -43,8 +43,10 @@ out vec3 vColour;	// Colour computed using reflectance model
 out vec2 vTexCoord;	// Texture coordinate
 
 out vec3 worldPosition;	// used for skybox
+//
 // FOG: Open GL Game Tutorial 16: fog https://www.youtube.com/watch?v=qslBNLeSPUc
 out float visibility;
+///
 out MaterialInfo materialOut;
 out vec4 eyePosition;
 out vec3 eyeNormal;

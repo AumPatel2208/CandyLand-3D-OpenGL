@@ -10,10 +10,13 @@ CCamera::CCamera() {
     m_speed = 0.025f;
 
     // set current distance to 0
-    m_currentDistance = 0.0f;
+    // m_currentDistance = 0.0f;
+    m_currentDistance = 20.f;
 
     m_cameraRotation = 0.f;
     m_cameraSpeed = 0.1f;
+    m_freeRoamSpeed = 2.f;
+    // m_cameraSpeed = 0.1f;
 }
 
 CCamera::~CCamera() {}
@@ -94,8 +97,6 @@ void CCamera::SetViewBySpline(double dt, CCatmullRom* catmullRom) {
     glm::vec3 normal = glm::normalize(glm::cross(tangent, glm::vec3(0, 1, 0)));
     glm::vec3 binormal = glm::normalize(glm::cross(normal, tangent));
     glm::vec3 up = glm::rotate(glm::vec3(0, 1, 0), m_cameraRotation, tangent);
-
-    // car->setPosition(pNext);
 
     // First Person Camera
     if (cameraType == FIRST_PERSON) {
@@ -219,19 +220,19 @@ void CCamera::Update(double dt, CCatmullRom* catmullRom) {
 // Update the camera to respond to key presses for translation
 void CCamera::TranslateByKeyboard(double dt) {
     if (GetKeyState('W') & 0x80) {
-        Advance(1.0 * dt);
+        Advance(m_freeRoamSpeed * dt);
     }
 
     if (GetKeyState('S') & 0x80) {
-        Advance(-1.0 * dt);
+        Advance(-m_freeRoamSpeed * dt);
     }
 
     if (GetKeyState('A') & 0x80) {
-        Strafe(-1.0 * dt);
+        Strafe(-m_freeRoamSpeed * dt);
     }
 
     if (GetKeyState('D') & 0x80) {
-        Strafe(1.0 * dt);
+        Strafe(m_freeRoamSpeed * dt);
     }
 }
 

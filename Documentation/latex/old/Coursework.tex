@@ -1,0 +1,61 @@
+\documentclass[10pt]{report}
+
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+% \usepackage[demo]{graphicx} % images % get rid of [demo] for black box removal
+\usepackage{graphicx} % images % get rid of [demo] for black box removal
+\usepackage{fancyhdr} % headers and footers
+\usepackage{parskip} % paragraph
+\usepackage{geometry} % page size
+% \usepackage{hyperref} % Links
+% \usepackage{pdflscape} % making a page landscape
+\usepackage{xcolor}
+\usepackage[shortlabels]{enumitem}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage{titlesec}
+\usepackage{float} % to place figures in place
+
+\graphicspath{{../images/}}
+
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries}{}{0pt}{\Huge}
+
+% margins and page size
+\geometry{
+a4paper,
+left=30mm,
+top=25mm,
+right=30mm,
+bottom=25mm
+}
+
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  frame=single,
+  breaklines=true,
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Aum Patel}
+\cfoot{\thepage}
+
+\begin{document}
+
+%title
+\author{Aum Patel - 180000492}
+\title{Computer Graphics}
+\maketitle
+
+
+\tableofcontents
+
+\chapter{}
+% \begin{figure}[H]
+%     \centering
+%     \fbox{\includegraphics[width = 7cm ]{Right_Hand_Axis.png}}
+%     \caption{Image of hand with axis labeled.}
+% \end{figure}

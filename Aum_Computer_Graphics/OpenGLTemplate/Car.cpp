@@ -17,8 +17,8 @@ Car::Car():GameObject() {
     // mMeshPath = "resources\\models\\chrysler\\Crysler_new_yorker.obj";
     mMeshPath = "resources\\models\\spaceship01\\StarSparrow_FBX\\use\\ship.obj";
     mSpeed = 0.1f;
-    mPositionOffsetSpeed = .005f;
-    m_currentDistance = 0.0f;
+    mPositionOffsetSpeed = .007f;
+    m_currentDistance = 20.f;
 }
 void Car::Advance(double direction) {
     // float speed = (float)(mSpeed * direction);

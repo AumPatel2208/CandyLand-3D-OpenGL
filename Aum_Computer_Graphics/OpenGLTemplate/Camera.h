@@ -88,6 +88,7 @@ private:
 
     float m_cameraRotation;
     float m_cameraSpeed;
+    float m_freeRoamSpeed;
     float m_currentDistance;
     
 

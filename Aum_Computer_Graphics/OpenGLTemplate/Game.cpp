@@ -224,8 +224,8 @@ void Game::Initialise() {
     sShaderFileNames.push_back("mainShader.frag");
     sShaderFileNames.push_back("textShader.vert");
     sShaderFileNames.push_back("textShader.frag");
-    sShaderFileNames.push_back("motionBlur.vert");
-    sShaderFileNames.push_back("motionBlur.frag");
+    sShaderFileNames.push_back("radialBlur.vert");
+    sShaderFileNames.push_back("radialBlur.frag");
     sShaderFileNames.push_back("hudShader.vert");
     sShaderFileNames.push_back("hudShader.frag");
 
@@ -258,13 +258,13 @@ void Game::Initialise() {
     pFontProgram->LinkProgram();
     m_pShaderPrograms->push_back(pFontProgram);
 
-    // Create the motionBlur shader program
-    CShaderProgram* pMotionBlurProgram = new CShaderProgram;
-    pMotionBlurProgram->CreateProgram();
-    pMotionBlurProgram->AddShaderToProgram(&shShaders[4]);
-    pMotionBlurProgram->AddShaderToProgram(&shShaders[5]);
-    pMotionBlurProgram->LinkProgram();
-    m_pShaderPrograms->push_back(pMotionBlurProgram);
+    // Create the radialBlur shader program
+    CShaderProgram* pRadialBlurProgram = new CShaderProgram;
+    pRadialBlurProgram->CreateProgram();
+    pRadialBlurProgram->AddShaderToProgram(&shShaders[4]);
+    pRadialBlurProgram->AddShaderToProgram(&shShaders[5]);
+    pRadialBlurProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pRadialBlurProgram);
 
     // Create the hud shader program
     CShaderProgram* pHudProgram = new CShaderProgram;
@@ -337,7 +337,7 @@ void Game::Initialise() {
     pickupPositions.push_back(mPickup->position());
     pickupPositions.push_back(glm::vec3(10, 10, 0));
     // pickupPositions.push_back(m_pCatmullRom->GeneratePositionOnPath());
-    CreatePickups(20);
+    CreatePickups(50);
 
     // needs to be called after creating the catmull rom path otherwise the prisms will go through path
     // creating multiple sized prisms to be reused
@@ -345,7 +345,7 @@ void Game::Initialise() {
     // creating position points to use those prisms
     generateWorldPrismPositions(50);
 
-    mPlayerXOffsetLimit = m_pCatmullRom->GetWidth()/2.f;
+    mPlayerXOffsetLimit = m_pCatmullRom->GetWidth() / 2.f;
 
     // CREATING QUAD
     // https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_opengl/5.1.framebuffers/framebuffers.cpp   
@@ -355,9 +355,9 @@ void Game::Initialise() {
         -1.0f, 1.0f, 0.0f, 1.0f,
         -1.0f, -1.0f, 0.0f, 0.0f,
         1.0f, -1.0f, 1.0f, 0.0f,
-    
-        -1.0f, 1.0f,  0.0f, 1.0f,
-        1.0f, -1.0f,  1.0f, 0.0f,
+
+        -1.0f, 1.0f, 0.0f, 1.0f,
+        1.0f, -1.0f, 1.0f, 0.0f,
         1.0f, 1.0f, 1.0f, 1.0f
     };
 
@@ -391,7 +391,6 @@ void Game::Render() {
     RenderScene(1);
 
 
-
     RECT dimensions = m_gameWindow.GetDimensions();
     int height = dimensions.bottom - dimensions.top;
 
@@ -414,7 +413,7 @@ void Game::Render() {
     // radial blur shader
     CShaderProgram* pBlur = (*m_pShaderPrograms)[2];
     pBlur->UseProgram();
-   
+
     // THIS ONE
     // 2d quad rendering the blur
     if (mSpeedPowerUpTimer > 0) {
@@ -422,6 +421,19 @@ void Game::Render() {
         m_pFBO->BindTexture(0);
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
+
+    // Render HUD
+    CShaderProgram* pHudShader = (*m_pShaderPrograms)[3];
+    pHudShader->UseProgram();
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    // Draw hud
+    // Disable depth testing to render the hud items on top of each other
+    glDisable(GL_DEPTH_TEST);
+    glBindVertexArray(quadVAO);
+    mHudTexture.Bind();
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    mHudManager.Render(pHudShader);
 
     // Font Shader
     CShaderProgram* fontProgram = (*m_pShaderPrograms)[1];
@@ -434,7 +446,9 @@ void Game::Render() {
     fontProgram->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
     fontProgram->SetUniform("vColour", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
     m_pFtFont->Render(20, height - 40, 20, "Score: %i", mPlayerScore);
-    
+    m_pFtFont->Render(100,  40, 100, "%i", mPlayerScore);
+    // m_pFtFont->Render(20, height - 40, 20, "Score: %f", currentSpeed);
+
     // Draw the 2D graphics after the 3D graphics
     DisplayFrameRate();
 
@@ -537,6 +551,7 @@ void Game::RenderScene(int pass) {
     modelViewMatrixStack.Push();
     {
         pMainProgram->SetUniform("renderSkybox", true);
+        pMainProgram->SetUniform("isFloor", true);
         // Translate the modelview matrix to the camera eye point so skybox stays centred around camera
         glm::vec3 vEye = m_pCamera->GetPosition();
         modelViewMatrixStack.Translate(vEye);
@@ -544,6 +559,7 @@ void Game::RenderScene(int pass) {
         pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
         m_pSkybox->Render();
         pMainProgram->SetUniform("renderSkybox", false);
+        pMainProgram->SetUniform("isFloor", false);
     }
     modelViewMatrixStack.Pop();
 
@@ -620,7 +636,7 @@ void Game::RenderScene(int pass) {
         mRock->Render();
     }
     modelViewMatrixStack.Pop();
-      modelViewMatrixStack.Push();
+    modelViewMatrixStack.Push();
     {
         modelViewMatrixStack.Translate(glm::vec3(-500.0f, 0.0f, 200.0f));
         modelViewMatrixStack.Scale(0.5f);
@@ -648,8 +664,7 @@ void Game::RenderScene(int pass) {
     }
     modelViewMatrixStack.Pop();
 
-    
-    
+
     pMainProgram->SetUniform("numberOfLights", (int)(pickupPositions.size() + speedPowerUpPositions.size()));
     for (int i = 0; i < pickupPositions.size(); ++i) {
         // render the series of pickups
@@ -663,7 +678,7 @@ void Game::RenderScene(int pass) {
         pMainProgram->SetUniform("pointLights[" + to_string(i) + "].quadratic", 0.20f); //
         pMainProgram->SetUniform("pointLights[" + to_string(i) + "].intensity", 5.f); //
     }
-    for (int i = 0; i < speedPowerUpPositions.size() ; ++i) {
+    for (int i = 0; i < speedPowerUpPositions.size(); ++i) {
         // render the series of pickups
         pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].position", viewMatrix * glm::vec4(speedPowerUpPositions[i].x, speedPowerUpPositions[i].y + 3.f, speedPowerUpPositions[i].z, 1.f));
         pMainProgram->SetUniform("pointLights[" + to_string(i + pickupPositions.size()) + "].La", glm::vec3(0.10f, 0.30f, 0.90f));
@@ -692,7 +707,6 @@ void Game::RenderScene(int pass) {
             pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
             pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
             mPickup->Render();
-
         }
         modelViewMatrixStack.Pop();
     }
@@ -855,8 +869,8 @@ void Game::RenderScene(int pass) {
         pMainProgram->SetUniform("bUseTexture", true); // turn off texturing
         pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
         pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-        m_pCatmullRom->RenderCentreline();
-        m_pCatmullRom->RenderOffsetCurves();
+        // m_pCatmullRom->RenderCentreline();
+        // m_pCatmullRom->RenderOffsetCurves();
         m_pCatmullRom->RenderTrack();
         // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
     }
@@ -876,15 +890,7 @@ void Game::RenderScene(int pass) {
     //     glDrawArrays(GL_TRIANGLES, 0, 6);
     // }
 
-    CShaderProgram* pHudShader = (*m_pShaderPrograms)[3];
-    pHudShader->UseProgram();
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    // Draw hud
-    // glBindVertexArray(quadVAO);
-    // mHudTexture.Bind();
-    // glDrawArrays(GL_TRIANGLES, 0, 6);
-    // mHudManager.Render(pHudShader);
+
 }
 
 
@@ -915,7 +921,7 @@ void Game::Update() {
             mPlayerLane = 0;
         else if (mPlayerLane == 0)
             mPlayerLane = -1;
-        
+
         mPlayerXOffset -= m_dt * mCar->getXOffsetSpeed();
         mCar->setXOffset(mPlayerXOffset);
         m_pCamera->setXOffset(mCar->getXOffset());
@@ -938,6 +944,9 @@ void Game::Update() {
 
     // set the speed of the camera and car
     speedSetter();
+    // set UI based on the speed
+    speedUISetter();
+
 
     updateSkyColour();
 
@@ -1054,6 +1063,24 @@ void Game::speedSetter() {
     else {
         m_pCamera->setSpeed(currentSpeed);
         mCar->setSpeed(currentSpeed);
+    }
+}
+
+void Game::speedUISetter() {
+    const float step = maxSpeed / 6.f;
+    float cumulativeStep = 0.f;
+
+    if (mSpeedPowerUpTimer > 0.f) {
+        mHudManager.setSpeedometerIndex(6);
+    }
+    else {
+        for (int i = 0; i < 6; ++i) {
+            if (currentSpeed <= cumulativeStep) {
+                mHudManager.setSpeedometerIndex(i);
+                break;
+            }
+            cumulativeStep += step;
+        }
     }
 
 }

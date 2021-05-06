@@ -23,7 +23,7 @@ struct LightInfo
     vec3 Ld;
     vec3 Ls;
 
-// https://learnopengl.com/Lighting/Light-casters
+    // https://learnopengl.com/Lighting/Light-casters
     float constant;
     float linear;
     float quadratic;
@@ -110,9 +110,9 @@ void main()
         vec4 vTexColour = texture(sampler0, vTexCoord);
 
         if (bUseTexture)
-        vOutputColour = vTexColour*vec4(vColour + pointLightColours, 1.0f);// Combine object colour and texture 
+            vOutputColour = vTexColour*vec4(vColour + pointLightColours, 1.0f);// Combine object colour and texture 
         else
-        vOutputColour = vec4(vColour + pointLightColours, 1.0f);// Just use the colour instead
+            vOutputColour = vec4(vColour + pointLightColours, 1.0f);// Just use the colour instead
 
         // fog
         vOutputColour = mix(vec4(skyColour, 1.0), vOutputColour, visibility);
