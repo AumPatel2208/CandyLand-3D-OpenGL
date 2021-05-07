@@ -15,6 +15,7 @@
 \usepackage{listings}
 \usepackage{titlesec}
 \usepackage{float} % to place figures in place
+\usepackage{xurl}
 
 % colors
 \usepackage{xcolor}
@@ -136,22 +137,23 @@ To plan out the path, Blender was used, as this provided an easier time visualis
 \end{figure}
 
 % Adding Control Points
-When adding the points into the \colorbox{mygrey}{\lstinline{SetControlPoints()}} method, I decided to create some parameters and add/multiply those to the vertices I was adding in, this way I could move the path around freely without needing to adjust the vertices.
+When adding the points into the \colorbox{mygrey}{\lstinline{SetControlPoints()}} method, I decided to create some parameters and add/multiply those to the vertices I was adding in, these parameters were a scalar value on the xyz axis and an offset value on the xyz (which is multiplied by the scalar before being applied to the control points). This way I could move the path around freely without needing to adjust the vertices.
 
-\begin{lstlisting}[language=c]
-SetControlPoints(){
-    // parameters to adjust the scaling and positioning of the path.
-    const float xScale = 10.f;
-    const float zScale = 10.f;
-    const float yScale = 10.f;
-    const float xOffset = 0 * xScale;
-    const float zOffset = 0 * zScale;
-    const float yOffset = 10 * yScale;
 
-    // example for one control point. Total of 70 points
-    m_controlPoints.emplace_back(xOffset + xScale * 59.0, yOffset + yScale * 5.0, zOffset + zScale * 7.0);
-}
-\end{lstlisting}
+% \begin{lstlisting}[language=c]
+% SetControlPoints(){
+%     // parameters to adjust the scaling and positioning of the path.
+%     const float xScale = 10.f;
+%     const float zScale = 10.f;
+%     const float yScale = 10.f;
+%     const float xOffset = 0 * xScale;
+%     const float zOffset = 0 * zScale;
+%     const float yOffset = 10 * yScale;
+
+%     // example for one control point. Total of 70 points
+%     m_controlPoints.emplace_back(xOffset + xScale * 59.0, yOffset + yScale * 5.0, zOffset + zScale * 7.0);
+% }
+% \end{lstlisting}
 
 \subsection*{Camera}
 I have implemented 5 camera modes: \textbf{First Person}, \textbf{Third Person}, \textbf{Left Side View}, \textbf{Right Side View} and \textbf{Top View}.
@@ -178,34 +180,34 @@ As well as these views, I still have the free view available to toggle to making
 
 \section*{HUD, Gameplay and Advanced Rendering}
 \subsection*{HUD}
-To create the HUD, I chose to use full-screen PNG's that act as sprites in the game and are rendered on top of the rendered frame using a full-screen quad. I created a \colorbox{mygrey}{\lstinline{HudItem}} class which holds one or multiple textures and can be 'bound' to the renderer by passing in an index; these textures are stored inside a vector. The \colorbox{mygrey}{\lstinline{HudManager}} will then render the many \colorbox{mygrey}{\lstinline{HudItems}} that are created.
+To create the HUD, I chose to use full-screen PNG's that act as sprites in the game and are rendered on top of the rendered frame using a full-screen quad. I created a \colorbox{mygrey}{\lstinline{HudItem}} class which holds one or multiple textures and can be 'bound' to the renderer by passing in an index to the texture wanting rendered; these textures are stored inside a vector. The \colorbox{mygrey}{\lstinline{HudManager}} will then render the many HudItems that are created.
 
-\begin{lstlisting}[language=c]
-void HudManager::Create() {
-    ...
-    // create a full screen quad
-    ...
-    santa.AddTexture("resources\\textures\\hud\\santa_png\\santa.png");
+% \begin{lstlisting}[language=c]
+% void HudManager::Create() {
+%     ...
+%     // create a full screen quad
+%     ...
+%     santa.AddTexture("resources\\textures\\hud\\santa_png\\santa.png");
 
-    for (int i = 1; i <= 6; ++i) {
-        speedometer.AddTexture("resources\\textures\\hud\\speedometer_png\\speed_" + to_string(i) + ".png");
-    }
-    speedometer.AddTexture("resources\\textures\\hud\\speedometer_png\\speed_boost.png");
-}
+%     for (int i = 1; i <= 6; ++i) {
+%         speedometer.AddTexture("resources\\textures\\hud\\speedometer_png\\speed_" + to_string(i) + ".png");
+%     }
+%     speedometer.AddTexture("resources\\textures\\hud\\speedometer_png\\speed_boost.png");
+% }
 
-void HudManager::Render(CShaderProgram* shader) {
-    // Draw santa
-    glBindVertexArray(quadVAO);
-    santa.Bind(0);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+% void HudManager::Render(CShaderProgram* shader) {
+%     // Draw santa
+%     glBindVertexArray(quadVAO);
+%     santa.Bind(0);
+%     glDrawArrays(GL_TRIANGLES, 0, 6);
 
-    // Draw Speedometer
-    glBindVertexArray(quadVAO);
-    // will draw the appropriate speedometer texture
-    speedometer.Bind(speedometerIndex);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-}
-\end{lstlisting}
+%     // Draw Speedometer
+%     glBindVertexArray(quadVAO);
+%     // will draw the appropriate speedometer texture
+%     speedometer.Bind(speedometerIndex);
+%     glDrawArrays(GL_TRIANGLES, 0, 6);
+% }
+% \end{lstlisting}
 
 Below are figures that show how the different hud items are displayed.
 \begin{figure}[H]
@@ -227,7 +229,9 @@ Below are figures that show how the different hud items are displayed.
     \caption{Hud as Displayed in Game}
 \end{figure}
 
-As well as the two HUD classes that I created, I also needed a shader to render the 2D elements appropriately. This is a very basic shader that maps the texture's colour to the fragment shader. This is all then rendered after the radial blur in the main Game \colorbox{mygrey}{\lstinline{Render()}} method.
+As well as the two HUD classes that I created, I also needed a shader to render the 2D elements appropriately. This is a very basic shader that maps the texture's colour to the fragment shader. This is all then rendered after the radial blur in the main Game \colorbox{mygrey}{\lstinline{Render()}} method. This shader was created by taking the radial blur shader, which was already a 2d shader, and removing the values that created the blur effect, essentially giving me a simple 2d shader.
+
+When rendering multiple full-screen elements, the \colorbox{mygrey}{\lstinline{GL_DEPTH_TEST}} had to be disabled, otherwise only the first element rendered will show; disabling depth test is done to avoid 'plane-fighting' where two overlapping faces will clash with each other, however, for the HUD, rendering multiple quads on the same 'plane' needed this to be disabled, to have all elements rendered.
 
 \subsection*{Gameplay}
 \subsubsection*{Control}
@@ -240,14 +244,34 @@ When pressing the Left and Right Arrow keys, the car placed on an offset from th
     m_pCamera->setXOffset(mCar->getXOffset());
 \end{lstlisting}
 
-
-
 \subsubsection*{Collision Detection}
-The collision detection used in the game is very simple, however is made easier by using a generalised \colorbox{mygrey}{\lstinline{GameObject}} class, this class contains the collision radius of an object. Any object that is rendered on screen is a child of GameObject. Every frame in the \colorbox{mygrey}{\lstinline{Update()}} loop of my game, I call a function \colorbox{mygrey}{\lstinline{ManageCollisions()}}, which traverses the many vector's that store the positions to render the different game objects and calls \colorbox{mygrey}{\lstinline{CheckCollision(aPos, aRadius, bPos, bRadius)}} that compares the radius between two objects and returns true if they overlap.
-
-Depending on which object it collides with, a different behaviour occurs. For the score pickup, the player's score is incremented by 1, and if it is te speed power up, then \colorbox{mygrey}{\lstinline{mSpeedPowerUpTimer}} is set to 1 seconds, which makes a boost activate. 
+The collision detection used in the  game is very simple, however is made easier by using a generalised \colorbox{mygrey}{\lstinline{GameObject}} class, this class contains the collision radius of an object. Any object that is rendered on screen is a child of GameObject. Every frame in the \colorbox{mygrey}{\lstinline{Update()}} loop of my game, I call a function \colorbox{mygrey}{\lstinline{ManageCollisions()}}, which traverses the many vector's that store the positions to render the different game objects and calls \colorbox{mygrey}{\lstinline{CheckCollision(aPos, aRadius, bPos, bRadius)}} that compares the radius between two objects and returns true if they overlap.
 
 When a collision happens, I store the iterator/position inside of the vector of positions and remove it; On doing so, the object in that position will stop rendering, simulating the player picking it up.
+
+\subsubsection*{Gameplay Elements}
+Depending on which object it collides with, a different behaviour occurs. For the score pickup, the player's score is incremented by 1, and if it is the speed power up, then \colorbox{mygrey}{\lstinline{mSpeedPowerUpTimer}} is set to 1 seconds, which makes a boost activate. The player just needs to pickup as much chocolate as they can. If they pick up all the points, a game over message will display.
+\begin{figure}[H]
+    \centering
+    \fbox{\includegraphics[width = 10cm]{Game_Over_Screen.png}}
+    \caption{Game Over Screen}
+\end{figure}
+
+\subsection*{Advanced Rendering}
+
+\subsubsection*{Fog}
+Two advanced rendering techniques were implemented, the first on was fog. This was achived by following a tutorial \footnote{Tutorial by Thin Matrix for Fog in OpenGL \url{https://youtu.be/qslBNLeSPUc}}. This tutorial described the shader that had to be created, I followed this and adjusted the parameters to get fog that displayed correctly; the \colorbox{mygrey}{\lstinline{mainShader.vert/frag}} was changed to add the fog. As the distance from the player to the object is calculated in the vertex shader per vertex, the distance for large objects, such as the terrain and skybox, is not presented correctly. To rectify this, the density and gradient for both gradient and skybox was lowered to make them visible. 
+
+\begin{figure}[H]
+    \centering
+    \fbox{\includegraphics[width = 10cm]{Fog.png}}
+    \caption{Fog in game scene}
+\end{figure}
+
+To add to the 'candyland' style theme of the game, the colour of the fog was randomly adjusted on the client side, and passed through to fragment shader as the sky colour, giving a nice vibrant ambience.
+
+\subsubsection*{Radial Blur}
+The radial blur was achieved by creating a seperate shader files (\colorbox{mygrey}{\lstinline{radialBlur.vert/frag}}) for it. These shaders were created by following the tutorial provided in lecture 7 \footnote{INM376\_2021.L07.pdf, page 55 \url{https://stackoverflow.com/questions/4579020/how-do-i-use-a-glsl-shader-to-apply-a-radial-blur-to-an-entire-scene}}. As this tutorial/post was 10 years old, the shader code had to be ported over to version 400. The fragment shader takes 10 samples 
 
 
 \end{document}

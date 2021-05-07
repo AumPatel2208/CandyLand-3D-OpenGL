@@ -10,13 +10,10 @@
     <list default="true" id="c7796f2d-f175-488a-8831-6047c0722fba" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OpenGLTemplate/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OpenGLTemplate/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Camera.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Camera.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/HudManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/HudManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/HudManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/HudManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/hudShader.frag" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/hudShader.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Camera.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Camera.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Game.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Game.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/Game.h" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/Game.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/radialBlur.frag" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/radialBlur.frag" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Game.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/Game.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/HudManager.obj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/HudManager.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.command.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.command.1.tlog" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.read.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.read.1.tlog" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.write.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGLTemplate/x64/Debug/OpenGLTemplate.tlog/CL.write.1.tlog" afterDir="false" />
@@ -29,32 +26,6 @@
       <change beforePath="$PROJECT_DIR$/x64/Debug/OpenGLTemplate.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/x64/Debug/OpenGLTemplate.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Documentation/latex/Computer_Graphics_Report.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../Documentation/latex/Computer_Graphics_Report.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Documentation/latex/Computer_Graphics_Report.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../Documentation/latex/Computer_Graphics_Report.tex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Presentation_Submission/Aum_Computer_Graphics.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Presentation_Submission/IN3005.GraphicsCourseworkMarkingScheme.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Presentation_Submission/IN3005_2021.GraphicsCoursework.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Presentation_Submission/Presentation Notes.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Presentation_Submission/readme.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/Documentation/IN3005_2021.InterimGraphicsCoursework.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/Documentation/Latex/Aum_Patel_Interim_Computer_Graphics.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/Documentation/Latex/Interim_Computer_Graphics.tex" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/Documentation/Latex/__latexindent_temp.tex" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/Documentation/images/FOV.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/Documentation/images/Right_Hand_Axis.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/Documentation/images/Trig_Circle.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/Documentation/images/geometry_windwos.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/Documentation/images/house_blender.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/Documentation/images/house_blender_wireframe_with_coord.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/Documentation/images/texture_doorsWindows.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/Documentation/images/texture_doorsWindows_labbleed.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/Documentation/images/texturemap.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/Documentation/images/texturemap_labelled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/Documentation/images/texturemap_triangles.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/house.blend" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/house.blend1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/house.mtl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/house.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Submission 1/moodle post.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,6 +70,15 @@
       <option value="$PROJECT_DIR$/OpenGLTemplate/HudItem.cpp" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/hudShader.vert" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Car.h" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Car.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/CatmullRom.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Camera.h" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/mainShader.vert" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/Camera.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/HudManager.h" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/HudManager.cpp" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/hudShader.frag" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/mainShader.frag" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Game.h" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Car.cpp" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/CatmullRom.cpp" />
@@ -106,10 +86,7 @@
       <option value="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/mainShader.frag" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/mainShader.vert" />
       <option value="$PROJECT_DIR$/OpenGLTemplate/Game.cpp" />
-      <option value="$PROJECT_DIR$/OpenGLTemplate/Camera.cpp" />
-      <option value="$PROJECT_DIR$/OpenGLTemplate/HudManager.h" />
-      <option value="$PROJECT_DIR$/OpenGLTemplate/HudManager.cpp" />
-      <option value="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/hudShader.frag" />
+      <option value="$PROJECT_DIR$/OpenGLTemplate/resources/shaders/radialBlur.frag" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1pLyEYkXJ9PTBURNnYQgCmEn482" />
@@ -240,6 +217,9 @@
       <workItem from="1617993745653" duration="1907000" />
       <workItem from="1620140538558" duration="2517000" />
       <workItem from="1620233451177" duration="13932000" />
+      <workItem from="1620317497547" duration="558000" />
+      <workItem from="1620318479011" duration="632000" />
+      <workItem from="1620412561841" duration="6021000" />
     </task>
     <servers />
   </component>

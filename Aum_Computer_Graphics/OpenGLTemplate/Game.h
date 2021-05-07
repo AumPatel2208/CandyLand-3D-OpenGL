@@ -146,6 +146,7 @@ private:
 	
 	unsigned int quadVAO, quadVBO;
 
+	bool isGameOver = false;
 	
 	// HUD
 	CTexture mHudTexture;

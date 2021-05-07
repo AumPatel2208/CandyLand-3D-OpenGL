@@ -184,8 +184,6 @@
     <None Include="resources\shaders\radialBlur.vert" />
     <None Include="resources\shaders\textShader.frag" />
     <None Include="resources\shaders\textShader.vert" />
-    <None Include="resources\shaders\velocityBuffer.frag" />
-    <None Include="resources\shaders\velocityBuffer.vert" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="resources\shaders\hudShader.frag" />

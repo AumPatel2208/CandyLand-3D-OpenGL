@@ -1,0 +1,13 @@
+﻿  Camera.cpp
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Camera.cpp(87,44): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+  Game.cpp
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Pickup.h(22,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Pickup.h(29,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(906,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(925,57): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(935,57): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\Game.cpp(1298,24): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
+  HudManager.cpp
+C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\OpenGLTemplate\HudManager.cpp(3,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  Generating Code...
+  OpenGLTemplate.vcxproj -> C:\Users\Aum\Documents\Graphics\Computer_Graphics\Aum_Computer_Graphics\x64\Debug\OpenGLTemplate.exe

@@ -393,6 +393,10 @@ void Game::Render() {
 
     RECT dimensions = m_gameWindow.GetDimensions();
     int height = dimensions.bottom - dimensions.top;
+    int width = dimensions.right - dimensions.left;
+    if (width<0) {
+        width*=-1;
+    }
 
 
     // render an image on the hud quad
@@ -447,6 +451,8 @@ void Game::Render() {
     fontProgram->SetUniform("vColour", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
     m_pFtFont->Render(20, height - 40, 20, "Score: %i", mPlayerScore);
     m_pFtFont->Render(100,  40, 100, "%i", mPlayerScore);
+	if(isGameOver)
+		m_pFtFont->Render(width/2 - 250,  height/2 - 25, 100, "Game Over");
     // m_pFtFont->Render(20, height - 40, 20, "Score: %f", currentSpeed);
 
     // Draw the 2D graphics after the 3D graphics
@@ -1000,6 +1006,11 @@ void Game::ManageCollisions() {
     }
     pickupPositions = removedPickupPositions;
 
+    // if the pickups are all picked up
+    // <=2 as there are a few pickups in the center of the world
+    if (pickupPositions.size() <= 2) {
+        isGameOver = true;
+    }
 
     // SPEED COLLISIONS
     vector<vector<glm::vec3>::iterator> speedPowerUpsToRemove;
@@ -1007,7 +1018,6 @@ void Game::ManageCollisions() {
     for (auto p = speedPowerUpPositions.begin(); p != speedPowerUpPositions.end(); ++p) {
         if (CheckCollision(*p, mSpeedPowerUp->collisionRadius(), m_pCamera->GetPosition(), m_pCamera->collisionRadius())) {
             mSpeedPowerUp->showCollisionSphere = false;
-
             mSpeedPowerUpTimer = 1000.f;
 
             // note to remove pickup
@@ -1015,9 +1025,7 @@ void Game::ManageCollisions() {
         }
         if (CheckCollision(*p, mSpeedPowerUp->collisionRadius(), mCar->position(), mCar->collisionRadius())) {
             mSpeedPowerUp->showCollisionSphere = false;
-            // mMovementSpeedCarCamera += 0.002f;
             mSpeedPowerUpTimer = 1000.f;
-
             // note to remove pickup
             speedPowerUpsToRemove.push_back(p);
         }
@@ -1082,7 +1090,6 @@ void Game::speedUISetter() {
             cumulativeStep += step;
         }
     }
-
 }
 
 void Game::accelerate(float accelerant) {

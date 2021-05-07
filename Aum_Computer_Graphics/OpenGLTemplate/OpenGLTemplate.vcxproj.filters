@@ -192,12 +192,6 @@
     <None Include="resources\shaders\hudShader.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="resources\shaders\velocityBuffer.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="resources\shaders\velocityBuffer.vert">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
     <None Include="resources\shaders\radialBlur.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>

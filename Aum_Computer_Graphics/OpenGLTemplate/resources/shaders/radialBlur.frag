@@ -3,7 +3,8 @@
 uniform sampler2D tex;
 in vec2 uv;
 const float sampleDist = 1.0;
-const float sampleStrength = 2.2;
+//const float sampleStrength = 2.2;
+const float sampleStrength = 3.2;
 
 void main(void)
 {
