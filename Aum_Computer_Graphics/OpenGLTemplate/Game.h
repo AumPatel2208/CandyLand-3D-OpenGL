@@ -81,9 +81,9 @@ private:
 	vector<WorldPrism> mWorldPrisms;
 	vector<glm::vec3> pickupPositions;
 	vector<glm::vec3> speedPowerUpPositions;
+	// could be placed into a struct
 	vector<glm::vec3> worldPrismsPositions;
 	vector<glm::vec3> worldPrismsHeightScales;
-	// vector<string> worldPrismsPositionsNames;
 	vector<int> worldPrismsIndexes;
 	glm::vec3 skyColour = glm::vec3(0.5f,0.5f,0.5f);
 	CFrameBufferObject *m_pFBO;
@@ -137,7 +137,6 @@ private:
 	double m_elapsedTime;
 	double mSeconds = 0;
 
-	int mPlayerLane = 0; // -1 is left, +1 is right
 	float mPlayerXOffset = 0.f;
 	// const float mPlayerXOffsetLimit = 10.f;
 	float mPlayerXOffsetLimit;

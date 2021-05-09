@@ -6,7 +6,7 @@
 class COpenAssetImportMesh;
 class CSphere;
 
-// Class for generating a unit sphere
+// generic Class for creating any game objects in the scene 
 class GameObject {
 public:
     GameObject();

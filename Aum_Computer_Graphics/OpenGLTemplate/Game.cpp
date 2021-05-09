@@ -399,19 +399,6 @@ void Game::Render() {
     }
 
 
-    // render an image on the hud quad
-
-    //
-    // // glDisable(GL_CULL_FACE);
-    // glBindVertexArray(quadVAO);
-    // glDisable(GL_DEPTH_TEST);
-    // // glBindTexture(GL_TEXTURE_2D, m_pFBO.);
-    // // pBlur->SetUniform("tex",);
-    // mHudTexture.Bind();
-    // fontProgram->SetUniform("matrices.modelViewMatrix", glm::mat4(1));
-    // fontProgram->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
-    // glDrawArrays(GL_TRIANGLES, 0, 6);
-    // // glEnable(GL_CULL_FACE);
 
     // 2d rendering
     // radial blur shader
@@ -495,9 +482,6 @@ void Game::RenderScene(int pass) {
     // Set light and materials in main shader program
     glm::vec4 lightPosition1 = glm::vec4(-100, 100, -100, 1); // Position of light source *in world coordinates*
     pMainProgram->SetUniform("light1.position", viewMatrix * lightPosition1); // Position of light source *in eye coordinates*
-    // pMainProgram->SetUniform("light1.La", glm::vec3(1.0f, 1.0f, 1.0f)); // Ambient colour of light
-    // pMainProgram->SetUniform("light1.Ld", glm::vec3(1.0f, 1.0f, 1.0f)); // Diffuse colour of light
-    // pMainProgram->SetUniform("light1.Ls", glm::vec3(1.0f, 1.0f, 1.0f)); // Specular colour of light
     pMainProgram->SetUniform("light1.La", glm::vec3(.5f, .5f, .5f)); // Ambient colour of light
     pMainProgram->SetUniform("light1.Ld", glm::vec3(.5f, .5f, .5f)); // Diffuse colour of light
     pMainProgram->SetUniform("light1.Ls", glm::vec3(.5f, .5f, .5f)); // Specular colour of light
@@ -509,19 +493,7 @@ void Game::RenderScene(int pass) {
     // Fog's colour
     pMainProgram->SetUniform("skyColour", skyColour); // Shininess material property
 
-
-    // Point light setting
-    // vec4 position;
-    // vec3 La;
-    // vec3 Ld;
-    // vec3 Ls;
-    //
-    // // https://learnopengl.com/Lighting/Light-casters
-    // float constant;
-    // float linear;
-    // float quadratic;
-    // 
-    // pMainProgram->SetUniform("pointLight1.position", viewMatrix * glm::vec4(0.f,10.f,0.f,1.f)); 
+    // player point light
     pMainProgram->SetUniform("pointLight1.position", viewMatrix * glm::vec4(mCar->position().x, mCar->position().y + 2.f, mCar->position().z, 1.f));
     pMainProgram->SetUniform("pointLight1.La", glm::vec3(0.f, 1.f, 0.f));
     pMainProgram->SetUniform("pointLight1.Ld", glm::vec3(0.f, 1.f, 0.f));
@@ -532,25 +504,7 @@ void Game::RenderScene(int pass) {
     pMainProgram->SetUniform("pointLight1.quadratic", 0.44f); //
     pMainProgram->SetUniform("pointLight1.intensity", 7.f); //
 
-    // RENDERING TV
-    // if (pass == 1) {
-    //     // Render the plane for the TV
-    //     // Back face actually places the horse the right way round
-    //     glDisable(GL_CULL_FACE);
-    //     modelViewMatrixStack.Push();
-    //     modelViewMatrixStack.Translate(glm::vec3(0.0f, 30.0f, 0.0f));
-    //     // modelViewMatrixStack.Rotate(glm::vec3(1.0f, 0.0f, 0.0f), 90.0);
-    //     // modelViewMatrixStack.Rotate(glm::vec3(0.0f, 0.0f, 1.0f), 180.0);
-    //     // modelViewMatrixStack.Scale(-1.0);
-    //     pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-    //     pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-    //     // To turn off texture mapping and use the plane colour only (currently white material), uncomment the next line
-    //     //pMainProgram->SetUniform("bUseTexture", false);
-    //     m_pFBO->BindTexture(0);
-    //     m_pPlane->Render(false);
-    //     modelViewMatrixStack.Pop();
-    //     glEnable(GL_CULL_FACE);
-    // }
+
 
 
     // Render the skybox and terrain with full ambient reflectance 
@@ -601,7 +555,6 @@ void Game::RenderScene(int pass) {
     modelViewMatrixStack.Pop();
 
     // render player
-    // m_player->Render(modelViewMatrixStack, pMainProgram, m_pCamera);
 
     // Render the barrel 
     modelViewMatrixStack.Push();
@@ -754,28 +707,6 @@ void Game::RenderScene(int pass) {
     }
     modelViewMatrixStack.Pop();
 
-    // // Render the sphere on the car
-    // if (mCar->showCollisionSphere) {
-    //     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    //
-    //     modelViewMatrixStack.Push();
-    //     {
-    //         modelViewMatrixStack.Translate(glm::vec3(mCar->position()));
-    //         modelViewMatrixStack.Translate(glm::vec3(0.0f, mCar->collisionHeight(), 0.0f));
-    //         modelViewMatrixStack.Scale(mCar->collisionRadius());
-    //         // modelViewMatrixStack.Scale(mCar->collisionScale());
-    //         modelViewMatrixStack *= mCar->getRotationOnPath();
-    //         pMainProgram->SetUniform("matrices.modelViewMatrix", modelViewMatrixStack.Top());
-    //         pMainProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(modelViewMatrixStack.Top()));
-    //         // To turn off texture mapping and use the sphere colour only (currently white material), uncomment the next line
-    //         //pMainProgram->SetUniform("bUseTexture", false);
-    //         // m_pSphere->Render();
-    //         mCar->getCollisionSphere()->Render();
-    //     }
-    //     modelViewMatrixStack.Pop();
-    //     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    // }
-
     // Render the Speed PowerUP
     modelViewMatrixStack.Push();
     {
@@ -882,35 +813,18 @@ void Game::RenderScene(int pass) {
     }
     modelViewMatrixStack.Pop();
 
-
-    // // 2d rendering
-    // // radial blur shader
-    // CShaderProgram* pBlur = (*m_pShaderPrograms)[2];
-    // pBlur->UseProgram();
-    //
-    // // THIS ONE
-    // // 2d quad rendering the blur
-    // if (pass == 1 && mSpeedPowerUpTimer > 0) {
-    //     glBindVertexArray(quadVAO);
-    //     m_pFBO->BindTexture(0);
-    //     glDrawArrays(GL_TRIANGLES, 0, 6);
-    // }
-
-
 }
 
 
 // Update method runs repeatedly with the Render method
 void Game::Update() {
     // Update the camera using the amount of time that has elapsed to avoid framerate dependent motion
-    // m_pCamera->Set(glm::vec3(0, 300, 0), glm::vec3(0, 0, 0), glm::vec3(1, 0, 0));
-
-    // m_car->Update(m_dt, m_pCamera);
-
     m_pCamera->Update(m_dt, m_pCatmullRom);
     mCar->Update(m_dt, m_pCatmullRom);
     float accelerant = m_dt * mMovementSpeedCarCamera;
 
+    // Keyboard inputs
+    // accelerate decelerate
     if (GetKeyState(VK_UP) & 0x80) {
         // m_pCamera->addSpeed(accelerant);
         // mCar->addSpeed(accelerant);
@@ -922,28 +836,22 @@ void Game::Update() {
         accelerate(-accelerant);
     }
 
+    // left right movements
     if (GetKeyState(VK_LEFT) & 0x80) {
-        if (mPlayerLane == 1)
-            mPlayerLane = 0;
-        else if (mPlayerLane == 0)
-            mPlayerLane = -1;
-
         mPlayerXOffset -= m_dt * mCar->getXOffsetSpeed();
         mCar->setXOffset(mPlayerXOffset);
         m_pCamera->setXOffset(mCar->getXOffset());
 
     }
     else if (GetKeyState(VK_RIGHT) & 0x80) {
-        if (mPlayerLane == -1)
-            mPlayerLane = 0;
-        else if (mPlayerLane == 0)
-            mPlayerLane = 1;
         mPlayerXOffset += m_dt * mCar->getXOffsetSpeed();
         mCar->setXOffset(mPlayerXOffset);
         m_pCamera->setXOffset(mCar->getXOffset());
     }
 
+    // collisions
     ManageCollisions();
+    // spin pickups
     mPickup->Update(m_dt);
     mSpeedPowerUp->Update(m_dt);
 
@@ -954,9 +862,12 @@ void Game::Update() {
     speedUISetter();
 
 
+    // change sky colour
     updateSkyColour();
 
+    // meh
     m_pAudio->Update();
+    // timer for speed power up
     if (mSpeedPowerUpTimer <= 0.f) { }
     else {
         // m_pCamera->addSpeed(speed*2.f);
@@ -985,10 +896,6 @@ void Game::ManageCollisions() {
         }
     }
 
-    // // remove pickup
-    // for (auto& i : pickupsToRemove) {
-    //     pickupPositions.erase(i);
-    // }
 
     vector<glm::vec3> removedPickupPositions;
 
@@ -1031,10 +938,6 @@ void Game::ManageCollisions() {
         }
     }
 
-    // // remove pickup
-    // for (auto& i : speedPowerUpsToRemove) {
-    //     speedPowerUpPositions.erase(i);
-    // }
     vector<glm::vec3> removedSpeedPowerUpPositions;
 
     for (auto p = speedPowerUpPositions.begin(); p != speedPowerUpPositions.end(); ++p) {
@@ -1158,16 +1061,6 @@ void Game::DisplayFrameRate() {
 
 // The game loop runs repeatedly until game over
 void Game::GameLoop() {
-    /*
-    // Fixed timer
-    dDt = pHighResolutionTimer->Elapsed();
-    if (dDt > 1000.0 / (double) Game::FPS) {
-        pHighResolutionTimer->Start();
-        Update();
-        Render();
-    }
-    */
-
 
     // Variable timer
     m_pHighResolutionTimer->Start();

@@ -64,14 +64,3 @@ void GameObject::Release() {
     glDeleteVertexArrays(1, &mVao);
     vbo.Release();
 }
-
-// bool GameObject::CheckCollision(glm::vec3 bPosition, float bCollisionRadius) {
-//
-//     float distance = glm::distance(mPosition, bPosition);
-//
-//     if (distance < mCollisionRadius || distance < bCollisionRadius) {
-//         return true;
-//     }
-//
-//     return false;
-// }
